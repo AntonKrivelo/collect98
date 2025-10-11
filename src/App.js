@@ -1,12 +1,16 @@
 import './App.css';
 import MenuAppBar from './components/MenuAppBar/MenuAppBar';
-import UserAuthentication from './components/MenuAppBar/UserAuthentication/UserAuthentication';
+import UserAuthentication from './components/UserAuthentication/UserAuthentication';
+import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
 
 function App() {
   return (
     <div className="App">
       <MenuAppBar />
-      <UserAuthentication />
+      <Routes>
+        <Route path="/register" element={<UserAuthentication mode="register" />} />
+        <Route path="/login" element={<UserAuthentication mode="login" />} />
+      </Routes>
     </div>
   );
 }

@@ -1,9 +1,10 @@
 import './App.css';
+import MenuAppBar from './components/MenuAppBar/MenuAppBar';
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">123</header>
+      <MenuAppBar />
     </div>
   );
 }

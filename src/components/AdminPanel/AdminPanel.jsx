@@ -1,3 +1,4 @@
+import { confirmDialog, ConfirmDialog } from 'primereact/confirmdialog';
 import { useState } from 'react';
 import {
   Box,
@@ -34,8 +35,18 @@ export default function AdminPanel() {
   };
 
   const handleBlock = () => {
-    setUsers((prev) => prev.map((u) => (selected.includes(u.id) ? { ...u, blocked: true } : u)));
-    setSelected([]);
+    confirmDialog({
+      message: 'Are you sure you want to blocked selected users?',
+      header: 'Confirmation',
+      acceptLabel: 'Yes',
+      rejectLabel: 'No',
+      accept: () => {
+        setUsers((prev) =>
+          prev.map((u) => (selected.includes(u.id) ? { ...u, blocked: true } : u)),
+        );
+        setSelected([]);
+      },
+    });
   };
 
   const handleUnblock = () => {
@@ -44,8 +55,16 @@ export default function AdminPanel() {
   };
 
   const handleDelete = () => {
-    setUsers((prev) => prev.filter((u) => !selected.includes(u.id)));
-    setSelected([]);
+    confirmDialog({
+      message: 'Are you sure you want to delete selected users?',
+      header: 'Confirmation',
+      acceptLabel: 'Yes',
+      rejectLabel: 'No',
+      accept: () => {
+        setUsers((prev) => prev.filter((u) => !selected.includes(u.id)));
+        setSelected([]);
+      },
+    });
   };
 
   const filteredUsers = users.filter(
@@ -88,32 +107,32 @@ export default function AdminPanel() {
           />
 
           <Box sx={{ display: 'flex', gap: 1 }}>
-            <Tooltip title="Block the selected ones">
+            <Tooltip title="Block the selected">
               <Button
-                color="warning"
                 variant="contained"
                 onClick={handleBlock}
                 disabled={!allSelected}
+                size="small"
               >
                 Blocked
               </Button>
             </Tooltip>
-            <Tooltip title="Unlock the selected ones">
+            <Tooltip title="Unlock the selected">
               <Button
-                color="success"
                 variant="contained"
                 onClick={handleUnblock}
                 disabled={!allSelected}
+                size="small"
               >
                 Unblock
               </Button>
             </Tooltip>
-            <Tooltip title="Delete selected ones">
+            <Tooltip title="Delete selected">
               <Button
-                color="error"
                 variant="contained"
                 onClick={handleDelete}
                 disabled={!allSelected}
+                size="small"
               >
                 Delete
               </Button>

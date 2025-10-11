@@ -45,7 +45,7 @@ const UserAuthentication = ({ mode }) => {
           {isRegister && <TextField required label="Confirm password" type="password" />}
 
           <Button sx={{ marginTop: '20px' }} variant="contained">
-            {isRegister ? 'Register' : 'Login'}
+            {isRegister ? 'Register' : 'Login Up'}
           </Button>
         </Box>
       </Paper>

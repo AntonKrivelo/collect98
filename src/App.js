@@ -1,7 +1,7 @@
 import './App.css';
 import MenuAppBar from './components/MenuAppBar/MenuAppBar';
 import UserAuthentication from './components/UserAuthentication/UserAuthentication';
-import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 
 function App() {
   return (

@@ -1,4 +1,4 @@
-import { confirmDialog, ConfirmDialog } from 'primereact/confirmdialog';
+import { confirmDialog } from 'primereact/confirmdialog';
 import { useState } from 'react';
 import {
   Box,

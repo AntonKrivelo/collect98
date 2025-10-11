@@ -4,10 +4,10 @@ import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
 import 'primeflex/primeflex.css';
 import { ConfirmDialog } from 'primereact/confirmdialog';
+import { Routes, Route } from 'react-router-dom';
 import AdminPanel from './components/AdminPanel/AdminPanel';
 import MenuAppBar from './components/MenuAppBar/MenuAppBar';
 import UserAuthentication from './components/UserAuthentication/UserAuthentication';
-import { Routes, Route } from 'react-router-dom';
 
 function App() {
   return (

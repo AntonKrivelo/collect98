@@ -37,6 +37,8 @@ export default function MenuAppBar() {
           <Menu id="menu-appbar" anchorEl={anchorEl} open={open} onClose={() => handleClose()}>
             <MenuItem onClick={() => handleClose('/register')}>Register</MenuItem>
             <MenuItem onClick={() => handleClose('/login')}>Login up</MenuItem>
+            <MenuItem onClick={() => handleClose('/admin')}>Admin Panel</MenuItem>
+            <MenuItem onClick={() => handleClose('/inventories')}>Inventories</MenuItem>
           </Menu>
         </Toolbar>
       </AppBar>

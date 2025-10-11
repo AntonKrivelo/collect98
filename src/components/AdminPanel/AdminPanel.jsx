@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import {
   Box,
   Typography,
@@ -90,7 +90,7 @@ export default function AdminPanel() {
           <Box sx={{ display: 'flex', gap: 1 }}>
             <Tooltip title="Block the selected ones">
               <Button
-                color="error"
+                color="warning"
                 variant="contained"
                 onClick={handleBlock}
                 disabled={!allSelected}
@@ -110,7 +110,7 @@ export default function AdminPanel() {
             </Tooltip>
             <Tooltip title="Delete selected ones">
               <Button
-                color="warning"
+                color="error"
                 variant="contained"
                 onClick={handleDelete}
                 disabled={!allSelected}

@@ -1,5 +1,6 @@
-import { Box, Button, TextField, Typography, Paper } from '@mui/material';
-
+import { Box, Button, TextField, Typography, Paper, IconButton } from '@mui/material';
+import GoogleIcon from '@mui/icons-material/Google';
+import FacebookIcon from '@mui/icons-material/Facebook';
 const UserAuthentication = ({ mode }) => {
   const isRegister = mode === 'register';
   return (
@@ -47,6 +48,24 @@ const UserAuthentication = ({ mode }) => {
           <Button sx={{ marginTop: '20px' }} variant="contained">
             {isRegister ? 'Register' : 'Login Up'}
           </Button>
+          <div
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: '15px',
+            }}
+          >
+            <Typography sx={{ paddingTop: '15px', fontWeight: '800', fontSize: '14px' }}>
+              Log in using:
+            </Typography>
+            <IconButton size="large" edge="end" color="primary">
+              <GoogleIcon />
+            </IconButton>
+            <IconButton size="large" edge="end" color="primary">
+              <FacebookIcon />
+            </IconButton>
+          </div>
         </Box>
       </Paper>
     </Box>

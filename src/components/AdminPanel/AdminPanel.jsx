@@ -57,7 +57,7 @@ export default function AdminPanel() {
   const allSelected = selected.length > 0;
 
   return (
-    <Box sx={{ maxWidth: 900, margin: '50px auto' }}>
+    <Box sx={{ maxWidth: 1100, margin: '50px auto' }}>
       <Typography variant="h5" sx={{ mb: 2, fontWeight: 'bold' }}>
         Admin Panel — User Management
       </Typography>

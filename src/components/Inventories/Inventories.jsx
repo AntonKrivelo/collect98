@@ -28,8 +28,8 @@ const Inventories = () => {
     }
     console.log({ type, ids });
     if (type === 'exclude') {
-      const selectedUsers = rows.filter(({ id }) => ![...ids].includes(id)).map(({ id }) => id);
-      setSelectedRows(selectedUsers);
+      const selectedRows = rows.filter(({ id }) => ![...ids].includes(id)).map(({ id }) => id);
+      setSelectedRows(selectedRows);
     }
   };
 

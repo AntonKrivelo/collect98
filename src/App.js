@@ -8,6 +8,7 @@ import { Routes, Route } from 'react-router-dom';
 import AdminPanel from './components/AdminPanel/AdminPanel';
 import MenuAppBar from './components/MenuAppBar/MenuAppBar';
 import UserAuthentication from './components/UserAuthentication/UserAuthentication';
+import Inventories from './components/Inventories/Inventories';
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
         <Route path="/register" element={<UserAuthentication mode="register" />} />
         <Route path="/login" element={<UserAuthentication mode="login" />} />
         <Route path="/admin" element={<AdminPanel />} />
+        <Route path="/inventories" element={<Inventories />} />
       </Routes>
     </div>
   );

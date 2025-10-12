@@ -17,6 +17,7 @@ import {
   InputAdornment,
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
+import SearchBar from '../Utils/SearchBar';
 
 const initialUsers = [
   { id: 1, name: 'Иван Петров', email: 'ivan@example.com', role: 'user', blocked: false },
@@ -90,53 +91,23 @@ export default function AdminPanel() {
             justifyContent: 'space-between',
           }}
         >
-          <TextField
-            variant="outlined"
-            size="small"
-            placeholder="Search by name or email..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            sx={{ flex: 1, maxWidth: 300 }}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <SearchIcon color="action" />
-                </InputAdornment>
-              ),
-            }}
-          />
+          <SearchBar value={search} onChange={setSearch} placeholder="Search by name or email..." />
 
           <Box sx={{ display: 'flex', gap: 1 }}>
-            <Tooltip title="Block the selected">
-              <Button
-                variant="contained"
-                onClick={handleBlock}
-                disabled={!allSelected}
-                size="small"
-              >
-                Blocked
-              </Button>
-            </Tooltip>
-            <Tooltip title="Unlock the selected">
-              <Button
-                variant="contained"
-                onClick={handleUnblock}
-                disabled={!allSelected}
-                size="small"
-              >
-                Unblock
-              </Button>
-            </Tooltip>
-            <Tooltip title="Delete selected">
-              <Button
-                variant="contained"
-                onClick={handleDelete}
-                disabled={!allSelected}
-                size="small"
-              >
-                Delete
-              </Button>
-            </Tooltip>
+            <Button variant="contained" onClick={handleBlock} disabled={!allSelected} size="small">
+              Blocked
+            </Button>
+            <Button
+              variant="contained"
+              onClick={handleUnblock}
+              disabled={!allSelected}
+              size="small"
+            >
+              Unblock
+            </Button>
+            <Button variant="contained" onClick={handleDelete} disabled={!allSelected} size="small">
+              Delete
+            </Button>
           </Box>
         </Toolbar>
       </Paper>

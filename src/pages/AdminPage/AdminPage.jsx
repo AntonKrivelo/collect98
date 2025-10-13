@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import { confirmDialog } from 'primereact/confirmdialog';
 import { Box, Button, Toolbar, Typography, Paper } from '@mui/material';
-import SearchBar from '../Utils/SearchBar';
+import SearchBar from '../../components/Utils/SearchBar';
 
 const initialUsers = [
   { id: 1, name: 'Иван Петров', email: 'ivan@example.com', role: 'user', blocked: false },
@@ -31,7 +31,7 @@ const columns = [
 
 const paginationModel = { page: 0, pageSize: 5 };
 
-export default function AdminPanel() {
+export default function AdminPage() {
   const [users, setUsers] = useState(initialUsers);
   const [selectedRows, setSelectedRows] = useState([]);
   const [search, setSearch] = useState('');

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import Paper from '@mui/material/Paper';
 import { Box, Button, Toolbar, Typography } from '@mui/material';
-import SearchBar from '../Utils/SearchBar';
+import SearchBar from '../../components/Utils/SearchBar';
 
 const columns = [
   { field: 'id', headerName: 'ID', width: 70 },
@@ -18,7 +18,7 @@ const rows = [
 
 const paginationModel = { page: 0, pageSize: 5 };
 
-const Inventories = () => {
+const InventoryPage = () => {
   const [search, setSearch] = useState('');
   const [selectedRows, setSelectedRows] = useState([]);
 
@@ -86,4 +86,4 @@ const Inventories = () => {
   );
 };
 
-export default Inventories;
+export default InventoryPage;

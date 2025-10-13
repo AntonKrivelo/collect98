@@ -5,10 +5,10 @@ import 'primeicons/primeicons.css';
 import 'primeflex/primeflex.css';
 import { ConfirmDialog } from 'primereact/confirmdialog';
 import { Routes, Route } from 'react-router-dom';
-import AdminPanel from './components/AdminPanel/AdminPanel';
 import MenuAppBar from './components/MenuAppBar/MenuAppBar';
 import UserAuthentication from './components/UserAuthentication/UserAuthentication';
-import Inventories from './components/Inventories/Inventories';
+import InventoryPage from './pages/InventoryPage/InventoryPage';
+import AdminPage from './pages/AdminPage/AdminPage';
 
 function App() {
   return (
@@ -25,8 +25,8 @@ function App() {
       <Routes>
         <Route path="/register" element={<UserAuthentication mode="register" />} />
         <Route path="/login" element={<UserAuthentication mode="login" />} />
-        <Route path="/admin" element={<AdminPanel />} />
-        <Route path="/inventories" element={<Inventories />} />
+        <Route path="/admin" element={<AdminPage />} />
+        <Route path="/inventory" element={<InventoryPage />} />
       </Routes>
     </div>
   );

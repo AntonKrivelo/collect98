@@ -7,8 +7,6 @@ import { ConfirmDialog } from 'primereact/confirmdialog';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import MenuAppBar from './components/MenuAppBar/MenuAppBar';
 import AuthPage from './pages/AuthPage/AuthPage';
-import RegisterAuth from './components/RegisterAuth/RegisterAuth';
-import LoginAuth from './components/LoginAuth/LoginAuth';
 
 function App() {
   return (
@@ -23,10 +21,8 @@ function App() {
         }}
       />
       <Routes>
-        <Route path="/" element={<Navigate to="/auth/register" replace />} />
-        <Route path="/auth/*" element={<AuthPage />} />
-        <Route path="/auth/register" element={<RegisterAuth />} />
-        <Route path="/auth/login" element={<LoginAuth />} />
+        <Route path="/" element={<Navigate to="/auth" replace />} />
+        <Route path="/auth" element={<AuthPage />} />
       </Routes>
     </div>
   );

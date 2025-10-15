@@ -1,0 +1,14 @@
+Grid {
+  min-height: 80vh;
+}
+Button {
+  padding: 10px;
+  cursor: pointer;
+}
+
+.blockButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+}

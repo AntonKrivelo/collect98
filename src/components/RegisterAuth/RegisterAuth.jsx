@@ -1,9 +1,14 @@
-import { TextField, Button } from '@mui/material';
+import { useState } from 'react';
+import { TextField, Button, Typography } from '@mui/material';
 import { useForm } from 'react-hook-form';
+import axios from 'axios';
 import styles from './RegisterAuth.module.scss';
 import AuthFormWrapper from '../../pages/AuthPage/AuthFormWrapper';
 
 const RegisterAuth = ({ setIsRegister }) => {
+  const [message, setMessage] = useState('');
+  const [error, setError] = useState('');
+
   const {
     register,
     handleSubmit,
@@ -14,10 +19,29 @@ const RegisterAuth = ({ setIsRegister }) => {
 
   const password = watch('password');
 
-  const onSubmit = (data) => {
-    console.log(data);
-    reset();
-    setIsRegister(false);
+  const onSubmit = async (data, e) => {
+    e.preventDefault();
+    setMessage('');
+    setError('');
+
+    try {
+      const res = await axios.post('http://localhost:4000/register', {
+        name: data.username,
+        email: data.email,
+        password: data.password,
+      });
+
+      console.log(res.data);
+      setMessage('Registration success!');
+      reset();
+    } catch (err) {
+      if (err.response) {
+        console.error(err.response.data);
+        setError(err.response.data.message || 'Error registration.');
+      } else {
+        setError('Server connection error.');
+      }
+    }
   };
 
   return (
@@ -87,6 +111,16 @@ const RegisterAuth = ({ setIsRegister }) => {
         >
           Register
         </Button>
+        {error && (
+          <Typography variant="body2" color="error" align="center" sx={{ mt: 2 }}>
+            {error}
+          </Typography>
+        )}
+        {message && (
+          <Typography variant="body2" color="success.main" align="center" sx={{ mt: 2 }}>
+            {message}
+          </Typography>
+        )}
       </form>
     </AuthFormWrapper>
   );

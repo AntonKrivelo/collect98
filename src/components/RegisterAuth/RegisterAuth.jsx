@@ -2,12 +2,12 @@ import { useState } from 'react';
 import { TextField, Button, Typography } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
-import styles from './RegisterAuth.module.scss';
 import AuthFormWrapper from '../../pages/AuthPage/AuthFormWrapper';
 
 const RegisterAuth = ({ setIsRegister }) => {
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const {
     register,
@@ -20,19 +20,20 @@ const RegisterAuth = ({ setIsRegister }) => {
   const password = watch('password');
 
   const onSubmit = async (data, e) => {
+    setIsLoading(true);
     e.preventDefault();
     setMessage('');
     setError('');
 
     try {
-      const res = await axios.post('http://localhost:4000/register', {
+      await axios.post('http://localhost:4000/register', {
         name: data.username,
         email: data.email,
         password: data.password,
       });
 
-      console.log(res.data);
       setMessage('Registration success!');
+      setIsRegister(false);
       reset();
     } catch (err) {
       if (err.response) {
@@ -41,6 +42,8 @@ const RegisterAuth = ({ setIsRegister }) => {
       } else {
         setError('Server connection error.');
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -107,6 +110,8 @@ const RegisterAuth = ({ setIsRegister }) => {
         <Button
           variant="contained"
           type="submit"
+          loading={isLoading}
+          disabled={isLoading}
           sx={{ mt: 2, py: 1.2, fontSize: '16px', fontWeight: 'bold' }}
         >
           Register

@@ -1,4 +1,4 @@
-import { TextField, Button, Typography, CircularProgress } from '@mui/material';
+import { TextField, Button, Typography } from '@mui/material';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import styles from './LoginAuth.module.scss';
@@ -91,7 +91,7 @@ const LoginAuth = () => {
             position: 'relative',
           }}
         >
-          {loading ? <CircularProgress size={24} color="inherit" /> : 'Login'}
+          Login
         </Button>
         {error && (
           <Typography variant="body2" color="error" align="center" sx={{ mt: 2 }}>

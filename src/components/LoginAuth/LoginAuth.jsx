@@ -20,6 +20,7 @@ const LoginAuth = () => {
   } = useForm();
 
   const onSubmit = async (data) => {
+    setLoading(true);
     setMessage('');
     setError('');
 
@@ -35,7 +36,7 @@ const LoginAuth = () => {
         localStorage.setItem('user', JSON.stringify(res.data.user));
         reset();
 
-        setTimeout(() => navigate('/'), 1000);
+        setTimeout(() => navigate('/dashboard'), 1000);
       }
     } catch (err) {
       if (err.response) {
@@ -83,6 +84,7 @@ const LoginAuth = () => {
         <Button
           variant="contained"
           type="submit"
+          loading={loading}
           disabled={loading}
           sx={{
             height: 40,

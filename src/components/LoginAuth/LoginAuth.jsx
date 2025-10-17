@@ -1,4 +1,4 @@
-import { TextField, Button, Typography } from '@mui/material';
+import { TextField, Button, Typography, CircularProgress } from '@mui/material';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import styles from './LoginAuth.module.scss';
@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
 const LoginAuth = () => {
   const [error, setError] = useState('');
   const [message, setMessage] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const {
@@ -45,7 +45,7 @@ const LoginAuth = () => {
         setError('Server connection error.');
       }
     } finally {
-      setIsLoading(false);
+      setLoading(false);
     }
   };
 
@@ -83,9 +83,13 @@ const LoginAuth = () => {
         <Button
           variant="contained"
           type="submit"
-          sx={{ mt: 2, py: 1.2, fontSize: '16px', fontWeight: 'bold' }}
+          disabled={loading}
+          sx={{
+            height: 40,
+            position: 'relative',
+          }}
         >
-          Login
+          {loading ? <CircularProgress size={24} color="inherit" /> : 'Login'}
         </Button>
         {error && (
           <Typography variant="body2" color="error" align="center" sx={{ mt: 2 }}>

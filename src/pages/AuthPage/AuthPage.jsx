@@ -5,7 +5,7 @@ import LoginAuth from '../../components/LoginAuth/LoginAuth';
 import styles from './AuthPage.module.scss';
 
 const AuthPage = () => {
-  const [isRegister, setIsRegister] = useState(true);
+  const [isRegister, setIsRegister] = useState(false);
 
   return (
     <Grid container display="flex" justifyContent="center" alignItems="center">

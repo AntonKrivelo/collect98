@@ -7,7 +7,6 @@ import { ConfirmDialog } from 'primereact/confirmdialog';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import MenuAppBar from './components/MenuAppBar/MenuAppBar';
 import AuthPage from './pages/AuthPage/AuthPage';
-import { AuthProvider } from './context/AuthContext';
 
 function App() {
   return (
@@ -21,12 +20,10 @@ function App() {
           backgroundColor: '#FFF',
         }}
       />
-      <AuthProvider>
-        <Routes>
-          <Route path="/" element={<Navigate to="/auth" replace />} />
-          <Route path="/auth" element={<AuthPage />} />
-        </Routes>
-      </AuthProvider>
+      <Routes>
+        <Route path="/" element={<Navigate to="/auth" replace />} />
+        <Route path="/auth" element={<AuthPage />} />
+      </Routes>
     </div>
   );
 }

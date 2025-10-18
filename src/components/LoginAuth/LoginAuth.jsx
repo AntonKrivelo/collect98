@@ -14,13 +14,6 @@ const LoginAuth = () => {
   const navigate = useNavigate();
 
   const { setUser } = useAuth();
-  const { logout } = useAuth();
-
-  const handleLogout = () => {
-    logout();
-    setMessage('You have logged out of your profile!');
-    setTimeout(() => navigate('/auth'), 2500);
-  };
 
   const {
     reset,
@@ -102,9 +95,7 @@ const LoginAuth = () => {
         >
           Login
         </Button>
-        <Button sx={{ marginTop: '20px' }} onClick={handleLogout} variant="contained">
-          Logout
-        </Button>
+
         {error && (
           <Typography variant="body2" color="error" align="center" sx={{ mt: 2 }}>
             {error}

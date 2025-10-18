@@ -19,6 +19,7 @@ const LoginAuth = () => {
   const handleLogout = () => {
     logout();
     setMessage('You have logged out of your profile!');
+    setTimeout(() => navigate('/auth'), 2500);
   };
 
   const {
@@ -45,7 +46,7 @@ const LoginAuth = () => {
         setUser(res.data.user);
 
         reset();
-        setTimeout(() => navigate('/dashboard'), 1000);
+        setTimeout(() => navigate('/dashboard'), 2000);
       }
     } catch (err) {
       if (err.response) {

@@ -16,6 +16,11 @@ const LoginAuth = () => {
   const { setUser } = useAuth();
   const { logout } = useAuth();
 
+  const handleLogout = () => {
+    logout();
+    setMessage('You have logged out of your profile!');
+  };
+
   const {
     reset,
     handleSubmit,
@@ -96,7 +101,7 @@ const LoginAuth = () => {
         >
           Login
         </Button>
-        <Button sx={{ marginTop: '20px' }} onClick={logout} variant="contained">
+        <Button sx={{ marginTop: '20px' }} onClick={handleLogout} variant="contained">
           Logout
         </Button>
         {error && (

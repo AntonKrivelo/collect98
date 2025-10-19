@@ -49,6 +49,8 @@ const LoginAuth = () => {
       } else {
         setError('Server connection error.');
       }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -76,6 +78,7 @@ const LoginAuth = () => {
           id="outlined-password"
           label="Password"
           variant="outlined"
+          type="password"
           margin="normal"
           {...register('password', {
             required: 'password is required',

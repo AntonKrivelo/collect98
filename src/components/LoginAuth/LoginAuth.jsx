@@ -23,6 +23,7 @@ const LoginAuth = () => {
   } = useForm();
 
   const onSubmit = async (data) => {
+    setLoading(true);
     setMessage('');
     setError('');
 

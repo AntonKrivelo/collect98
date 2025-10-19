@@ -21,6 +21,7 @@ export default function MenuAppBar() {
   const open = Boolean(anchorEl);
   const navigate = useNavigate();
   const { logout } = useAuth();
+  const { user } = useAuth();
 
   const handleLogout = () => {
     logout();
@@ -60,9 +61,11 @@ export default function MenuAppBar() {
             Collection
           </Typography>
 
-          <Button onClick={handleLogout} size="small" color="black" variant="outlined">
-            Logout
-          </Button>
+          {user && (
+            <Button onClick={handleLogout} size="small" color="black" variant="outlined">
+              Logout
+            </Button>
+          )}
 
           <IconButton size="large" color="inherit" onClick={toggleTheme}>
             {mode === 'light' ? <Brightness4Icon /> : <Brightness7Icon />}

@@ -83,6 +83,7 @@ const RegisterAuth = ({ setIsRegister }) => {
           id="outlined-password"
           label="Password"
           variant="outlined"
+          type="password"
           margin="normal"
           {...register('password', {
             required: 'Password is required.',
@@ -99,6 +100,7 @@ const RegisterAuth = ({ setIsRegister }) => {
           id="outlined-password"
           label="Confirm password"
           variant="outlined"
+          type="password"
           margin="normal"
           {...register('confirmPassword', {
             required: 'Password confirmation is required.',

@@ -5,12 +5,15 @@ import styles from './LoginAuth.module.scss';
 import AuthFormWrapper from '../../pages/AuthPage/AuthFormWrapper';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
 
 const LoginAuth = () => {
   const [error, setError] = useState('');
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+
+  const { setUser } = useAuth();
 
   const {
     reset,
@@ -31,17 +34,18 @@ const LoginAuth = () => {
       });
 
       if (res.data.ok) {
-        setMessage('Login is successfully.');
+        setMessage('Login successful!');
         localStorage.setItem('token', res.data.token);
-        localStorage.setItem('user', JSON.stringify(res.data.user));
-        reset();
 
-        setTimeout(() => navigate('/dashboard'), 1000);
+        setUser(res.data.user);
+
+        reset();
+        setTimeout(() => navigate('/dashboard'), 2000);
       }
     } catch (err) {
       if (err.response) {
         console.error(err.response.data);
-        setError(err.response.data.message || 'Error login.');
+        setError(err.response.data.message || 'Login error');
       } else {
         setError('Server connection error.');
       }
@@ -74,6 +78,7 @@ const LoginAuth = () => {
           id="outlined-password"
           label="Password"
           variant="outlined"
+          type="password"
           margin="normal"
           {...register('password', {
             required: 'password is required',
@@ -89,10 +94,12 @@ const LoginAuth = () => {
           sx={{
             height: 40,
             position: 'relative',
+            marginTop: '20px',
           }}
         >
           Login
         </Button>
+
         {error && (
           <Typography variant="body2" color="error" align="center" sx={{ mt: 2 }}>
             {error}

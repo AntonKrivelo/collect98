@@ -8,6 +8,7 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import MenuAppBar from './components/MenuAppBar/MenuAppBar';
 import AuthPage from './pages/AuthPage/AuthPage';
 import AdminPage from './pages/AdminPage/AdminPage';
+import Dashboard from './pages/Dashboard/Dashboard';
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
         <Route path="/" element={<Navigate to="/auth" replace />} />
         <Route path="/auth" element={<AuthPage />} />
         <Route path="/admin-panel" element={<AdminPage />} />
+        <Route path="/dashboard" element={<Dashboard />} />
       </Routes>
     </div>
   );

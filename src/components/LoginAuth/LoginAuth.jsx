@@ -1,21 +1,16 @@
 import { TextField, Button, Typography } from '@mui/material';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import styles from './LoginAuth.module.scss';
-import AuthFormWrapper from '../../pages/AuthPage/AuthFormWrapper';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../context/AuthContext';
+import AuthFormWrapper from '../../pages/AuthPage/AuthFormWrapper';
+import styles from './LoginAuth.module.scss';
 
 const LoginAuth = () => {
   const [error, setError] = useState('');
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-
-  const { setUser, user } = useAuth();
-
-  console.log(user);
 
   const {
     reset,
@@ -36,11 +31,7 @@ const LoginAuth = () => {
       });
 
       if (res.data.ok) {
-        setMessage('Login successful!');
         localStorage.setItem('token', res.data.token);
-
-        setUser(res.data.user);
-
         reset();
         navigate('/dashboard');
       }
@@ -58,7 +49,7 @@ const LoginAuth = () => {
 
   return (
     <AuthFormWrapper header="Login">
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
         <TextField
           required
           id="outlined-email"

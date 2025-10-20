@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { DataGrid } from '@mui/x-data-grid';
-import { confirmDialog } from 'primereact/confirmdialog';
 import { Box, Button, Toolbar, Typography, Paper } from '@mui/material';
 import SearchBar from '../../components/Utils/SearchBar';
 import { useAuth } from '../../context/AuthContext';

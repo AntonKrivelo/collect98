@@ -79,6 +79,7 @@ export default function MenuAppBar() {
             {!user || user.role !== 'admin' ? null : (
               <MenuItem onClick={() => handleClose('/admin-panel')}>AdminPage</MenuItem>
             )}
+            <MenuItem onClick={() => handleClose('/dashboard')}>Dashboard</MenuItem>
           </Menu>
         </Toolbar>
       </AppBar>

@@ -4,8 +4,7 @@ import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import AuthFormWrapper from '../../pages/AuthPage/AuthFormWrapper';
 
-const RegisterAuth = ({ setIsRegister }) => {
-  const [message, setMessage] = useState('');
+const RegisterAuth = ({ setIsRegister, setAlertMessage }) => {
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
@@ -22,7 +21,6 @@ const RegisterAuth = ({ setIsRegister }) => {
   const onSubmit = async (data, e) => {
     setIsLoading(true);
     e.preventDefault();
-    setMessage('');
     setError('');
 
     try {
@@ -32,13 +30,13 @@ const RegisterAuth = ({ setIsRegister }) => {
         password: data.password,
       });
 
-      setMessage('Registration success!');
+      setAlertMessage({ text: 'Registration success!', severity: 'success' });
       setIsRegister(false);
       reset();
     } catch (err) {
       if (err.response) {
         console.error(err.response.data);
-        setError(err.response.data.message || 'Error registration.');
+        setError(err.response.data.message || `Error registration.`);
       } else {
         setError('Server connection error.');
       }
@@ -104,7 +102,7 @@ const RegisterAuth = ({ setIsRegister }) => {
           margin="normal"
           {...register('confirmPassword', {
             required: 'Password confirmation is required.',
-            validate: (value) => value === password || "Passwords don't match!",
+            validate: (value) => value === password,
           })}
           error={!!errors.confirmPassword}
           helperText={errors.confirmPassword ? errors.confirmPassword.message : ''}
@@ -121,11 +119,6 @@ const RegisterAuth = ({ setIsRegister }) => {
         {error && (
           <Typography variant="body2" color="error" align="center" sx={{ mt: 2 }}>
             {error}
-          </Typography>
-        )}
-        {message && (
-          <Typography variant="body2" color="success.main" align="center" sx={{ mt: 2 }}>
-            {message}
           </Typography>
         )}
       </form>

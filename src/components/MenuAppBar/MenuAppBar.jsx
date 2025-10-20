@@ -26,7 +26,7 @@ export default function MenuAppBar() {
   const handleLogout = () => {
     logout();
     setMessage('You have logged out of your profile!');
-    setTimeout(() => navigate('/auth'), 2500);
+    navigate('/auth');
   };
 
   const [mode, setMode] = React.useState(localStorage.getItem('theme') || 'light');
@@ -76,8 +76,10 @@ export default function MenuAppBar() {
           </IconButton>
 
           <Menu id="menu-appbar" anchorEl={anchorEl} open={open} onClose={() => handleClose()}>
-            {/* <MenuItem onClick={() => handleClose('/admin')}>AdminPage</MenuItem>
-            <MenuItem onClick={() => handleClose('/inventory')}>InventoryPage</MenuItem> */}
+            {!user || user.role !== 'admin' ? null : (
+              <MenuItem onClick={() => handleClose('/admin-panel')}>AdminPage</MenuItem>
+            )}
+            <MenuItem onClick={() => handleClose('/dashboard')}>Dashboard</MenuItem>
           </Menu>
         </Toolbar>
       </AppBar>

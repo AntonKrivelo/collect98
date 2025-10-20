@@ -42,7 +42,7 @@ const LoginAuth = () => {
         setUser(res.data.user);
 
         reset();
-        setTimeout(() => navigate('/dashboard'), 2000);
+        navigate('/dashboard');
       }
     } catch (err) {
       if (err.response) {

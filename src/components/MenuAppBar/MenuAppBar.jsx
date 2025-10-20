@@ -26,7 +26,7 @@ export default function MenuAppBar() {
   const handleLogout = () => {
     logout();
     setMessage('You have logged out of your profile!');
-    setTimeout(() => navigate('/auth'), 2500);
+    navigate('/auth');
   };
 
   const [mode, setMode] = React.useState(localStorage.getItem('theme') || 'light');

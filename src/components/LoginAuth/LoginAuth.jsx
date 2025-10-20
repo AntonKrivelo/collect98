@@ -13,7 +13,9 @@ const LoginAuth = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const { setUser } = useAuth();
+  const { setUser, user } = useAuth();
+
+  console.log(user);
 
   const {
     reset,

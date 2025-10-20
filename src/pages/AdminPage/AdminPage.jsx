@@ -1,15 +1,11 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 import { DataGrid } from '@mui/x-data-grid';
 import { confirmDialog } from 'primereact/confirmdialog';
 import { Box, Button, Toolbar, Typography, Paper } from '@mui/material';
 import SearchBar from '../../components/Utils/SearchBar';
-
-const initialUsers = [
-  { id: 1, name: 'Иван Петров', email: 'ivan@example.com', role: 'user', blocked: false },
-  { id: 2, name: 'Мария Иванова', email: 'maria@example.com', role: 'admin', blocked: false },
-  { id: 3, name: 'Павел Смирнов', email: 'pavel@example.com', role: 'user', blocked: true },
-  { id: 4, name: 'Алексей Сидоров', email: 'alexey@example.com', role: 'user', blocked: false },
-];
+import { useAuth } from '../../context/AuthContext';
+import { useNavigate } from 'react-router';
 
 const columns = [
   { field: 'id', headerName: 'ID', width: 70 },
@@ -32,9 +28,38 @@ const columns = [
 const paginationModel = { page: 0, pageSize: 5 };
 
 export default function AdminPage() {
-  const [users, setUsers] = useState(initialUsers);
+  const { user } = useAuth();
+  const navigate = useNavigate();
+
+  const [users, setUsers] = useState([]);
   const [selectedRows, setSelectedRows] = useState([]);
   const [search, setSearch] = useState('');
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (!user || user.role !== 'admin') {
+      navigate('/dashboard');
+      return;
+    }
+  }, []);
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        const res = await axios.get('http://localhost:4000/users', {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setUsers(res.data.users || []);
+      } catch (err) {
+        console.error('Errors is loading users:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUsers();
+  }, []);
 
   const filteredRows = users.filter(
     (u) =>
@@ -42,51 +67,15 @@ export default function AdminPage() {
       u.email.toLowerCase().includes(search.toLowerCase()),
   );
 
-  const handleOnRowSelectionModelChange = ({ type, ids }) => {
-    if (type === 'include') {
-      setSelectedRows([...ids]);
-    }
-    console.log({ type, ids });
-    if (type === 'exclude') {
-      const selectedUsers = users.filter(({ id }) => ![...ids].includes(id)).map(({ id }) => id);
-      setSelectedRows(selectedUsers);
-    }
+  const handleOnRowSelectionModelChange = (ids) => {
+    setSelectedRows(ids);
   };
 
-  const handleBlock = () => {
-    confirmDialog({
-      message: 'Are you sure you want to block selected users?',
-      header: 'Confirmation',
-      acceptLabel: 'Yes',
-      rejectLabel: 'No',
-      accept: () => {
-        setUsers((prev) =>
-          prev.map((u) => (selectedRows.includes(u.id) ? { ...u, blocked: true } : u)),
-        );
-        setSelectedRows([]);
-      },
-    });
-  };
+  const handleBlock = () => {};
 
-  const handleUnblock = () => {
-    setUsers((prev) =>
-      prev.map((u) => (selectedRows.includes(u.id) ? { ...u, blocked: false } : u)),
-    );
-    setSelectedRows([]);
-  };
+  const handleUnblock = () => {};
 
-  const handleDelete = () => {
-    confirmDialog({
-      message: 'Are you sure you want to delete selected users?',
-      header: 'Confirmation',
-      acceptLabel: 'Yes',
-      rejectLabel: 'No',
-      accept: () => {
-        setUsers((prev) => prev.filter((u) => !selectedRows.includes(u.id)));
-        setSelectedRows([]);
-      },
-    });
-  };
+  const handleDelete = () => {};
 
   return (
     <div>
@@ -104,6 +93,15 @@ export default function AdminPage() {
               justifyContent: 'space-between',
             }}
           >
+            <Button
+              variant="contained"
+              onClick={() => {
+                navigate('/dashboard');
+              }}
+              size="small"
+            >
+              Back
+            </Button>
             <SearchBar
               value={search}
               onChange={setSearch}
@@ -145,7 +143,8 @@ export default function AdminPage() {
             initialState={{ pagination: { paginationModel } }}
             pageSizeOptions={[5, 10]}
             checkboxSelection
-            onRowSelectionModelChange={(rows) => handleOnRowSelectionModelChange(rows)}
+            loading={loading}
+            onRowSelectionModelChange={handleOnRowSelectionModelChange}
             sx={{ border: 0 }}
           />
         </Paper>

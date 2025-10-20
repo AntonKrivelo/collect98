@@ -36,7 +36,7 @@ const RegisterAuth = ({ setIsRegister, setAlertMessage }) => {
     } catch (err) {
       if (err.response) {
         console.error(err.response.data);
-        setError(err.response.data.message`Error registration.`);
+        setError(err.response.data.message || `Error registration.`);
       } else {
         setError('Server connection error.');
       }

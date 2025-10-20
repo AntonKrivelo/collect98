@@ -40,7 +40,7 @@ export default function AdminPage() {
       navigate('/dashboard');
       return;
     }
-  }, []);
+  }, [user]);
 
   useEffect(() => {
     const fetchUsers = async () => {

@@ -36,6 +36,13 @@ export default function AdminPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (!user || user.role !== 'admin') {
+      navigate('/dashboard');
+      return;
+    }
+  }, [user]);
+
+  useEffect(() => {
     const fetchUsers = async () => {
       try {
         const token = localStorage.getItem('token');

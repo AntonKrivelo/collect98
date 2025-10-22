@@ -12,6 +12,17 @@ const columns = [
   { field: 'email', headerName: 'Email', width: 220 },
   { field: 'role', headerName: 'Role', width: 120 },
   {
+    field: 'status',
+    headerName: 'Verified',
+    width: 120,
+    renderCell: (params) =>
+      params.row.status === 'verified' ? (
+        <Typography color="success.main">Verified</Typography>
+      ) : (
+        <Typography color="error">Unverified</Typography>
+      ),
+  },
+  {
     field: 'blocked',
     headerName: 'Status',
     width: 130,

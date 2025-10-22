@@ -110,6 +110,58 @@ export default function AdminPage() {
     setSelectedRows([]);
   };
 
+  const handleProvideAdminAccess = async () => {
+    console.log(selectedRows);
+
+    const token = localStorage.getItem('token');
+
+    await Promise.all(
+      selectedRows.map((userId) =>
+        axios.patch(
+          `http://localhost:4000/users/${userId}`,
+          {
+            role: 'admin',
+          },
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`,
+            },
+          },
+        ),
+      ),
+    );
+    setUsers((prevUsers) =>
+      prevUsers.map((user) => (selectedRows.includes(user.id) ? { ...user, role: 'admin' } : user)),
+    );
+  };
+
+  const handleRemoveAdminAccess = async () => {
+    console.log(selectedRows);
+
+    const token = localStorage.getItem('token');
+
+    await Promise.all(
+      selectedRows.map((userId) =>
+        axios.patch(
+          `http://localhost:4000/users/${userId}`,
+          {
+            role: 'user',
+          },
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`,
+            },
+          },
+        ),
+      ),
+    );
+    setUsers((prevUsers) =>
+      prevUsers.map((user) => (selectedRows.includes(user.id) ? { ...user, role: 'user' } : user)),
+    );
+  };
+
   return (
     <div>
       <Box sx={{ maxWidth: 1100, margin: '20px auto' }}>
@@ -181,7 +233,7 @@ export default function AdminPage() {
               <Button
                 sx={{ fontSize: '12px' }}
                 variant="contained"
-                onClick={() => {}}
+                onClick={handleProvideAdminAccess}
                 disabled={selectedRows.length === 0}
                 size="small"
               >
@@ -190,7 +242,7 @@ export default function AdminPage() {
               <Button
                 sx={{ fontSize: '12px' }}
                 variant="contained"
-                onClick={() => {}}
+                onClick={handleRemoveAdminAccess}
                 disabled={selectedRows.length === 0}
                 size="small"
               >

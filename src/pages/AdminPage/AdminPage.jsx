@@ -16,7 +16,7 @@ const columns = [
     headerName: 'Status',
     width: 120,
     renderCell: (params) =>
-      params.row.status === 'verified' ? (
+      params.row.status === 'active' ? (
         <Typography color="success.main">Active</Typography>
       ) : (
         <Typography color="error">Blocked</Typography>
@@ -103,7 +103,31 @@ export default function AdminPage() {
     );
   };
 
-  const handleUnblock = () => {};
+  const handleUnblock = async () => {
+    const token = localStorage.getItem('token');
+
+    await Promise.all(
+      selectedRows.map((userId) =>
+        axios.patch(
+          `http://localhost:4000/users/${userId}`,
+          {
+            status: 'active',
+          },
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`,
+            },
+          },
+        ),
+      ),
+    );
+    setUsers((prevUsers) =>
+      prevUsers.map((user) =>
+        selectedRows.includes(user.id) ? { ...user, status: 'active' } : user,
+      ),
+    );
+  };
 
   const handleDeleteUsers = async () => {
     console.log(selectedRows);

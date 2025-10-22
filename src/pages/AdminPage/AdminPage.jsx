@@ -116,6 +116,7 @@ export default function AdminPage() {
             }}
           >
             <Button
+              sx={{ fontSize: '12px' }}
               variant="contained"
               onClick={() => {
                 navigate('/dashboard');
@@ -131,6 +132,7 @@ export default function AdminPage() {
             />
             <Box sx={{ display: 'flex', gap: 1 }}>
               <Button
+                sx={{ fontSize: '12px' }}
                 variant="contained"
                 onClick={handleBlock}
                 disabled={selectedRows.length === 0}
@@ -139,6 +141,7 @@ export default function AdminPage() {
                 Block
               </Button>
               <Button
+                sx={{ fontSize: '12px' }}
                 variant="contained"
                 onClick={handleUnblock}
                 disabled={selectedRows.length === 0}
@@ -147,12 +150,40 @@ export default function AdminPage() {
                 Unblock
               </Button>
               <Button
+                sx={{ fontSize: '12px' }}
                 variant="contained"
                 onClick={handleDeleteUsers}
                 disabled={selectedRows.length === 0}
                 size="small"
               >
                 Delete
+              </Button>
+              <Button
+                sx={{ fontSize: '12px' }}
+                variant="contained"
+                onClick={() => {}}
+                disabled={selectedRows.length === 0}
+                size="small"
+              >
+                Verified
+              </Button>
+              <Button
+                sx={{ fontSize: '12px' }}
+                variant="contained"
+                onClick={() => {}}
+                disabled={selectedRows.length === 0}
+                size="small"
+              >
+                Provide admin access
+              </Button>
+              <Button
+                sx={{ fontSize: '12px' }}
+                variant="contained"
+                onClick={() => {}}
+                disabled={selectedRows.length === 0}
+                size="small"
+              >
+                Remove admin access
               </Button>
             </Box>
           </Toolbar>

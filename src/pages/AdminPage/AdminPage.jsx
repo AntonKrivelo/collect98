@@ -36,13 +36,6 @@ export default function AdminPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!user || user.role !== 'admin') {
-      navigate('/dashboard');
-      return;
-    }
-  }, [user]);
-
-  useEffect(() => {
     const fetchUsers = async () => {
       try {
         const token = localStorage.getItem('token');
@@ -66,15 +59,38 @@ export default function AdminPage() {
       u.email.toLowerCase().includes(search.toLowerCase()),
   );
 
-  const handleOnRowSelectionModelChange = (ids) => {
-    setSelectedRows(ids);
+  const handleOnRowSelectionModelChange = ({ type, ids }) => {
+    if (type === 'include') {
+      setSelectedRows([...ids]);
+    }
+    console.log({ type, ids });
+    if (type === 'exclude') {
+      const selectedUsers = users.filter(({ id }) => ![...ids].includes(id)).map(({ id }) => id);
+      setSelectedRows(selectedUsers);
+    }
   };
 
   const handleBlock = () => {};
 
   const handleUnblock = () => {};
 
-  const handleDelete = () => {};
+  const handleDeleteUsers = async () => {
+    console.log(selectedRows);
+
+    const token = localStorage.getItem('token');
+
+    await axios.delete('http://localhost:4000/users', {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      data: {
+        ids: selectedRows,
+      },
+    });
+    setUsers((prevUsers) => prevUsers.filter((user) => !selectedRows.includes(user.id)));
+    setSelectedRows([]);
+  };
 
   return (
     <div>
@@ -125,7 +141,7 @@ export default function AdminPage() {
               </Button>
               <Button
                 variant="contained"
-                onClick={handleDelete}
+                onClick={handleDeleteUsers}
                 disabled={selectedRows.length === 0}
                 size="small"
               >
@@ -143,7 +159,7 @@ export default function AdminPage() {
             pageSizeOptions={[5, 10]}
             checkboxSelection
             loading={loading}
-            onRowSelectionModelChange={handleOnRowSelectionModelChange}
+            onRowSelectionModelChange={(rows) => handleOnRowSelectionModelChange(rows)}
             sx={{ border: 0 }}
           />
         </Paper>

@@ -13,24 +13,13 @@ const columns = [
   { field: 'role', headerName: 'Role', width: 120 },
   {
     field: 'status',
-    headerName: 'Verified',
+    headerName: 'Status',
     width: 120,
     renderCell: (params) =>
       params.row.status === 'verified' ? (
-        <Typography color="success.main">Verified</Typography>
-      ) : (
-        <Typography color="error">Unverified</Typography>
-      ),
-  },
-  {
-    field: 'blocked',
-    headerName: 'Status',
-    width: 130,
-    renderCell: (params) =>
-      params.row.blocked ? (
-        <Typography color="error">Blocked</Typography>
-      ) : (
         <Typography color="success.main">Active</Typography>
+      ) : (
+        <Typography color="error">Blocked</Typography>
       ),
   },
 ];
@@ -88,7 +77,31 @@ export default function AdminPage() {
     }
   };
 
-  const handleBlock = () => {};
+  const handleBlock = async () => {
+    const token = localStorage.getItem('token');
+
+    await Promise.all(
+      selectedRows.map((userId) =>
+        axios.patch(
+          `http://localhost:4000/users/${userId}`,
+          {
+            status: 'blocked',
+          },
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`,
+            },
+          },
+        ),
+      ),
+    );
+    setUsers((prevUsers) =>
+      prevUsers.map((user) =>
+        selectedRows.includes(user.id) ? { ...user, status: 'blocked' } : user,
+      ),
+    );
+  };
 
   const handleUnblock = () => {};
 
@@ -111,8 +124,6 @@ export default function AdminPage() {
   };
 
   const handleProvideAdminAccess = async () => {
-    console.log(selectedRows);
-
     const token = localStorage.getItem('token');
 
     await Promise.all(
@@ -137,8 +148,6 @@ export default function AdminPage() {
   };
 
   const handleRemoveAdminAccess = async () => {
-    console.log(selectedRows);
-
     const token = localStorage.getItem('token');
 
     await Promise.all(
@@ -159,34 +168,6 @@ export default function AdminPage() {
     );
     setUsers((prevUsers) =>
       prevUsers.map((user) => (selectedRows.includes(user.id) ? { ...user, role: 'user' } : user)),
-    );
-  };
-
-  const handleVerifiedUser = async () => {
-    console.log(selectedRows);
-
-    const token = localStorage.getItem('token');
-
-    await Promise.all(
-      selectedRows.map((userId) =>
-        axios.patch(
-          `http://localhost:4000/users/${userId}`,
-          {
-            status: 'verified',
-          },
-          {
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${token}`,
-            },
-          },
-        ),
-      ),
-    );
-    setUsers((prevUsers) =>
-      prevUsers.map((user) =>
-        selectedRows.includes(user.id) ? { ...user, status: 'verified' } : user,
-      ),
     );
   };
 
@@ -248,15 +229,6 @@ export default function AdminPage() {
                 size="small"
               >
                 Delete
-              </Button>
-              <Button
-                sx={{ fontSize: '12px' }}
-                variant="contained"
-                onClick={handleVerifiedUser}
-                disabled={selectedRows.length === 0}
-                size="small"
-              >
-                Verified
               </Button>
               <Button
                 sx={{ fontSize: '12px' }}

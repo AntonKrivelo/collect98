@@ -5,12 +5,14 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import AuthFormWrapper from '../../pages/AuthPage/AuthFormWrapper';
 import styles from './LoginAuth.module.scss';
+import { useAuth } from '../../context/AuthContext';
 
 const LoginAuth = () => {
   const [error, setError] = useState('');
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { user } = useAuth();
 
   const {
     reset,
@@ -30,17 +32,17 @@ const LoginAuth = () => {
         password: data.password,
       });
 
-      if (res.data.ok) {
+      if (res.status === 200) {
         localStorage.setItem('token', res.data.token);
-        reset();
-        navigate('/dashboard');
+        return navigate('/dashboard');
       }
-    } catch (err) {
-      if (err.response) {
-        console.error(err.response.data);
-        setError(err.response.data.message || 'Login error');
+    } catch (error) {
+      if (error.response?.status === 403) {
+        setError('Your account is blocked. Contact the administrator.');
+      } else if (error.response?.status === 401) {
+        setError('Invalid email or password.');
       } else {
-        setError('Server connection error.');
+        setError('Server error. Please try again.');
       }
     } finally {
       setLoading(false);

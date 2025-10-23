@@ -12,14 +12,14 @@ const columns = [
   { field: 'email', headerName: 'Email', width: 220 },
   { field: 'role', headerName: 'Role', width: 120 },
   {
-    field: 'blocked',
+    field: 'status',
     headerName: 'Status',
-    width: 130,
+    width: 120,
     renderCell: (params) =>
-      params.row.blocked ? (
-        <Typography color="error">Blocked</Typography>
-      ) : (
+      params.row.status === 'active' ? (
         <Typography color="success.main">Active</Typography>
+      ) : (
+        <Typography color="error">Blocked</Typography>
       ),
   },
 ];
@@ -36,7 +36,7 @@ export default function AdminPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!user || user.role !== 'admin') {
+    if (!user || user.role !== 'admin' || user.status === 'blocked') {
       navigate('/dashboard');
       return;
     }
@@ -66,15 +66,103 @@ export default function AdminPage() {
       u.email.toLowerCase().includes(search.toLowerCase()),
   );
 
-  const handleOnRowSelectionModelChange = (ids) => {
-    setSelectedRows(ids);
+  const handleOnRowSelectionModelChange = ({ type, ids }) => {
+    if (type === 'include') {
+      setSelectedRows([...ids]);
+    }
+    console.log({ type, ids });
+    if (type === 'exclude') {
+      const selectedUsers = users.filter(({ id }) => ![...ids].includes(id)).map(({ id }) => id);
+      setSelectedRows(selectedUsers);
+    }
   };
 
-  const handleBlock = () => {};
+  const fetchEditUsers = async ({ ids, editField }) => {
+    const token = localStorage.getItem('token');
+    const usersUpdateData = ids.map((id) => ({ id, ...editField }));
 
-  const handleUnblock = () => {};
+    return await axios.patch(
+      `http://localhost:4000/users`,
+      { users: usersUpdateData },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+  };
 
-  const handleDelete = () => {};
+  const handleBlock = async () => {
+    try {
+      await fetchEditUsers({ ids: selectedRows, update: { status: 'blocked' } });
+      setUsers((prevUsers) =>
+        prevUsers.map((user) =>
+          selectedRows.includes(user.id) ? { ...user, status: 'blocked' } : user,
+        ),
+      );
+    } catch (e) {
+    } finally {
+    }
+  };
+  const handleUnblock = async () => {
+    try {
+      setSelectedRows([]);
+
+      await fetchEditUsers({ ids: selectedRows, update: { status: 'active' } });
+      setUsers((prevUsers) =>
+        prevUsers.map((user) =>
+          selectedRows.includes(user.id) ? { ...user, status: 'active' } : user,
+        ),
+      );
+    } catch (e) {
+    } finally {
+    }
+  };
+
+  const handleDeleteUsers = async () => {
+    console.log(selectedRows);
+
+    const token = localStorage.getItem('token');
+
+    await axios.delete('http://localhost:4000/users', {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      data: {
+        ids: selectedRows,
+      },
+    });
+    setUsers((prevUsers) => prevUsers.filter((user) => !selectedRows.includes(user.id)));
+    setSelectedRows([]);
+  };
+
+  const handleProvideAdminAccess = async () => {
+    try {
+      await fetchEditUsers({ ids: selectedRows, update: { role: 'admin' } });
+      setUsers((prevUsers) =>
+        prevUsers.map((user) =>
+          selectedRows.includes(user.id) ? { ...user, role: 'admin' } : user,
+        ),
+      );
+    } catch (e) {
+    } finally {
+    }
+  };
+
+  const handleRemoveAdminAccess = async () => {
+    try {
+      await fetchEditUsers({ ids: selectedRows, update: { role: 'user' } });
+      setUsers((prevUsers) =>
+        prevUsers.map((user) =>
+          selectedRows.includes(user.id) ? { ...user, role: 'user' } : user,
+        ),
+      );
+    } catch (e) {
+    } finally {
+    }
+  };
 
   return (
     <div>
@@ -93,6 +181,7 @@ export default function AdminPage() {
             }}
           >
             <Button
+              sx={{ fontSize: '12px' }}
               variant="contained"
               onClick={() => {
                 navigate('/dashboard');
@@ -108,6 +197,7 @@ export default function AdminPage() {
             />
             <Box sx={{ display: 'flex', gap: 1 }}>
               <Button
+                sx={{ fontSize: '12px' }}
                 variant="contained"
                 onClick={handleBlock}
                 disabled={selectedRows.length === 0}
@@ -116,6 +206,7 @@ export default function AdminPage() {
                 Block
               </Button>
               <Button
+                sx={{ fontSize: '12px' }}
                 variant="contained"
                 onClick={handleUnblock}
                 disabled={selectedRows.length === 0}
@@ -124,12 +215,31 @@ export default function AdminPage() {
                 Unblock
               </Button>
               <Button
+                sx={{ fontSize: '12px' }}
                 variant="contained"
-                onClick={handleDelete}
+                onClick={handleDeleteUsers}
                 disabled={selectedRows.length === 0}
                 size="small"
               >
                 Delete
+              </Button>
+              <Button
+                sx={{ fontSize: '12px' }}
+                variant="contained"
+                onClick={handleProvideAdminAccess}
+                disabled={selectedRows.length === 0}
+                size="small"
+              >
+                Provide admin access
+              </Button>
+              <Button
+                sx={{ fontSize: '12px' }}
+                variant="contained"
+                onClick={handleRemoveAdminAccess}
+                disabled={selectedRows.length === 0}
+                size="small"
+              >
+                Remove admin access
               </Button>
             </Box>
           </Toolbar>
@@ -143,7 +253,7 @@ export default function AdminPage() {
             pageSizeOptions={[5, 10]}
             checkboxSelection
             loading={loading}
-            onRowSelectionModelChange={handleOnRowSelectionModelChange}
+            onRowSelectionModelChange={(rows) => handleOnRowSelectionModelChange(rows)}
             sx={{ border: 0 }}
           />
         </Paper>

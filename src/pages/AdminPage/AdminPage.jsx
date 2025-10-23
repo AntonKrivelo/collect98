@@ -36,7 +36,7 @@ export default function AdminPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!user || user.role !== 'admin') {
+    if (!user || user.role !== 'admin' || user.status === 'blocked') {
       navigate('/dashboard');
       return;
     }

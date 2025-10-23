@@ -34,11 +34,7 @@ const LoginAuth = () => {
 
       if (res.status === 200) {
         localStorage.setItem('token', res.data.token);
-        if (user.role === 'admin') {
-          return navigate('/admin-panel');
-        } else {
-          return navigate('/dashboard');
-        }
+        return navigate('/dashboard');
       }
     } catch (error) {
       if (error.response?.status === 403) {

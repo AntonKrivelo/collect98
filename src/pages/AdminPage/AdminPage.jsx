@@ -77,56 +77,47 @@ export default function AdminPage() {
     }
   };
 
-  const handleBlock = async () => {
+  const tokenBody = async ({ ids, update }) => {
     const token = localStorage.getItem('token');
+    const a = ids.map((id) => ({ id, ...update }));
 
-    await Promise.all(
-      selectedRows.map((userId) =>
-        axios.patch(
-          `http://localhost:4000/users/${userId}`,
-          {
-            status: 'blocked',
-          },
-          {
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${token}`,
-            },
-          },
-        ),
-      ),
-    );
-    setUsers((prevUsers) =>
-      prevUsers.map((user) =>
-        selectedRows.includes(user.id) ? { ...user, status: 'blocked' } : user,
-      ),
+    return await axios.patch(
+      `http://localhost:4000/users`,
+      { users: a },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      },
     );
   };
 
-  const handleUnblock = async () => {
-    const token = localStorage.getItem('token');
-
-    await Promise.all(
-      selectedRows.map((userId) =>
-        axios.patch(
-          `http://localhost:4000/users/${userId}`,
-          {
-            status: 'active',
-          },
-          {
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${token}`,
-            },
-          },
+  const handleBlock = async () => {
+    try {
+      await tokenBody({ ids: selectedRows, update: { status: 'blocked' } });
+      setUsers((prevUsers) =>
+        prevUsers.map((user) =>
+          selectedRows.includes(user.id) ? { ...user, status: 'blocked' } : user,
         ),
-      ),
-    );
-    setUsers((prevUsers) =>
-      prevUsers.map((user) =>
-        selectedRows.includes(user.id) ? { ...user, status: 'active' } : user,
-      ),
-    );
+      );
+    } catch (e) {
+    } finally {
+    }
+  };
+  const handleUnblock = async () => {
+    try {
+      setSelectedRows([]);
+
+      await tokenBody({ ids: selectedRows, update: { status: 'active' } });
+      setUsers((prevUsers) =>
+        prevUsers.map((user) =>
+          selectedRows.includes(user.id) ? { ...user, status: 'active' } : user,
+        ),
+      );
+    } catch (e) {
+    } finally {
+    }
   };
 
   const handleDeleteUsers = async () => {
@@ -148,51 +139,29 @@ export default function AdminPage() {
   };
 
   const handleProvideAdminAccess = async () => {
-    const token = localStorage.getItem('token');
-
-    await Promise.all(
-      selectedRows.map((userId) =>
-        axios.patch(
-          `http://localhost:4000/users/${userId}`,
-          {
-            role: 'admin',
-          },
-          {
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${token}`,
-            },
-          },
+    try {
+      await tokenBody({ ids: selectedRows, update: { role: 'admin' } });
+      setUsers((prevUsers) =>
+        prevUsers.map((user) =>
+          selectedRows.includes(user.id) ? { ...user, role: 'admin' } : user,
         ),
-      ),
-    );
-    setUsers((prevUsers) =>
-      prevUsers.map((user) => (selectedRows.includes(user.id) ? { ...user, role: 'admin' } : user)),
-    );
+      );
+    } catch (e) {
+    } finally {
+    }
   };
 
   const handleRemoveAdminAccess = async () => {
-    const token = localStorage.getItem('token');
-
-    await Promise.all(
-      selectedRows.map((userId) =>
-        axios.patch(
-          `http://localhost:4000/users/${userId}`,
-          {
-            role: 'user',
-          },
-          {
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${token}`,
-            },
-          },
+    try {
+      await tokenBody({ ids: selectedRows, update: { role: 'user' } });
+      setUsers((prevUsers) =>
+        prevUsers.map((user) =>
+          selectedRows.includes(user.id) ? { ...user, role: 'user' } : user,
         ),
-      ),
-    );
-    setUsers((prevUsers) =>
-      prevUsers.map((user) => (selectedRows.includes(user.id) ? { ...user, role: 'user' } : user)),
-    );
+      );
+    } catch (e) {
+    } finally {
+    }
   };
 
   return (

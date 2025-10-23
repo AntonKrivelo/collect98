@@ -77,13 +77,13 @@ export default function AdminPage() {
     }
   };
 
-  const fetchEditUsers = async ({ ids, update }) => {
+  const fetchEditUsers = async ({ ids, editField }) => {
     const token = localStorage.getItem('token');
-    const a = ids.map((id) => ({ id, ...update }));
+    const usersUpdateData = ids.map((id) => ({ id, ...editField }));
 
     return await axios.patch(
       `http://localhost:4000/users`,
-      { users: a },
+      { users: usersUpdateData },
       {
         headers: {
           'Content-Type': 'application/json',

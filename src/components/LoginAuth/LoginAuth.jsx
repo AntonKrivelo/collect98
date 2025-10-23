@@ -32,11 +32,9 @@ const LoginAuth = () => {
         password: data.password,
       });
 
-      if (res.data.ok && user.role === 'admin') {
+      if (res.data.ok) {
         localStorage.setItem('token', res.data.token);
         reset();
-        navigate('/admin-panel');
-      } else {
         navigate('/dashboard');
       }
     } catch (error) {

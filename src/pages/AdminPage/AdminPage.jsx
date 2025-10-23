@@ -77,7 +77,7 @@ export default function AdminPage() {
     }
   };
 
-  const tokenBody = async ({ ids, update }) => {
+  const fetchEditUsers = async ({ ids, update }) => {
     const token = localStorage.getItem('token');
     const a = ids.map((id) => ({ id, ...update }));
 
@@ -95,7 +95,7 @@ export default function AdminPage() {
 
   const handleBlock = async () => {
     try {
-      await tokenBody({ ids: selectedRows, update: { status: 'blocked' } });
+      await fetchEditUsers({ ids: selectedRows, update: { status: 'blocked' } });
       setUsers((prevUsers) =>
         prevUsers.map((user) =>
           selectedRows.includes(user.id) ? { ...user, status: 'blocked' } : user,
@@ -109,7 +109,7 @@ export default function AdminPage() {
     try {
       setSelectedRows([]);
 
-      await tokenBody({ ids: selectedRows, update: { status: 'active' } });
+      await fetchEditUsers({ ids: selectedRows, update: { status: 'active' } });
       setUsers((prevUsers) =>
         prevUsers.map((user) =>
           selectedRows.includes(user.id) ? { ...user, status: 'active' } : user,
@@ -140,7 +140,7 @@ export default function AdminPage() {
 
   const handleProvideAdminAccess = async () => {
     try {
-      await tokenBody({ ids: selectedRows, update: { role: 'admin' } });
+      await fetchEditUsers({ ids: selectedRows, update: { role: 'admin' } });
       setUsers((prevUsers) =>
         prevUsers.map((user) =>
           selectedRows.includes(user.id) ? { ...user, role: 'admin' } : user,
@@ -153,7 +153,7 @@ export default function AdminPage() {
 
   const handleRemoveAdminAccess = async () => {
     try {
-      await tokenBody({ ids: selectedRows, update: { role: 'user' } });
+      await fetchEditUsers({ ids: selectedRows, update: { role: 'user' } });
       setUsers((prevUsers) =>
         prevUsers.map((user) =>
           selectedRows.includes(user.id) ? { ...user, role: 'user' } : user,

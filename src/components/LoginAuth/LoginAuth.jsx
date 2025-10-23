@@ -35,12 +35,13 @@ const LoginAuth = () => {
         reset();
         navigate('/dashboard');
       }
-    } catch (err) {
-      if (err.response) {
-        console.error(err.response.data);
-        setError(err.response.data.message || 'Login error');
+    } catch (error) {
+      if (error.response?.status === 403) {
+        setError('Your account is blocked. Contact the administrator.');
+      } else if (error.response?.status === 401) {
+        setError('Invalid email or password.');
       } else {
-        setError('Server connection error.');
+        setError('Server error. Please try again.');
       }
     } finally {
       setLoading(false);

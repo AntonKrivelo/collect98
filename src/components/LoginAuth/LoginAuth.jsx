@@ -32,10 +32,13 @@ const LoginAuth = () => {
         password: data.password,
       });
 
-      if (res.data.ok) {
+      if (res.status === 200) {
         localStorage.setItem('token', res.data.token);
-        reset();
-        navigate('/dashboard');
+        if (user.role === 'admin') {
+          return navigate('/admin-panel');
+        } else {
+          return navigate('/dashboard');
+        }
       }
     } catch (error) {
       if (error.response?.status === 403) {

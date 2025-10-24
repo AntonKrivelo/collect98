@@ -15,12 +15,7 @@ const columns = [
     field: 'status',
     headerName: 'Status',
     width: 120,
-    renderCell: (params) =>
-      params.row.status === 'active' ? (
-        <Typography color="success.main">Active</Typography>
-      ) : (
-        <Typography color="error">Blocked</Typography>
-      ),
+    renderCell: (params) => <Typography color="success.main">{params.row.status}</Typography>,
   },
 ];
 

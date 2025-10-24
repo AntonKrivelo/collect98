@@ -10,17 +10,31 @@ const columns = [
   { field: 'id', headerName: 'ID', width: 70 },
   { field: 'name', headerName: 'Name', width: 180 },
   { field: 'email', headerName: 'Email', width: 220 },
-  { field: 'role', headerName: 'Role', width: 120 },
+  {
+    field: 'role',
+    headerName: 'Role',
+    width: 120,
+    renderCell: (params) => {
+      const color = params.row.role === 'admin' ? 'error' : 'success.main';
+      const text = params.row.role === 'admin' ? 'Admin' : 'User';
+
+      return <Typography color={color}>{text}</Typography>;
+    },
+  },
   {
     field: 'status',
     headerName: 'Status',
     width: 120,
-    renderCell: (params) =>
-      params.row.status === 'active' ? (
-        <Typography color="success.main">Active</Typography>
-      ) : (
-        <Typography color="error">Blocked</Typography>
-      ),
+    renderCell: (params) => {
+      const color =
+        params.row.status === 'active'
+          ? 'success.main'
+          : params.row.status === 'blocked'
+          ? 'error'
+          : 'warning.main';
+
+      return <Typography color={color}>{params.row.status}</Typography>;
+    },
   },
 ];
 
@@ -95,7 +109,7 @@ export default function AdminPage() {
 
   const handleBlock = async () => {
     try {
-      await fetchEditUsers({ ids: selectedRows, update: { status: 'blocked' } });
+      await fetchEditUsers({ ids: selectedRows, editField: { status: 'blocked' } });
       setUsers((prevUsers) =>
         prevUsers.map((user) =>
           selectedRows.includes(user.id) ? { ...user, status: 'blocked' } : user,
@@ -107,9 +121,7 @@ export default function AdminPage() {
   };
   const handleUnblock = async () => {
     try {
-      setSelectedRows([]);
-
-      await fetchEditUsers({ ids: selectedRows, update: { status: 'active' } });
+      await fetchEditUsers({ ids: selectedRows, editField: { status: 'active' } });
       setUsers((prevUsers) =>
         prevUsers.map((user) =>
           selectedRows.includes(user.id) ? { ...user, status: 'active' } : user,
@@ -140,7 +152,7 @@ export default function AdminPage() {
 
   const handleProvideAdminAccess = async () => {
     try {
-      await fetchEditUsers({ ids: selectedRows, update: { role: 'admin' } });
+      await fetchEditUsers({ ids: selectedRows, editField: { role: 'admin' } });
       setUsers((prevUsers) =>
         prevUsers.map((user) =>
           selectedRows.includes(user.id) ? { ...user, role: 'admin' } : user,
@@ -153,7 +165,7 @@ export default function AdminPage() {
 
   const handleRemoveAdminAccess = async () => {
     try {
-      await fetchEditUsers({ ids: selectedRows, update: { role: 'user' } });
+      await fetchEditUsers({ ids: selectedRows, editField: { role: 'user' } });
       setUsers((prevUsers) =>
         prevUsers.map((user) =>
           selectedRows.includes(user.id) ? { ...user, role: 'user' } : user,

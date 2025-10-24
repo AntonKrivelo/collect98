@@ -121,8 +121,6 @@ export default function AdminPage() {
   };
   const handleUnblock = async () => {
     try {
-      setSelectedRows([]);
-
       await fetchEditUsers({ ids: selectedRows, editField: { status: 'active' } });
       setUsers((prevUsers) =>
         prevUsers.map((user) =>

@@ -10,12 +10,28 @@ const columns = [
   { field: 'category', headerName: 'Category', width: 380 },
 ];
 
-const paginationModel = { page: 0, pageSize: 5 };
+const paginationModel = { page: 0, pageSize: 10 };
 
 const CategoriesPage = () => {
   const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [selectedRows, setSelectedRows] = useState([]);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const res = await axios.get('http://localhost:4000/categories', {});
+        setCategories(res.data.category || []);
+      } catch (err) {
+        console.error('Errors is loading categories:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCategories();
+  }, []);
 
   const handleOnRowSelectionModelChange = ({ type, ids }) => {
     if (type === 'include') {
@@ -43,7 +59,6 @@ const CategoriesPage = () => {
               display: 'flex',
               flexWrap: 'wrap',
               gap: 1,
-              justifyContent: 'space-between',
             }}
           >
             <Button
@@ -55,6 +70,9 @@ const CategoriesPage = () => {
               size="small"
             >
               Back
+            </Button>
+            <Button sx={{ fontSize: '12px' }} variant="contained" onClick={() => {}} size="small">
+              + Add category
             </Button>
             <Box sx={{ display: 'flex', gap: 1 }}></Box>
           </Toolbar>

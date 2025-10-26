@@ -16,7 +16,7 @@ export default function SearchBar({
       value={value}
       autoFocus={autoFocus}
       onChange={(e) => onChange(e.target.value)}
-      sx={{ width: '100%', maxWidth: 300 }}
+      sx={{ width: '50%', maxWidth: 250 }}
       InputProps={{
         startAdornment: (
           <InputAdornment position="start">

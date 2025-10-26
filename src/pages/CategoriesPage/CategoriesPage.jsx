@@ -4,10 +4,11 @@ import { Box, Button, Toolbar, Typography, Paper } from '@mui/material';
 import { useNavigate } from 'react-router';
 
 import axios from 'axios';
+import CategoryModal from '../../components/Utils/CategoryModal';
 
 const columns = [
   { field: 'id', headerName: 'ID', width: 70 },
-  { field: 'category', headerName: 'Category', width: 380 },
+  { field: 'category', headerName: 'Category name', width: 380 },
 ];
 
 const paginationModel = { page: 0, pageSize: 10 };
@@ -16,11 +17,13 @@ const CategoriesPage = () => {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedRows, setSelectedRows] = useState([]);
+  const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchCategories = async () => {
       try {
+        setLoading(true);
         const res = await axios.get('http://localhost:4000/categories', {});
         setCategories(res.data.category || []);
       } catch (err) {
@@ -43,6 +46,16 @@ const CategoriesPage = () => {
         .filter(({ id }) => ![...ids].includes(id))
         .map(({ id }) => id);
       setSelectedRows(selectedCategories);
+    }
+  };
+
+  const handleCreateCategory = async (categoryName) => {
+    setLoading(true);
+    try {
+      await axios.post('http://localhost:4000/categories', { category: categoryName });
+      console.log('Category created:', categoryName);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -71,7 +84,12 @@ const CategoriesPage = () => {
             >
               Back
             </Button>
-            <Button sx={{ fontSize: '12px' }} variant="contained" onClick={() => {}} size="small">
+            <Button
+              onClick={() => setShowModal(true)}
+              sx={{ fontSize: '12px' }}
+              variant="contained"
+              size="small"
+            >
               + Add category
             </Button>
             <Box sx={{ display: 'flex', gap: 1 }}></Box>
@@ -85,10 +103,19 @@ const CategoriesPage = () => {
             initialState={{ pagination: { paginationModel } }}
             pageSizeOptions={[5, 10]}
             checkboxSelection
+            loading={loading}
             onRowSelectionModelChange={(rows) => handleOnRowSelectionModelChange(rows)}
             sx={{ border: 0 }}
           />
         </Paper>
+        <CategoryModal
+          open={showModal}
+          onClose={() => setShowModal(false)}
+          onSubmit={handleCreateCategory}
+          loading={loading}
+          title="Create New Category"
+          submitButtonText="Create"
+        />
       </Box>
     </div>
   );

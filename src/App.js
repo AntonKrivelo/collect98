@@ -9,6 +9,7 @@ import MenuAppBar from './components/MenuAppBar/MenuAppBar';
 import AuthPage from './pages/AuthPage/AuthPage';
 import AdminPage from './pages/AdminPage/AdminPage';
 import Dashboard from './pages/Dashboard/Dashboard';
+import CategoriesPage from './pages/CategoriesPage/CategoriesPage';
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
         <Route path="/auth" element={<AuthPage />} />
         <Route path="/admin-panel" element={<AdminPage />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/categories" element={<CategoriesPage />} />
       </Routes>
     </div>
   );

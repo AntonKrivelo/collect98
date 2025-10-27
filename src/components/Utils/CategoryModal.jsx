@@ -95,12 +95,6 @@ const CategoryModal = ({
             helperText={errors.category ? errors.category.message : ''}
             disabled={loading}
           />
-
-          {error && (
-            <Typography variant="body2" color="error" align="center" sx={{ mt: 2 }}>
-              {error}
-            </Typography>
-          )}
           {isSuccess && (
             <div className={classes.root}>
               <Alert variant="outlined" severity="success">
@@ -116,7 +110,6 @@ const CategoryModal = ({
             </div>
           )}
         </DialogContent>
-
         <DialogActions sx={{ px: 3, pb: 3 }}>
           <Button onClick={handleCancel} disabled={loading} variant="outlined">
             Cancel

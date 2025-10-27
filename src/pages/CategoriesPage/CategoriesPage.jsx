@@ -69,6 +69,7 @@ const CategoriesPage = () => {
     } catch {
       console.error('Errors is create category:');
       setError(true);
+      showModal(true);
     } finally {
       setLoading(false);
       setIsSuccess(false);

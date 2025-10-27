@@ -17,7 +17,6 @@ const paginationModel = { page: 0, pageSize: 5 };
 const CategoriesPage = () => {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [selectedRows, setSelectedRows] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [error, setError] = useState(false);
@@ -39,19 +38,6 @@ const CategoriesPage = () => {
 
     fetchCategories();
   }, []);
-
-  const handleOnRowSelectionModelChange = ({ type, ids }) => {
-    if (type === 'include') {
-      setSelectedRows([...ids]);
-    }
-    console.log({ type, ids });
-    if (type === 'exclude') {
-      const selectedCategories = categories
-        .filter(({ id }) => ![...ids].includes(id))
-        .map(({ id }) => id);
-      setSelectedRows(selectedCategories);
-    }
-  };
 
   const handleCreateCategory = async (categoryName, id) => {
     setLoading(true);
@@ -119,9 +105,7 @@ const CategoriesPage = () => {
             columns={columns}
             initialState={{ pagination: { paginationModel } }}
             pageSizeOptions={[5, 10]}
-            checkboxSelection
             loading={loading}
-            onRowSelectionModelChange={(rows) => handleOnRowSelectionModelChange(rows)}
             sx={{ border: 0 }}
           />
         </Paper>

@@ -55,7 +55,7 @@ const CategoryModal = ({
       setTimeout(() => {
         onClose();
         setIsSuccess(false);
-      }, 1000);
+      }, 500);
     } catch (err) {
       setError(err.message || 'Something went wrong');
       setIsSuccess(false);

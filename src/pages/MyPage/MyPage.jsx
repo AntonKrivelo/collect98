@@ -15,7 +15,7 @@ const MyPage = () => {
 
   return (
     <div>
-      <div>My page</div>
+      <h1>My page</h1>
       <h2>My Information:</h2>
       <div>
         {user && user.id ? (
@@ -25,25 +25,13 @@ const MyPage = () => {
         )}
       </div>
       <div>
-        {user && user.name ? (
-          <span>Unique identifier: {user.name}</span>
-        ) : (
-          <span>Identifier not available</span>
-        )}
+        {user && user.name ? <span>Name: {user.name}</span> : <span>Name not available</span>}
       </div>
       <div>
-        {user && user.email ? (
-          <span>Unique identifier: {user.email}</span>
-        ) : (
-          <span>Identifier not available</span>
-        )}
+        {user && user.email ? <span>Email: {user.email}</span> : <span>Email not available</span>}
       </div>
       <div>
-        {user && user.role ? (
-          <span>Unique identifier: {user.role}</span>
-        ) : (
-          <span>Identifier not available</span>
-        )}
+        {user && user.role ? <span>Role: {user.role}</span> : <span>Role not available</span>}
       </div>
     </div>
   );

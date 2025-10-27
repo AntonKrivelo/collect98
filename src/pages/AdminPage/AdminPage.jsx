@@ -202,6 +202,16 @@ export default function AdminPage() {
             >
               Back
             </Button>
+            <Button
+              sx={{ fontSize: '12px' }}
+              variant="contained"
+              onClick={() => {
+                navigate('/categories');
+              }}
+              size="small"
+            >
+              Categories
+            </Button>
             <SearchBar
               value={search}
               onChange={setSearch}

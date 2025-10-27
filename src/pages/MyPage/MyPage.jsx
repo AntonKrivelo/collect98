@@ -11,14 +11,18 @@ const MyPage = () => {
   return (
     <div>
       <div>My page</div>
+      <h2>My Information:</h2>
       <div>
-        <span>{user.id}</span>
+        <span>Unique identifier: {user.id}</span>
       </div>
       <div>
-        <span>{user.name}</span>
+        <span>My login:{user.name}</span>
       </div>
       <div>
-        <span>{user.role}</span>
+        <span>My email:{user.email}</span>
+      </div>
+      <div>
+        <span>My role:{user.role}</span>
       </div>
     </div>
   );

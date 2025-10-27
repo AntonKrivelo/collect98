@@ -10,6 +10,17 @@ import {
   CircularProgress,
 } from '@mui/material';
 import { useForm } from 'react-hook-form';
+import { styled } from '@mui/material/styles';
+import { Alert } from '@mui/material';
+
+const useStyles = styled((theme) => ({
+  root: {
+    width: '100%',
+    '& > * + *': {
+      marginTop: theme.spacing(2),
+    },
+  },
+}));
 
 const CategoryModal = ({
   open = false,
@@ -21,6 +32,8 @@ const CategoryModal = ({
   loading = false,
 }) => {
   const [error, setError] = useState('');
+  const [isSuccess, setIsSuccess] = useState(false);
+  const classes = useStyles();
 
   const {
     register,
@@ -38,9 +51,14 @@ const CategoryModal = ({
       setError('');
       await onSubmit(data.category);
       reset();
-      onClose();
+      setIsSuccess(true);
+      setTimeout(() => {
+        onClose();
+        setIsSuccess(false);
+      }, 1000);
     } catch (err) {
       setError(err.message || 'Something went wrong');
+      setIsSuccess(false);
     }
   };
 
@@ -82,6 +100,20 @@ const CategoryModal = ({
             <Typography variant="body2" color="error" align="center" sx={{ mt: 2 }}>
               {error}
             </Typography>
+          )}
+          {isSuccess && (
+            <div className={classes.root}>
+              <Alert variant="outlined" severity="success">
+                The category was successfully created!.
+              </Alert>
+            </div>
+          )}
+          {error && (
+            <div className={classes.root}>
+              <Alert variant="outlined" severity="error">
+                There is already a category with that name.
+              </Alert>
+            </div>
           )}
         </DialogContent>
 

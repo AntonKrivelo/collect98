@@ -11,7 +11,7 @@ const columns = [
   { field: 'category', headerName: 'Category name', width: 380 },
 ];
 
-const paginationModel = { page: 0, pageSize: 10 };
+const paginationModel = { page: 0, pageSize: 5 };
 
 const CategoriesPage = () => {
   const [categories, setCategories] = useState([]);
@@ -49,11 +49,20 @@ const CategoriesPage = () => {
     }
   };
 
-  const handleCreateCategory = async (categoryName) => {
+  const handleCreateCategory = async (categoryName, id) => {
     setLoading(true);
     try {
-      await axios.post('http://localhost:4000/categories', { category: categoryName });
+      await axios.post('http://localhost:4000/categories', {
+        category: categoryName,
+      });
       console.log('Category created:', categoryName);
+
+      const newCategory = {
+        category: categoryName,
+        id: (categories.length + 1).toString(),
+      };
+
+      setCategories([...categories, newCategory]);
     } finally {
       setLoading(false);
     }

@@ -3,7 +3,6 @@ import { DataGrid } from '@mui/x-data-grid';
 import { Box, Button, Toolbar, Typography, Paper } from '@mui/material';
 import { useNavigate } from 'react-router';
 import { Alert } from '@mui/material';
-
 import axios from 'axios';
 import CategoryModal from '../../components/Utils/CategoryModal';
 

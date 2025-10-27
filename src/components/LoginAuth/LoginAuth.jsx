@@ -5,17 +5,14 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import AuthFormWrapper from '../../pages/AuthPage/AuthFormWrapper';
 import styles from './LoginAuth.module.scss';
-import { useAuth } from '../../context/AuthContext';
 
 const LoginAuth = () => {
   const [error, setError] = useState('');
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const { user } = useAuth();
 
   const {
-    reset,
     handleSubmit,
     register,
     formState: { errors },

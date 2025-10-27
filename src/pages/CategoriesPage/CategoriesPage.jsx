@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import { Box, Button, Toolbar, Typography, Paper } from '@mui/material';
 import { useNavigate } from 'react-router';
+import { Alert } from '@mui/material';
 
 import axios from 'axios';
 import CategoryModal from '../../components/Utils/CategoryModal';
@@ -18,6 +19,9 @@ const CategoriesPage = () => {
   const [loading, setLoading] = useState(true);
   const [selectedRows, setSelectedRows] = useState([]);
   const [showModal, setShowModal] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [error, setError] = useState(false);
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -56,15 +60,18 @@ const CategoriesPage = () => {
         category: categoryName,
       });
       console.log('Category created:', categoryName);
-
+      setIsSuccess(true);
       const newCategory = {
         category: categoryName,
         id: (categories.length + 1).toString(),
       };
-
       setCategories([...categories, newCategory]);
+    } catch {
+      console.error('Errors is create category:');
+      setError(true);
     } finally {
       setLoading(false);
+      setIsSuccess(false);
     }
   };
 
@@ -117,6 +124,16 @@ const CategoriesPage = () => {
             sx={{ border: 0 }}
           />
         </Paper>
+        {isSuccess && (
+          <Alert variant="outlined" severity="success">
+            The category was successfully created!.
+          </Alert>
+        )}
+        {error && (
+          <Alert variant="outlined" severity="error">
+            There is already a category with that name.
+          </Alert>
+        )}
         <CategoryModal
           open={showModal}
           onClose={() => setShowModal(false)}

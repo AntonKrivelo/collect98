@@ -10,17 +10,6 @@ import {
   CircularProgress,
 } from '@mui/material';
 import { useForm } from 'react-hook-form';
-import { styled } from '@mui/material/styles';
-import { Alert } from '@mui/material';
-
-const useStyles = styled((theme) => ({
-  root: {
-    width: '100%',
-    '& > * + *': {
-      marginTop: theme.spacing(2),
-    },
-  },
-}));
 
 const CategoryModal = ({
   open = false,
@@ -32,8 +21,6 @@ const CategoryModal = ({
   loading = false,
 }) => {
   const [error, setError] = useState('');
-  const [isSuccess, setIsSuccess] = useState(false);
-  const classes = useStyles();
 
   const {
     register,
@@ -51,14 +38,9 @@ const CategoryModal = ({
       setError('');
       await onSubmit(data.category);
       reset();
-      setIsSuccess(true);
-      setTimeout(() => {
-        onClose();
-        setIsSuccess(false);
-      }, 500);
+      onClose();
     } catch (err) {
       setError(err.message || 'Something went wrong');
-      setIsSuccess(false);
     }
   };
 
@@ -70,7 +52,6 @@ const CategoryModal = ({
   return (
     <Dialog open={open} onClose={handleCancel} maxWidth="sm" fullWidth>
       <DialogTitle>{title}</DialogTitle>
-
       <form onSubmit={handleSubmit(handleFormSubmit)}>
         <DialogContent>
           <TextField
@@ -95,20 +76,6 @@ const CategoryModal = ({
             helperText={errors.category ? errors.category.message : ''}
             disabled={loading}
           />
-          {isSuccess && (
-            <div className={classes.root}>
-              <Alert variant="outlined" severity="success">
-                The category was successfully created!.
-              </Alert>
-            </div>
-          )}
-          {error && (
-            <div className={classes.root}>
-              <Alert variant="outlined" severity="error">
-                There is already a category with that name.
-              </Alert>
-            </div>
-          )}
         </DialogContent>
         <DialogActions sx={{ px: 3, pb: 3 }}>
           <Button onClick={handleCancel} disabled={loading} variant="outlined">

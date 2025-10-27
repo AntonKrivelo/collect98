@@ -80,7 +80,7 @@ export default function MenuAppBar() {
               <MenuItem onClick={() => handleClose('/admin-panel')}>Admin Page</MenuItem>
             )}
             <MenuItem onClick={() => handleClose('/dashboard')}>Dashboard</MenuItem>
-            <MenuItem onClick={() => handleClose('/my-page')}>My Page</MenuItem>
+            {user && <MenuItem onClick={() => handleClose('/my-page')}>My Page</MenuItem>}
           </Menu>
         </Toolbar>
       </AppBar>

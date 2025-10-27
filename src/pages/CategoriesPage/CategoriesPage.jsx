@@ -56,22 +56,23 @@ const CategoriesPage = () => {
   const handleCreateCategory = async (categoryName, id) => {
     setLoading(true);
     try {
-      await axios.post('http://localhost:4000/categories', {
+      const res = await axios.post('http://localhost:4000/categories', {
         category: categoryName,
       });
-      console.log('Category created:', categoryName);
-      setIsSuccess(true);
-      const newCategory = {
-        category: categoryName,
-        id: (categories.length + 1).toString(),
-      };
-      setCategories([...categories, newCategory]);
+
+      if (res.data.ok) {
+        setIsSuccess(true);
+        setCategories([...categories, res.data.category]);
+      }
     } catch {
       console.error('Errors is create category:');
       setError(true);
       showModal(true);
     } finally {
       setLoading(false);
+      setTimeout(() => {
+        setIsSuccess(false);
+      }, 1000);
     }
   };
 

@@ -72,7 +72,6 @@ const CategoriesPage = () => {
       showModal(true);
     } finally {
       setLoading(false);
-      setIsSuccess(false);
     }
   };
 
@@ -128,11 +127,6 @@ const CategoriesPage = () => {
         {isSuccess && (
           <Alert variant="outlined" severity="success">
             The category was successfully created!.
-          </Alert>
-        )}
-        {error && (
-          <Alert variant="outlined" severity="error">
-            There is already a category with that name.
           </Alert>
         )}
         <CategoryModal

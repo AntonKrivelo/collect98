@@ -10,6 +10,7 @@ import {
   CircularProgress,
 } from '@mui/material';
 import { useForm } from 'react-hook-form';
+import { Alert } from '@mui/material';
 
 const CategoryModal = ({
   open = false,
@@ -76,7 +77,13 @@ const CategoryModal = ({
             helperText={errors.category ? errors.category.message : ''}
             disabled={loading}
           />
+          {error && (
+            <Alert variant="outlined" severity="error">
+              There is already a category with that name.
+            </Alert>
+          )}
         </DialogContent>
+
         <DialogActions sx={{ px: 3, pb: 3 }}>
           <Button onClick={handleCancel} disabled={loading} variant="outlined">
             Cancel

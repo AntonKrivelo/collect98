@@ -1,4 +1,4 @@
-import { Typography } from '@mui/material';
+import { Button, Typography } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 
 const InventoryTable = ({ inventory }) => {
@@ -14,12 +14,13 @@ const InventoryTable = ({ inventory }) => {
     <>
       {category_name && (
         <Typography variant="h6" sx={{ mb: 2, fontWeight: 'bold' }}>
-          {category_name}
+          Name category: {category_name}
         </Typography>
       )}
       <Typography variant="h6" sx={{ mb: 2, fontWeight: 'bold' }}>
         Name inventory: {name}
       </Typography>
+      <Button variant="contained">Add item</Button>
       <div style={{ height: 300, width: '100%' }}>
         <DataGrid columns={columns} pageSizeOptions={[5]} sx={{ border: 0 }} />
       </div>

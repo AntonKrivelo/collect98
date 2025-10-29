@@ -50,7 +50,7 @@ const InventoriesPage = () => {
         My Inventories
       </Typography>
       <Button sx={{ marginBottom: '40px' }} color="primary" variant="contained">
-        Create New Inventory
+        + Create New Inventory
       </Button>
       {inventories.length === 0 ? (
         <Typography>No inventories found.</Typography>

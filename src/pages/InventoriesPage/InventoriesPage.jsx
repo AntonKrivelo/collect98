@@ -9,8 +9,6 @@ const InventoriesPage = () => {
   const [inventories, setInventories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
-  const [error, setError] = useState(false);
-  const [success, setIsSuccess] = useState(false);
 
   useEffect(() => {
     const fetchInventories = async () => {

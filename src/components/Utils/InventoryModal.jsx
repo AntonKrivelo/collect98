@@ -32,6 +32,7 @@ const InventoryModal = ({ open, onClose, onCreated }) => {
   const [fields, setFields] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [isSuccess, setIsSuccess] = useState(false);
 
   useEffect(() => {
     if (!open) return;
@@ -98,13 +99,20 @@ const InventoryModal = ({ open, onClose, onCreated }) => {
       );
 
       if (res.data.ok) {
+        setIsSuccess(true);
         setInventoryName([...inventoryName, res.data.inventory]);
       }
-      onClose();
+      setTimeout(() => {
+        setIsSuccess(false);
+      }, 1000);
     } catch (err) {
       console.error('Error creating inventory:', err);
       setError('Error creating inventory');
     }
+  };
+
+  const handleCancel = () => {
+    onClose();
   };
 
   return (
@@ -144,12 +152,12 @@ const InventoryModal = ({ open, onClose, onCreated }) => {
               label="Name Field"
               value={f.field_name}
               onChange={(e) => handleFieldChange(index, 'field_name', e.target.value)}
-              fullWidth
+              small
             />
             <Select
               value={f.field_type}
               onChange={(e) => handleFieldChange(index, 'field_type', e.target.value)}
-              sx={{ width: 150 }}
+              sx={{ width: 100 }}
             >
               <MenuItem value="string">String</MenuItem>
               <MenuItem value="number">Number</MenuItem>
@@ -170,13 +178,18 @@ const InventoryModal = ({ open, onClose, onCreated }) => {
         </Button>
 
         <Button type="submit" variant="contained" color="primary" fullWidth disabled={loading}>
-          {loading ? 'Created...' : 'Create'}
+          Create
         </Button>
-        {onCreated && (
-          <Alert variant="outlined" severity="success">
-            The Inventory was successfully created!.
-          </Alert>
-        )}
+        <Button
+          onClick={handleCancel}
+          sx={{ marginTop: '10px' }}
+          type="submit"
+          variant="contained"
+          color="primary"
+          fullWidth
+        >
+          Cancel
+        </Button>
       </Box>
     </Modal>
   );

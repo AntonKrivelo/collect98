@@ -31,6 +31,8 @@ const LoginAuth = () => {
 
       if (res.status === 200) {
         localStorage.setItem('token', res.data.token);
+        localStorage.setItem('userId', res.data.user.id);
+        localStorage.setItem('userName', res.data.user.name);
         return navigate('/dashboard');
       }
     } catch (error) {

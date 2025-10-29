@@ -11,6 +11,7 @@ import CategoriesPage from './pages/CategoriesPage/CategoriesPage';
 import MyPage from './pages/MyPage/MyPage';
 import { ConfirmDialog } from 'primereact/confirmdialog';
 import { Routes, Route, Navigate } from 'react-router-dom';
+import InventoriesPage from './pages/InventoriesPage/InventoriesPage';
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/categories" element={<CategoriesPage />} />
         <Route path="/my-page" element={<MyPage />} />
+        <Route path="/inventories" element={<InventoriesPage />} />
       </Routes>
     </div>
   );

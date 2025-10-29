@@ -1,13 +1,16 @@
 import { useEffect, useState } from 'react';
-import { DataGrid } from '@mui/x-data-grid';
 import axios from 'axios';
 import Paper from '@mui/material/Paper';
 import { Box, Typography, CircularProgress, Button } from '@mui/material';
 import InventoryTable from './InventoryTable';
+import InventoryModal from '../../components/Utils/InventoryModal';
 
 const InventoriesPage = () => {
   const [inventories, setInventories] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [showModal, setShowModal] = useState(false);
+  const [error, setError] = useState(false);
+  const [success, setIsSuccess] = useState(false);
 
   useEffect(() => {
     const fetchInventories = async () => {
@@ -49,8 +52,13 @@ const InventoriesPage = () => {
       <Typography variant="h4" sx={{ mb: 4, fontWeight: 'bold', textAlign: 'center' }}>
         My Inventories
       </Typography>
-      <Button sx={{ marginBottom: '40px' }} color="primary" variant="contained">
-        + Create New Inventory
+      <Button
+        onClick={() => setShowModal(true)}
+        sx={{ marginBottom: '40px' }}
+        color="primary"
+        variant="contained"
+      >
+        Create New Inventory
       </Button>
       {inventories.length === 0 ? (
         <Typography>No inventories found.</Typography>
@@ -61,6 +69,13 @@ const InventoriesPage = () => {
           </Paper>
         ))
       )}
+      <InventoryModal
+        open={showModal}
+        onClose={() => setShowModal(false)}
+        loading={loading}
+        title="Create New Inventory"
+        submitButtonText="Create"
+      />
     </Box>
   );
 };

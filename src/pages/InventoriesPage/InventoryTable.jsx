@@ -12,8 +12,13 @@ const InventoryTable = ({ inventory }) => {
 
   return (
     <>
+      {category_name && (
+        <Typography variant="h6" sx={{ mb: 2, fontWeight: 'bold' }}>
+          {category_name}
+        </Typography>
+      )}
       <Typography variant="h6" sx={{ mb: 2, fontWeight: 'bold' }}>
-        {category_name} - {name}
+        Name inventory: {name}
       </Typography>
       <div style={{ height: 300, width: '100%' }}>
         <DataGrid columns={columns} pageSizeOptions={[5]} sx={{ border: 0 }} />

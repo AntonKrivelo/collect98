@@ -53,21 +53,11 @@ const InventoriesPage = () => {
       {inventories.length === 0 ? (
         <Typography>No inventories found.</Typography>
       ) : (
-        inventories.map((inventory) => {
-          const columns = inventory.fields.map((field) => ({
-            field: field.field_name,
-            headerName: field.field_name,
-            width: 150,
-          }));
-          return (
-            <Paper key={inventory.id} sx={{ mb: 4, p: 2 }}>
-              <Typography variant="h6" sx={{ mb: 2, fontWeight: 'bold' }}>
-                {inventory.name}
-              </Typography>
-              <DataGrid columns={columns} pageSizeOptions={[5]} sx={{ border: 0 }} />
-            </Paper>
-          );
-        })
+        inventories.map((inventory) => (
+          <Paper key={inventory.id} sx={{ mb: 4, p: 2 }}>
+            <InventoryTable inventory={inventory} />
+          </Paper>
+        ))
       )}
     </Box>
   );

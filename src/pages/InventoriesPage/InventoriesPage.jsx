@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import axios from 'axios';
 import Paper from '@mui/material/Paper';
-import { Box, Typography, CircularProgress } from '@mui/material';
+import { Box, Typography, CircularProgress, Button } from '@mui/material';
 import InventoryTable from './InventoryTable';
 
 const InventoriesPage = () => {
@@ -49,7 +49,9 @@ const InventoriesPage = () => {
       <Typography variant="h4" sx={{ mb: 4, fontWeight: 'bold', textAlign: 'center' }}>
         My Inventories
       </Typography>
-
+      <Button sx={{ marginBottom: '40px' }} color="primary" variant="contained">
+        + Create New Inventory
+      </Button>
       {inventories.length === 0 ? (
         <Typography>No inventories found.</Typography>
       ) : (

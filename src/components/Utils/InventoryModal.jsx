@@ -82,7 +82,7 @@ const InventoryModal = ({ open, onClose, setIsSuccessCreatedAlert }) => {
         'http://localhost:4000/inventories',
         {
           userId,
-          name: inventoryName.trim(),
+          name: inventoryName.trim().toLowerCase(),
           categoryId: selectedCategory,
           fields: mapFields,
         },

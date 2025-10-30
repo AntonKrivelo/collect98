@@ -12,6 +12,7 @@ const InventoryTable = ({ inventory }) => {
 
   return (
     <>
+      <Typography>Inventory ID:{id}</Typography>
       {category_name && (
         <Typography variant="h6" sx={{ mb: 2, fontWeight: 'bold' }}>
           Name category: {category_name}

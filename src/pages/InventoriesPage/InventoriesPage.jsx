@@ -52,6 +52,17 @@ const InventoriesPage = () => {
       <Typography variant="h4" sx={{ mb: 4, fontWeight: 'bold', textAlign: 'center' }}>
         My Inventories
       </Typography>
+      <Typography
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          fontWeight: 'bold',
+          gap: '10px',
+        }}
+      >
+        Total number of inventory items: <h2>{inventories.length}</h2>
+      </Typography>
       <Button
         onClick={() => setShowModal(true)}
         sx={{ marginBottom: '40px' }}

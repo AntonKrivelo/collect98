@@ -95,7 +95,7 @@ const InventoryModal = ({
         { headers: { Authorization: `Bearer ${token}` } },
       );
 
-      if (res.status === 200 || res.data.inventory) {
+      if (res.status === 201 || res.data.inventory) {
         setIsSuccessCreatedAlert(true);
         setInventories([res.data.inventory, ...inventories]);
         onClose();

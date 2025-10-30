@@ -14,7 +14,13 @@ import {
 import axios from 'axios';
 import styles from './InventoryModal.module.scss';
 
-const InventoryModal = ({ open, onClose, setIsSuccessCreatedAlert }) => {
+const InventoryModal = ({
+  open,
+  onClose,
+  setIsSuccessCreatedAlert,
+  inventories,
+  setInventories,
+}) => {
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('');
   const [inventoryName, setInventoryName] = useState('');
@@ -91,6 +97,7 @@ const InventoryModal = ({ open, onClose, setIsSuccessCreatedAlert }) => {
 
       if (res.status === 200 || res.data.inventory) {
         setIsSuccessCreatedAlert(true);
+        setInventories([res.data.inventory, ...inventories]);
         onClose();
       }
     } catch (err) {

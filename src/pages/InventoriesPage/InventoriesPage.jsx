@@ -126,6 +126,8 @@ const InventoriesPage = () => {
         open={showModal}
         onClose={() => setShowModal(false)}
         setIsSuccessCreatedAlert={setIsSuccessCreatedAlert}
+        inventories={inventories}
+        setInventories={setInventories}
       />
     </Box>
   );

@@ -99,12 +99,14 @@ const InventoryModal = ({ open, onClose, onCreated }) => {
       );
 
       if (res.data.ok) {
+        onCreated({
+          ok: true,
+          message: 'Inventory created successfully!',
+        });
         setIsSuccess(true);
         setInventoryName([...inventoryName, res.data.inventory]);
+        onClose();
       }
-      setTimeout(() => {
-        setIsSuccess(false);
-      }, 1000);
     } catch (err) {
       console.error('Error creating inventory:', err);
       setError('Error creating inventory');

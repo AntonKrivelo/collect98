@@ -12,18 +12,7 @@ import {
   Alert,
 } from '@mui/material';
 import axios from 'axios';
-
-const modalStyle = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: 400,
-  bgcolor: '#FFF',
-  boxShadow: 24,
-  borderRadius: 2,
-  p: 4,
-};
+import styles from './InventoryModal.module.scss';
 
 const InventoryModal = ({ open, onClose, setIsSuccessCreatedAlert }) => {
   const [categories, setCategories] = useState([]);
@@ -54,10 +43,6 @@ const InventoryModal = ({ open, onClose, setIsSuccessCreatedAlert }) => {
   }, [open]);
 
   const handleAddField = () => {
-    if (fields.length >= 5) {
-      setError('Max fields to 5');
-      return;
-    }
     setFields([...fields, { field_name: '', field_type: 'string', is_visible: true }]);
     setError('');
   };
@@ -69,10 +54,6 @@ const InventoryModal = ({ open, onClose, setIsSuccessCreatedAlert }) => {
   };
 
   const handleRemoveField = (index) => {
-    if (fields.length <= 2) {
-      setError('Minimal fields 2...');
-      return;
-    }
     const updated = fields.filter((_, i) => i !== index);
     setFields(updated);
     setError('');
@@ -90,10 +71,6 @@ const InventoryModal = ({ open, onClose, setIsSuccessCreatedAlert }) => {
 
       if (fields.some((f) => !f.field_name.trim())) {
         return setError('All fields must have a name.');
-      }
-
-      if (fields.length < 2) {
-        return setError('Minimal 2 fields');
       }
 
       const mapFields = fields.map((e) => ({
@@ -133,7 +110,7 @@ const InventoryModal = ({ open, onClose, setIsSuccessCreatedAlert }) => {
 
   return (
     <Modal open={open} onClose={onClose}>
-      <Box sx={modalStyle} component="form" onSubmit={handleSubmit}>
+      <Box className={styles.modalStyle} component="form" onSubmit={handleSubmit}>
         <Typography variant="h6" sx={{ mb: 2 }}>
           Create new inventory
         </Typography>

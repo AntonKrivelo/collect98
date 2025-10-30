@@ -1,6 +1,13 @@
 import { useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { useNavigate } from 'react-router';
+import { Container, Typography, Paper, Box, Chip, Divider, Alert } from '@mui/material';
+import {
+  Person as PersonIcon,
+  Email as EmailIcon,
+  Fingerprint as FingerprintIcon,
+  Security as SecurityIcon,
+} from '@mui/icons-material';
 
 const MyPage = () => {
   const { user } = useAuth();
@@ -11,29 +18,101 @@ const MyPage = () => {
       navigate('/auth');
       return;
     }
-  }, [user]);
+  }, [user, navigate]);
 
   return (
-    <div>
-      <h1>My page</h1>
-      <h2>My Information:</h2>
-      <div>
-        {user && user.id ? (
-          <span>Unique identifier: {user.id}</span>
+    <Container maxWidth="md" sx={{ py: 4 }}>
+      <Typography
+        variant="h3"
+        component="h1"
+        gutterBottom
+        sx={{
+          fontWeight: 'bold',
+          textAlign: 'center',
+          mb: 4,
+        }}
+      >
+        My Page
+      </Typography>
+
+      <Paper
+        elevation={3}
+        sx={{
+          p: 4,
+          borderRadius: 2,
+        }}
+      >
+        <Typography
+          variant="h5"
+          component="h2"
+          gutterBottom
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: 1,
+            mb: 3,
+            color: 'text.secondary',
+          }}
+        >
+          <PersonIcon color="primary" />
+          My Information
+        </Typography>
+
+        {!user ? (
+          <Alert severity="warning">User data not available</Alert>
         ) : (
-          <span>Identifier not available</span>
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+              <FingerprintIcon color="action" />
+              <Box sx={{ flexGrow: 1 }}>
+                <Typography variant="caption" color="text.secondary">
+                  Unique identifier
+                </Typography>
+                <Typography variant="h6" component="div">
+                  {user.id || 'Not available'}
+                </Typography>
+              </Box>
+            </Box>
+            <Divider />
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+              <PersonIcon color="action" />
+              <Box sx={{ flexGrow: 1 }}>
+                <Typography variant="caption" color="text.secondary">
+                  Name
+                </Typography>
+                <Typography variant="h6" component="div">
+                  {user.name || 'Not available'}
+                </Typography>
+              </Box>
+            </Box>
+            <Divider />
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+              <EmailIcon color="action" />
+              <Box sx={{ flexGrow: 1 }}>
+                <Typography variant="caption" color="text.secondary">
+                  Email
+                </Typography>
+                <Typography variant="h6" component="div">
+                  {user.email || 'Not available'}
+                </Typography>
+              </Box>
+            </Box>
+            <Divider />
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+              <SecurityIcon color="action" />
+              <Box sx={{ flexGrow: 1 }}>
+                <Typography variant="caption" color="text.secondary">
+                  Role
+                </Typography>
+                <Typography variant="h6" component="div">
+                  {user.role || 'Not available'}
+                </Typography>
+              </Box>
+            </Box>
+          </Box>
         )}
-      </div>
-      <div>
-        {user && user.name ? <span>Name: {user.name}</span> : <span>Name not available</span>}
-      </div>
-      <div>
-        {user && user.email ? <span>Email: {user.email}</span> : <span>Email not available</span>}
-      </div>
-      <div>
-        {user && user.role ? <span>Role: {user.role}</span> : <span>Role not available</span>}
-      </div>
-    </div>
+      </Paper>
+    </Container>
   );
 };
 

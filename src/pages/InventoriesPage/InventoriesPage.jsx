@@ -39,6 +39,16 @@ const InventoriesPage = () => {
     fetchInventories();
   }, []);
 
+  useEffect(() => {
+    if (isSuccessCreatedAlert) {
+      const timer = setTimeout(() => {
+        setIsSuccessCreatedAlert(false);
+      }, 4000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [isSuccessCreatedAlert]);
+
   if (loading) {
     return (
       <Box sx={{ display: 'flex', justifyContent: 'center', mt: 10 }}>
@@ -71,8 +81,7 @@ const InventoriesPage = () => {
       >
         Create New Inventory
       </Button>
-      {isSuccessCreatedAlert ? <Alert sx={{ marginBottom: '20px' }}>Success</Alert> : null}
-
+      {isSuccessCreatedAlert ? <Alert sx={{ marginBottom: '20px' }}>Inventory added </Alert> : null}
       <Snackbar
         open={Boolean(successMessage)}
         autoHideDuration={3000}

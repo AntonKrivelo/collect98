@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { DataGrid } from '@mui/x-data-grid';
-import { Box, Button, Toolbar, Typography, Paper } from '@mui/material';
+import { Box, Button, Toolbar, Typography, Paper, CircularProgress } from '@mui/material';
 import SearchBar from '../../components/Utils/SearchBar';
 import { useAuth } from '../../context/AuthContext';
 import { useNavigate } from 'react-router';
@@ -59,6 +59,7 @@ export default function AdminPage() {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
+        setLoading(true);
         const token = localStorage.getItem('token');
         const res = await axios.get('http://localhost:4000/users', {
           headers: { Authorization: `Bearer ${token}` },
@@ -175,6 +176,14 @@ export default function AdminPage() {
     } finally {
     }
   };
+
+  if (loading) {
+    return (
+      <Box sx={{ display: 'flex', justifyContent: 'center', mt: 10 }}>
+        <CircularProgress />
+      </Box>
+    );
+  }
 
   return (
     <div>

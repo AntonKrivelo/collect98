@@ -25,19 +25,19 @@ const modalStyle = {
   p: 4,
 };
 
-const InventoryModal = ({ open, onClose, onCreated }) => {
+const InventoryModal = ({ open, onClose, setIsSuccessCreatedAlert }) => {
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('');
   const [inventoryName, setInventoryName] = useState('');
   const [fields, setFields] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [isSuccess, setIsSuccess] = useState(false);
 
   useEffect(() => {
     if (!open) return;
     const fetchCategories = async () => {
       try {
+        setLoading(true);
         const res = await axios.get('http://localhost:4000/categories', {});
         setCategories(res.data.category || []);
         setFields([
@@ -46,6 +46,8 @@ const InventoryModal = ({ open, onClose, onCreated }) => {
         ]);
       } catch (err) {
         console.error('Error loading category:', err);
+      } finally {
+        setLoading(false);
       }
     };
     fetchCategories();
@@ -76,8 +78,11 @@ const InventoryModal = ({ open, onClose, onCreated }) => {
     setError('');
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
     try {
+      setLoading(true);
       const token = localStorage.getItem('token');
       const userId = localStorage.getItem('userId');
 
@@ -87,29 +92,34 @@ const InventoryModal = ({ open, onClose, onCreated }) => {
         return setError('Minimal 2 fields');
       }
 
+      const mapFields = fields.map((e) => ({
+        ...e,
+        field_name: e.field_name.trim().toLowerCase(),
+      }));
+
       const res = await axios.post(
         'http://localhost:4000/inventories',
         {
           userId,
-          name: inventoryName,
+          name: inventoryName.trim(),
           categoryId: selectedCategory,
-          fields,
+          fields: mapFields,
         },
         { headers: { Authorization: `Bearer ${token}` } },
       );
 
-      if (res.data.ok) {
-        onCreated({
-          ok: true,
-          message: 'Inventory created successfully!',
-        });
-        setIsSuccess(true);
-        setInventoryName([...inventoryName, res.data.inventory]);
+      if (res.status === 200 || res.data.inventory) {
+        setIsSuccessCreatedAlert(true);
         onClose();
       }
     } catch (err) {
-      console.error('Error creating inventory:', err);
-      setError('Error creating inventory');
+      if (err.response && err.response.data?.error) {
+        setError(err.response.data.error);
+      } else {
+        setError('Something went wrong while creating inventory');
+      }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -123,6 +133,7 @@ const InventoryModal = ({ open, onClose, onCreated }) => {
         <Typography variant="h6" sx={{ mb: 2 }}>
           Create new inventory
         </Typography>
+
         <FormControl fullWidth required sx={{ mb: 3 }}>
           <InputLabel id="category-select-label">Category</InputLabel>
           <Select
@@ -154,7 +165,7 @@ const InventoryModal = ({ open, onClose, onCreated }) => {
               label="Name Field"
               value={f.field_name}
               onChange={(e) => handleFieldChange(index, 'field_name', e.target.value)}
-              small
+              small="true"
             />
             <Select
               value={f.field_type}
@@ -168,7 +179,7 @@ const InventoryModal = ({ open, onClose, onCreated }) => {
               variant="outlined"
               color="error"
               onClick={() => handleRemoveField(index)}
-              disabled={fields.length <= 2}
+              disabled={fields.length <= 2 || loading}
             >
               Delete
             </Button>
@@ -179,19 +190,33 @@ const InventoryModal = ({ open, onClose, onCreated }) => {
           Add field
         </Button>
 
-        <Button type="submit" variant="contained" color="primary" fullWidth disabled={loading}>
+        <Button
+          type="submit"
+          variant="contained"
+          color="primary"
+          fullWidth
+          disabled={loading}
+          sx={{ mt: 2 }}
+        >
           Create
         </Button>
+
         <Button
           onClick={handleCancel}
+          disabled={loading}
           sx={{ marginTop: '10px' }}
-          type="submit"
           variant="contained"
           color="primary"
           fullWidth
         >
           Cancel
         </Button>
+
+        {error && (
+          <Alert severity="error" sx={{ mt: 2 }}>
+            {error}
+          </Alert>
+        )}
       </Box>
     </Modal>
   );

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import Paper from '@mui/material/Paper';
-import { Box, Typography, CircularProgress, Button } from '@mui/material';
+import { Box, Typography, CircularProgress, Button, Snackbar, Alert } from '@mui/material';
 import InventoryTable from './InventoryTable';
 import InventoryModal from '../../components/Utils/InventoryModal';
 
@@ -9,6 +9,8 @@ const InventoriesPage = () => {
   const [inventories, setInventories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
+  const [successMessage, setSuccessMessage] = useState('');
+  const [isSuccessCreatedAlert, setIsSuccessCreatedAlert] = useState(false);
 
   useEffect(() => {
     const fetchInventories = async () => {
@@ -58,6 +60,18 @@ const InventoriesPage = () => {
       >
         Create New Inventory
       </Button>
+      {isSuccessCreatedAlert ? <Alert sx={{ marginBottom: '20px' }}>Success</Alert> : null}
+
+      <Snackbar
+        open={Boolean(successMessage)}
+        autoHideDuration={3000}
+        onClose={() => setSuccessMessage('')}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+      >
+        <Alert severity="success" sx={{ width: '100%' }}>
+          {successMessage}
+        </Alert>
+      </Snackbar>
       {inventories.length === 0 ? (
         <Typography>No inventories found.</Typography>
       ) : (
@@ -70,9 +84,7 @@ const InventoriesPage = () => {
       <InventoryModal
         open={showModal}
         onClose={() => setShowModal(false)}
-        loading={loading}
-        title="Create New Inventory"
-        submitButtonText="Create"
+        setIsSuccessCreatedAlert={setIsSuccessCreatedAlert}
       />
     </Box>
   );

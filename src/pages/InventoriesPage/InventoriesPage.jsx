@@ -1,7 +1,15 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import Paper from '@mui/material/Paper';
-import { Box, Typography, CircularProgress, Button, Snackbar, Alert } from '@mui/material';
+import {
+  Box,
+  Typography,
+  CircularProgress,
+  Button,
+  Snackbar,
+  Alert,
+  Pagination,
+} from '@mui/material';
 import InventoryTable from './InventoryTable';
 import InventoryModal from '../../components/Utils/InventoryModal';
 
@@ -11,6 +19,10 @@ const InventoriesPage = () => {
   const [showModal, setShowModal] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
   const [isSuccessCreatedAlert, setIsSuccessCreatedAlert] = useState(false);
+
+  const [page, setPage] = useState(1);
+  const itemsPerPage = 5;
+  const currentInventories = inventories.slice((page - 1) * itemsPerPage, page * itemsPerPage);
 
   useEffect(() => {
     const fetchInventories = async () => {
@@ -43,8 +55,7 @@ const InventoriesPage = () => {
     if (isSuccessCreatedAlert) {
       const timer = setTimeout(() => {
         setIsSuccessCreatedAlert(false);
-        window.location.reload();
-      }, 2000);
+      }, 3000);
 
       return () => clearTimeout(timer);
     }
@@ -96,11 +107,20 @@ const InventoriesPage = () => {
       {inventories.length === 0 ? (
         <Typography>No inventories found.</Typography>
       ) : (
-        inventories.map((inventory) => (
-          <Paper key={inventory.id} sx={{ mb: 4, p: 2 }}>
-            <InventoryTable inventory={inventory} />
-          </Paper>
-        ))
+        <>
+          {currentInventories.map((inventory) => (
+            <Paper key={inventory.id} sx={{ mb: 4, p: 2 }}>
+              <InventoryTable inventory={inventory} />
+            </Paper>
+          ))}
+
+          <Pagination
+            count={Math.ceil(inventories.length / itemsPerPage)}
+            page={page}
+            onChange={(e, value) => setPage(value)}
+            sx={{ display: 'flex', justifyContent: 'center', mt: 3 }}
+          />
+        </>
       )}
       <InventoryModal
         open={showModal}

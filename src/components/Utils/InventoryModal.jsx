@@ -88,6 +88,10 @@ const InventoryModal = ({ open, onClose, setIsSuccessCreatedAlert }) => {
 
       if (!userId) return setError('User ID not found.');
 
+      if (fields.some((f) => !f.field_name.trim())) {
+        return setError('All fields must have a name.');
+      }
+
       if (fields.length < 2) {
         return setError('Minimal 2 fields');
       }

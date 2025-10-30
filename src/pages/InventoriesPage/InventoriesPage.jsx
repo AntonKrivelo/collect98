@@ -44,7 +44,7 @@ const InventoriesPage = () => {
       const timer = setTimeout(() => {
         setIsSuccessCreatedAlert(false);
         window.location.reload();
-      }, 3000);
+      }, 2000);
 
       return () => clearTimeout(timer);
     }

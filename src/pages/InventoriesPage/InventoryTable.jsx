@@ -1,4 +1,4 @@
-import { Button, Typography } from '@mui/material';
+import { Alert, Button, Typography } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import { useState, useEffect } from 'react';
 import ItemsModal from '../../components/Utils/ItemsModal';
@@ -16,6 +16,7 @@ const InventoryTable = ({ inventory }) => {
   const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [itemsInventory, setItemsInventory] = useState(items);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     const fetchItems = async () => {
@@ -56,6 +57,11 @@ const InventoryTable = ({ inventory }) => {
       <div style={{ height: 300, width: '100%' }}>
         <DataGrid rows={rows} columns={columns} pageSizeOptions={[5]} sx={{ border: 0 }} />
       </div>
+      {error && (
+        <Alert variant="outlined" severity="error">
+          There is already a category with that name.
+        </Alert>
+      )}
 
       <ItemsModal
         open={showModal}

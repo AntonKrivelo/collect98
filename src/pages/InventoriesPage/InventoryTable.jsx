@@ -18,6 +18,7 @@ const InventoryTable = ({ inventory }) => {
   const [itemsInventory, setItemsInventory] = useState(items);
   const [error, setError] = useState('');
   const [selectedRows, setSelectedRows] = useState([]);
+  const [inventoryUser, setInventoryUser] = useState(inventory);
 
   const handleOnRowSelectionModelChange = ({ type, ids }) => {
     if (type === 'include') {
@@ -33,6 +34,26 @@ const InventoryTable = ({ inventory }) => {
   };
 
   console.log(selectedRows);
+
+  const fetchInventories = async () => {
+    const token = localStorage.getItem('token');
+    const userId = localStorage.getItem('userId');
+
+    try {
+      setLoading(true);
+      const res = await axios.get(`http://localhost:4000/users/${userId}/inventories`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setInventoryUser(res.data.inventory || []);
+    } catch (err) {
+      console.error('Error fetching inventories:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+  useEffect(() => {
+    fetchInventories();
+  }, []);
 
   useEffect(() => {
     const fetchItems = async () => {
@@ -78,8 +99,38 @@ const InventoryTable = ({ inventory }) => {
     setSelectedRows([]);
   };
 
+  const handleDeleteInventory = async (inventoryId) => {
+    const token = localStorage.getItem('token');
+    const userId = localStorage.getItem('userId');
+
+    try {
+      setLoading(true);
+      await axios.delete(`http://localhost:4000/inventories/${inventoryId}`, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        data: { userId, inventoryId },
+      });
+      await fetchInventories();
+    } catch (err) {
+      console.error('Error deleting inventory:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <>
+      <Button
+        onClick={() => handleDeleteInventory(inventory.id)}
+        sx={{ marginBottom: '40px' }}
+        color="error"
+        variant="contained"
+        small
+      >
+        Delete inventory
+      </Button>
       <Typography>Inventory ID:{id}</Typography>
       {category_name && (
         <Typography variant="h6" sx={{ mb: 2, fontWeight: 'bold' }}>

@@ -11,6 +11,7 @@ import { DataGrid } from '@mui/x-data-grid';
 import { useState, useEffect } from 'react';
 import ItemsModal from '../../components/Utils/ItemsModal';
 import axios from 'axios';
+import useConfirmDialog from '../../components/Utils/useConfirmDialog';
 
 const InventoryTable = ({ inventory }) => {
   const { id, name, created_at, user_id, category_name, fields = [], items = [] } = inventory;
@@ -27,8 +28,8 @@ const InventoryTable = ({ inventory }) => {
   const [itemsInventory, setItemsInventory] = useState(items);
   const [error, setError] = useState('');
   const [selectedRows, setSelectedRows] = useState([]);
-  const [inventoryUser, setInventoryUser] = useState(inventory);
-  const [openConfirm, setOpenConfirm] = useState(false);
+  const [inventoryUser, setInventoryUser] = useState([]);
+  const { openConfirm, ConfirmDialog } = useConfirmDialog();
 
   const handleOnRowSelectionModelChange = ({ type, ids }) => {
     if (type === 'include') {
@@ -105,16 +106,16 @@ const InventoryTable = ({ inventory }) => {
         inventoryId,
       },
     });
-    setOpenConfirm(false);
     setItemsInventory((prevItems) => prevItems.filter((item) => !selectedRows.includes(item.id)));
     setSelectedRows([]);
     setSuccessMsg('Items successfully deleted.');
     setTimeout(() => setSuccessMsg(''), 4000);
   };
 
-  const handleDeleteInventory = async (inventoryId) => {
+  const handleDeleteInventory = async () => {
     const token = localStorage.getItem('token');
     const userId = localStorage.getItem('userId');
+    const inventoryId = inventory.id;
 
     try {
       setLoading(true);
@@ -125,7 +126,11 @@ const InventoryTable = ({ inventory }) => {
         },
         data: { userId, inventoryId },
       });
-      await fetchInventories();
+
+      setInventoryUser((prevInventories) =>
+        prevInventories.filter((inv) => inv.id !== inventoryId),
+      );
+
       setSuccessMsg('Inventory successfully deleted.');
       setTimeout(() => setSuccessMsg(''), 4000);
     } catch (err) {
@@ -138,7 +143,13 @@ const InventoryTable = ({ inventory }) => {
   return (
     <>
       <Button
-        onClick={() => handleDeleteInventory(inventory.id)}
+        onClick={() =>
+          openConfirm({
+            title: 'Delete Inventory',
+            message: 'Are you sure you want to delete this inventory?',
+            onConfirm: handleDeleteInventory,
+          })
+        }
         sx={{ marginBottom: '40px' }}
         color="error"
         variant="contained"
@@ -160,7 +171,13 @@ const InventoryTable = ({ inventory }) => {
       </Button>
       <Button
         disabled={selectedRows.length === 0}
-        onClick={() => setOpenConfirm(true)}
+        onClick={() =>
+          openConfirm({
+            title: 'Delete Item',
+            message: 'Are you sure you want to delete this items?',
+            onConfirm: handleDeleteItem,
+          })
+        }
         sx={{ marginLeft: '20px' }}
         variant="contained"
       >
@@ -171,6 +188,7 @@ const InventoryTable = ({ inventory }) => {
           {successMsg}
         </Alert>
       )}
+      {ConfirmDialog}
 
       <div style={{ height: 300, width: '100%' }}>
         <DataGrid
@@ -198,16 +216,6 @@ const InventoryTable = ({ inventory }) => {
         userId={user_id}
         onItemCreated={handleItemCreated}
       />
-      <Dialog open={openConfirm} onClose={() => setOpenConfirm(false)}>
-        <DialogTitle>Confirm deletion</DialogTitle>
-        <DialogContent>
-          <Typography>Are you sure you want to delete the selected items?</Typography>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setOpenConfirm(false)}>Cancel</Button>
-          <Button onClick={handleDeleteItem}>Delete</Button>
-        </DialogActions>
-      </Dialog>
     </>
   );
 };

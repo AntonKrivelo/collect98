@@ -17,6 +17,22 @@ const InventoryTable = ({ inventory }) => {
   const [showModal, setShowModal] = useState(false);
   const [itemsInventory, setItemsInventory] = useState(items);
   const [error, setError] = useState('');
+  const [selectedRows, setSelectedRows] = useState([]);
+
+  const handleOnRowSelectionModelChange = ({ type, ids }) => {
+    if (type === 'include') {
+      setSelectedRows([...ids]);
+    }
+    console.log({ type, ids });
+    if (type === 'exclude') {
+      const selectedItems = itemsInventory
+        .filter(({ id }) => ![...ids].includes(id))
+        .map(({ id }) => id);
+      setSelectedRows(selectedItems);
+    }
+  };
+
+  console.log(selectedRows);
 
   useEffect(() => {
     const fetchItems = async () => {
@@ -40,6 +56,28 @@ const InventoryTable = ({ inventory }) => {
     setItemsInventory((prev) => [newItem, ...prev]);
   };
 
+  const handleDeleteItem = async () => {
+    console.log(selectedRows);
+
+    const token = localStorage.getItem('token');
+    const userId = localStorage.getItem('userId');
+    const inventoryId = inventory.id;
+
+    await axios.delete(`http://localhost:4000/inventories/${inventoryId}/items`, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      data: {
+        userId,
+        itemIds: selectedRows,
+        inventoryId,
+      },
+    });
+    setItemsInventory((prevItems) => prevItems.filter((item) => !selectedRows.includes(item.id)));
+    setSelectedRows([]);
+  };
+
   return (
     <>
       <Typography>Inventory ID:{id}</Typography>
@@ -54,8 +92,18 @@ const InventoryTable = ({ inventory }) => {
       <Button onClick={() => setShowModal(true)} variant="contained">
         Add item
       </Button>
+      <Button onClick={handleDeleteItem} sx={{ marginLeft: '20px' }} variant="contained">
+        Delete item
+      </Button>
       <div style={{ height: 300, width: '100%' }}>
-        <DataGrid rows={rows} columns={columns} pageSizeOptions={[5]} sx={{ border: 0 }} />
+        <DataGrid
+          onRowSelectionModelChange={(rows) => handleOnRowSelectionModelChange(rows)}
+          checkboxSelection
+          rows={rows}
+          columns={columns}
+          pageSizeOptions={[5]}
+          sx={{ border: 0 }}
+        />
       </div>
       {error && (
         <Alert variant="outlined" severity="error">

@@ -21,7 +21,7 @@ const InventoryTable = ({ inventory }) => {
     width: 150,
   }));
 
-  const [successMsg, setSuccessMsg] = useState(false);
+  const [successMsg, setSuccessMsg] = useState('');
   const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [itemsInventory, setItemsInventory] = useState(items);
@@ -108,10 +108,8 @@ const InventoryTable = ({ inventory }) => {
     setOpenConfirm(false);
     setItemsInventory((prevItems) => prevItems.filter((item) => !selectedRows.includes(item.id)));
     setSelectedRows([]);
-    setSuccessMsg(true);
-    setTimeout(() => {
-      setSuccessMsg(false);
-    }, 4000);
+    setSuccessMsg('Items successfully deleted.');
+    setTimeout(() => setSuccessMsg(''), 4000);
   };
 
   const handleDeleteInventory = async (inventoryId) => {
@@ -128,6 +126,8 @@ const InventoryTable = ({ inventory }) => {
         data: { userId, inventoryId },
       });
       await fetchInventories();
+      setSuccessMsg('Inventory successfully deleted.');
+      setTimeout(() => setSuccessMsg(''), 4000);
     } catch (err) {
       console.error('Error deleting inventory:', err);
     } finally {
@@ -158,12 +158,19 @@ const InventoryTable = ({ inventory }) => {
       <Button onClick={() => setShowModal(true)} variant="contained">
         Add item
       </Button>
-      <Button onClick={() => setOpenConfirm(true)} sx={{ marginLeft: '20px' }} variant="contained">
+      <Button
+        disabled={selectedRows.length === 0}
+        onClick={() => setOpenConfirm(true)}
+        sx={{ marginLeft: '20px' }}
+        variant="contained"
+      >
         Delete item
       </Button>
-      {successMsg ? (
-        <Alert sx={{ marginBottom: '20px', marginTop: '20px' }}>Items deleted </Alert>
-      ) : null}
+      {successMsg && (
+        <Alert severity="success" sx={{ mb: 2, mt: 2 }}>
+          {successMsg}
+        </Alert>
+      )}
 
       <div style={{ height: 300, width: '100%' }}>
         <DataGrid

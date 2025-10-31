@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { useNavigate } from 'react-router';
-import { Container, Typography, Paper, Box, Chip, Divider, Alert } from '@mui/material';
+import { Container, Typography, Paper, Box, Divider, Alert } from '@mui/material';
 import {
   Person as PersonIcon,
   Email as EmailIcon,
@@ -51,7 +51,6 @@ const MyPage = () => {
             alignItems: 'center',
             gap: 1,
             mb: 3,
-            color: 'text.secondary',
           }}
         >
           <PersonIcon color="primary" />

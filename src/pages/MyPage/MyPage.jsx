@@ -1,13 +1,7 @@
 import { useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { useNavigate } from 'react-router';
-import { Container, Typography, Paper, Box, Chip, Divider, Alert } from '@mui/material';
-import {
-  Person as PersonIcon,
-  Email as EmailIcon,
-  Fingerprint as FingerprintIcon,
-  Security as SecurityIcon,
-} from '@mui/icons-material';
+import { Container, Typography, Paper, Box, Alert } from '@mui/material';
 
 const MyPage = () => {
   const { user } = useAuth();
@@ -45,16 +39,13 @@ const MyPage = () => {
         <Typography
           variant="h5"
           component="h2"
-          gutterBottom
           sx={{
             display: 'flex',
             alignItems: 'center',
             gap: 1,
             mb: 3,
-            color: 'text.secondary',
           }}
         >
-          <PersonIcon color="primary" />
           My Information
         </Typography>
 
@@ -63,7 +54,6 @@ const MyPage = () => {
         ) : (
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-              <FingerprintIcon color="action" />
               <Box sx={{ flexGrow: 1 }}>
                 <Typography variant="caption" color="text.secondary">
                   Unique identifier
@@ -73,9 +63,7 @@ const MyPage = () => {
                 </Typography>
               </Box>
             </Box>
-            <Divider />
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-              <PersonIcon color="action" />
               <Box sx={{ flexGrow: 1 }}>
                 <Typography variant="caption" color="text.secondary">
                   Name
@@ -85,9 +73,7 @@ const MyPage = () => {
                 </Typography>
               </Box>
             </Box>
-            <Divider />
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-              <EmailIcon color="action" />
               <Box sx={{ flexGrow: 1 }}>
                 <Typography variant="caption" color="text.secondary">
                   Email
@@ -97,9 +83,7 @@ const MyPage = () => {
                 </Typography>
               </Box>
             </Box>
-            <Divider />
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-              <SecurityIcon color="action" />
               <Box sx={{ flexGrow: 1 }}>
                 <Typography variant="caption" color="text.secondary">
                   Role

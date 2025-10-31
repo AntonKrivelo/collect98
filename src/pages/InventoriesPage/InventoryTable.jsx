@@ -1,4 +1,12 @@
-import { Alert, Button, Typography } from '@mui/material';
+import {
+  Alert,
+  Button,
+  Typography,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+} from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import { useState, useEffect } from 'react';
 import ItemsModal from '../../components/Utils/ItemsModal';
@@ -13,12 +21,14 @@ const InventoryTable = ({ inventory }) => {
     width: 150,
   }));
 
+  const [successMsg, setSuccessMsg] = useState(false);
   const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [itemsInventory, setItemsInventory] = useState(items);
   const [error, setError] = useState('');
   const [selectedRows, setSelectedRows] = useState([]);
   const [inventoryUser, setInventoryUser] = useState(inventory);
+  const [openConfirm, setOpenConfirm] = useState(false);
 
   const handleOnRowSelectionModelChange = ({ type, ids }) => {
     if (type === 'include') {
@@ -95,8 +105,13 @@ const InventoryTable = ({ inventory }) => {
         inventoryId,
       },
     });
+    setOpenConfirm(false);
     setItemsInventory((prevItems) => prevItems.filter((item) => !selectedRows.includes(item.id)));
     setSelectedRows([]);
+    setSuccessMsg(true);
+    setTimeout(() => {
+      setSuccessMsg(false);
+    }, 4000);
   };
 
   const handleDeleteInventory = async (inventoryId) => {
@@ -143,9 +158,13 @@ const InventoryTable = ({ inventory }) => {
       <Button onClick={() => setShowModal(true)} variant="contained">
         Add item
       </Button>
-      <Button onClick={handleDeleteItem} sx={{ marginLeft: '20px' }} variant="contained">
+      <Button onClick={() => setOpenConfirm(true)} sx={{ marginLeft: '20px' }} variant="contained">
         Delete item
       </Button>
+      {successMsg ? (
+        <Alert sx={{ marginBottom: '20px', marginTop: '20px' }}>Items deleted </Alert>
+      ) : null}
+
       <div style={{ height: 300, width: '100%' }}>
         <DataGrid
           onRowSelectionModelChange={(rows) => handleOnRowSelectionModelChange(rows)}
@@ -172,6 +191,16 @@ const InventoryTable = ({ inventory }) => {
         userId={user_id}
         onItemCreated={handleItemCreated}
       />
+      <Dialog open={openConfirm} onClose={() => setOpenConfirm(false)}>
+        <DialogTitle>Confirm deletion</DialogTitle>
+        <DialogContent>
+          <Typography>Are you sure you want to delete the selected items?</Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenConfirm(false)}>Cancel</Button>
+          <Button onClick={handleDeleteItem}>Delete</Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 };

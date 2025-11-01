@@ -1,20 +1,12 @@
-import {
-  Alert,
-  Button,
-  Typography,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-} from '@mui/material';
+import { Alert, Button, Typography } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import { useState, useEffect } from 'react';
 import ItemsModal from '../../components/Utils/ItemsModal';
 import axios from 'axios';
 import useConfirmDialog from '../../components/Utils/useConfirmDialog';
 
-const InventoryTable = ({ inventory }) => {
-  const { id, name, created_at, user_id, category_name, fields = [], items = [] } = inventory;
+const InventoryTable = ({ inventory, handleDeleteInventory }) => {
+  const { id, name, user_id, category_name, fields = [], items = [] } = inventory;
 
   const columns = fields.map(({ field_name = '' }) => ({
     field: field_name,
@@ -26,16 +18,20 @@ const InventoryTable = ({ inventory }) => {
   const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [itemsInventory, setItemsInventory] = useState(items);
+
   const [error, setError] = useState('');
   const [selectedRows, setSelectedRows] = useState([]);
-  const [inventoryUser, setInventoryUser] = useState([]);
+
   const { openConfirm, ConfirmDialog } = useConfirmDialog();
+
+  const token = localStorage.getItem('token');
+  const userId = localStorage.getItem('userId');
 
   const handleOnRowSelectionModelChange = ({ type, ids }) => {
     if (type === 'include') {
       setSelectedRows([...ids]);
     }
-    console.log({ type, ids });
+
     if (type === 'exclude') {
       const selectedItems = itemsInventory
         .filter(({ id }) => ![...ids].includes(id))
@@ -44,24 +40,19 @@ const InventoryTable = ({ inventory }) => {
     }
   };
 
-  console.log(selectedRows);
-
   const fetchInventories = async () => {
-    const token = localStorage.getItem('token');
-    const userId = localStorage.getItem('userId');
-
     try {
       setLoading(true);
-      const res = await axios.get(`http://localhost:4000/users/${userId}/inventories`, {
+      await axios.get(`http://localhost:4000/users/${userId}/inventories`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      setInventoryUser(res.data.inventory || []);
     } catch (err) {
       console.error('Error fetching inventories:', err);
     } finally {
       setLoading(false);
     }
   };
+
   useEffect(() => {
     fetchInventories();
   }, []);
@@ -89,10 +80,6 @@ const InventoryTable = ({ inventory }) => {
   };
 
   const handleDeleteItem = async () => {
-    console.log(selectedRows);
-
-    const token = localStorage.getItem('token');
-    const userId = localStorage.getItem('userId');
     const inventoryId = inventory.id;
 
     await axios.delete(`http://localhost:4000/inventories/${inventoryId}/items`, {
@@ -112,34 +99,6 @@ const InventoryTable = ({ inventory }) => {
     setTimeout(() => setSuccessMsg(''), 4000);
   };
 
-  const handleDeleteInventory = async () => {
-    const token = localStorage.getItem('token');
-    const userId = localStorage.getItem('userId');
-    const inventoryId = inventory.id;
-
-    try {
-      setLoading(true);
-      await axios.delete(`http://localhost:4000/inventories/${inventoryId}`, {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        data: { userId, inventoryId },
-      });
-
-      setInventoryUser((prevInventories) =>
-        prevInventories.filter((inv) => inv.id !== inventoryId),
-      );
-
-      setSuccessMsg('Inventory successfully deleted.');
-      setTimeout(() => setSuccessMsg(''), 4000);
-    } catch (err) {
-      console.error('Error deleting inventory:', err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   return (
     <>
       <Button
@@ -147,7 +106,7 @@ const InventoryTable = ({ inventory }) => {
           openConfirm({
             title: 'Delete Inventory',
             message: 'Are you sure you want to delete this inventory?',
-            onConfirm: handleDeleteInventory,
+            onConfirm: () => handleDeleteInventory({ deleteInventoryId: inventory.id }),
           })
         }
         sx={{ marginBottom: '40px' }}

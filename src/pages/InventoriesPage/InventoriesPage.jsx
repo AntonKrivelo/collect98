@@ -14,6 +14,9 @@ import InventoryTable from './InventoryTable';
 import InventoryModal from '../../components/Utils/InventoryModal';
 
 const InventoriesPage = () => {
+  const token = localStorage.getItem('token');
+  const userId = localStorage.getItem('userId');
+
   const [inventories, setInventories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
@@ -28,8 +31,6 @@ const InventoriesPage = () => {
     const fetchInventories = async () => {
       try {
         setLoading(true);
-        const token = localStorage.getItem('token');
-        const userId = localStorage.getItem('userId');
 
         if (!userId) {
           console.error('User ID not found in localStorage');
@@ -68,6 +69,26 @@ const InventoriesPage = () => {
       </Box>
     );
   }
+
+  const handleDeleteInventory = async ({ deleteInventoryId }) => {
+    const inventoryId = deleteInventoryId;
+
+    try {
+      // setLoading(true);
+      await axios.delete(`http://localhost:4000/inventories/${deleteInventoryId}`, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        data: { userId, inventoryId },
+      });
+      setInventories(inventories.filter((e) => e.id !== deleteInventoryId));
+    } catch (err) {
+      console.error('Error deleting inventory:', err);
+    } finally {
+      // setLoading(false);
+    }
+  };
 
   return (
     <Box sx={{ maxWidth: 1100, margin: '20px auto' }}>
@@ -111,7 +132,11 @@ const InventoriesPage = () => {
         <>
           {currentInventories.map((inventory) => (
             <Paper key={inventory.id} sx={{ mb: 4, p: 2 }}>
-              <InventoryTable setInventories={setInventories} inventory={inventory} />
+              <InventoryTable
+                setInventories={setInventories}
+                inventory={inventory}
+                handleDeleteInventory={handleDeleteInventory}
+              />
             </Paper>
           ))}
 

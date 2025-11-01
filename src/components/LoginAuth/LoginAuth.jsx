@@ -33,10 +33,7 @@ const LoginAuth = () => {
         localStorage.setItem('token', res.data.token);
         localStorage.setItem('userId', res.data.user.id);
         localStorage.setItem('userName', res.data.user.name);
-        setMessage('Successfully logged in! Redirecting...');
-        setTimeout(() => {
-          navigate('/dashboard');
-        }, 1500);
+        return navigate('/dashboard');
       }
     } catch (error) {
       if (error.response?.status === 403) {

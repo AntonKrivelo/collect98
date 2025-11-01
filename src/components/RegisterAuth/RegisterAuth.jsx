@@ -30,9 +30,15 @@ const RegisterAuth = ({ setIsRegister, setAlertMessage }) => {
         password: data.password,
       });
 
-      setAlertMessage({ text: 'Registration success!', severity: 'success' });
-      setIsRegister(false);
-      reset();
+      setAlertMessage({
+        text: 'Registration successful! You can now log in.',
+        severity: 'success',
+      });
+
+      setTimeout(() => {
+        setIsRegister(false);
+        reset();
+      }, 1500);
     } catch (err) {
       if (err.response) {
         console.error(err.response.data);

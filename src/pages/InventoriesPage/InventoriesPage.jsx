@@ -93,6 +93,7 @@ const InventoriesPage = () => {
       >
         Create New Inventory
       </Button>
+
       {isSuccessCreatedAlert ? <Alert sx={{ marginBottom: '20px' }}>Inventory added </Alert> : null}
       <Snackbar
         open={Boolean(successMessage)}
@@ -110,7 +111,7 @@ const InventoriesPage = () => {
         <>
           {currentInventories.map((inventory) => (
             <Paper key={inventory.id} sx={{ mb: 4, p: 2 }}>
-              <InventoryTable inventory={inventory} />
+              <InventoryTable setInventories={setInventories} inventory={inventory} />
             </Paper>
           ))}
 

@@ -29,9 +29,11 @@ const Dashboard = () => {
     fetchInventories();
   }, []);
 
+  console.log(inventories);
+
   return (
     <div>
-      <Typography variant="h5" sx={{ mb: 4, mt: 4, fontWeight: 'bold', textAlign: 'center' }}>
+      <Typography variant="h4" sx={{ mb: 4, mt: 4, fontWeight: 'bold', textAlign: 'center' }}>
         Dashboard
       </Typography>
 

@@ -33,7 +33,7 @@ const DashboardTable = ({ inventory }) => {
       <Box display="flex" gap="15px">
         {category_name && (
           <Typography variant="h6" sx={{ mb: 2, textAlign: 'center' }}>
-            {category_name}
+            {category_name}:
           </Typography>
         )}
         <Typography variant="h6" sx={{ mb: 2, textAlign: 'center' }}>
@@ -43,7 +43,7 @@ const DashboardTable = ({ inventory }) => {
           Created by: {user_name}
         </Typography>
         <Typography variant="h6" sx={{ mb: 2, textAlign: 'center' }}>
-          Created inventory: {formatDate(inventory.created_at)}
+          Created at: {formatDate(inventory.created_at)}
         </Typography>
       </Box>
       <div style={{ height: 300, width: '100%' }}>

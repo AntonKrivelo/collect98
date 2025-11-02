@@ -10,6 +10,7 @@ import {
   InputLabel,
   Select,
   MenuItem,
+  CircularProgress,
 } from '@mui/material';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
@@ -20,12 +21,18 @@ const Dashboard = () => {
   const [categories, setCategories] = useState([]);
   const [inventories, setInventories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('');
+  const [showOnlyWithItems, setShowOnlyWithItems] = useState(false);
 
   const [page, setPage] = useState(1);
   const itemsPerPage = 5;
-  const filteredInventories = selectedCategory
-    ? inventories.filter((inv) => inv.category_id === selectedCategory)
-    : inventories;
+
+  const filteredInventories = inventories.filter((inv) => {
+    const matchesCategory = selectedCategory ? inv.category_id === selectedCategory : true;
+    const matchesItems = showOnlyWithItems
+      ? Array.isArray(inv.items) && inv.items.length > 0
+      : true;
+    return matchesCategory && matchesItems;
+  });
 
   const currentInventories = filteredInventories.slice(
     (page - 1) * itemsPerPage,
@@ -46,6 +53,7 @@ const Dashboard = () => {
     };
     fetchCategories();
   }, []);
+  console.log(inventories);
 
   useEffect(() => {
     const fetchInventories = async () => {
@@ -65,6 +73,14 @@ const Dashboard = () => {
     fetchInventories();
   }, []);
 
+  if (loading) {
+    return (
+      <Box sx={{ display: 'flex', justifyContent: 'center', mt: 10 }}>
+        <CircularProgress />
+      </Box>
+    );
+  }
+
   return (
     <div>
       <Typography variant="h4" sx={{ mb: 4, mt: 4, fontWeight: 'bold', textAlign: 'center' }}>
@@ -80,7 +96,7 @@ const Dashboard = () => {
             label="Category"
             onChange={(e) => setSelectedCategory(e.target.value)}
           >
-            <MenuItem value="">All Categories</MenuItem>
+            <MenuItem sx={{ fontWeight: 'bold' }}>All Categories</MenuItem>
             {categories.map((cat) => (
               <MenuItem key={cat.id} value={cat.id}>
                 {cat.category}
@@ -88,6 +104,17 @@ const Dashboard = () => {
             ))}
           </Select>
         </FormControl>
+        <FormGroup sx={{ mb: 3 }}>
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={showOnlyWithItems}
+                onChange={(e) => setShowOnlyWithItems(e.target.checked)}
+              />
+            }
+            label="Hide empty inventories"
+          />
+        </FormGroup>
         {inventories.length === 0 ? (
           <Typography>Is loading...</Typography>
         ) : (

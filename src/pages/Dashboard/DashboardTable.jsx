@@ -5,7 +5,7 @@ import { useState } from 'react';
 const DashboardTable = ({ inventory }) => {
   const { id, name, category_name, fields = [], items = [], user_name, created_at } = inventory;
 
-  const columns = fields.map(({ field_name = '', category_name = '' }) => ({
+  const columns = fields.map(({ field_name = '' }) => ({
     field: field_name,
     headerName: field_name,
     width: 150,
@@ -19,23 +19,31 @@ const DashboardTable = ({ inventory }) => {
     ...(item.values || {}),
   }));
 
+  const formatDate = (isoString) => {
+    return new Date(isoString).toLocaleString('ru-RU', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+    });
+  };
+
   return (
     <>
       <Typography>Inventory ID:{id}</Typography>
-      <Box>
+      <Box display="flex" gap="15px">
         {category_name && (
           <Typography variant="h6" sx={{ mb: 2, textAlign: 'center' }}>
-            Name category: {category_name}
+            {category_name}
           </Typography>
         )}
         <Typography variant="h6" sx={{ mb: 2, textAlign: 'center' }}>
-          Name inventory: {name}
+          {name}
         </Typography>
         <Typography variant="h6" sx={{ mb: 2, textAlign: 'center' }}>
-          Created user: {user_name}
+          Created by: {user_name}
         </Typography>
         <Typography variant="h6" sx={{ mb: 2, textAlign: 'center' }}>
-          Created inventory: {created_at}
+          Created inventory: {formatDate(inventory.created_at)}
         </Typography>
       </Box>
       <div style={{ height: 300, width: '100%' }}>

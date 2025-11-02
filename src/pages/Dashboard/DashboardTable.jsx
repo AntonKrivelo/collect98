@@ -1,4 +1,4 @@
-import { Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import { useState } from 'react';
 
@@ -22,20 +22,22 @@ const DashboardTable = ({ inventory }) => {
   return (
     <>
       <Typography>Inventory ID:{id}</Typography>
-      {category_name && (
-        <Typography variant="h6" sx={{ mb: 2 }}>
-          Name category: {category_name}
+      <Box>
+        {category_name && (
+          <Typography variant="h6" sx={{ mb: 2, textAlign: 'center' }}>
+            Name category: {category_name}
+          </Typography>
+        )}
+        <Typography variant="h6" sx={{ mb: 2, textAlign: 'center' }}>
+          Name inventory: {name}
         </Typography>
-      )}
-      <Typography variant="h6" sx={{ mb: 2 }}>
-        Name inventory: {name}
-      </Typography>
-      <Typography variant="h6" sx={{ mb: 2 }}>
-        Created user: {user_name}
-      </Typography>
-      <Typography variant="h6" sx={{ mb: 2 }}>
-        Created inventory: {created_at}
-      </Typography>
+        <Typography variant="h6" sx={{ mb: 2, textAlign: 'center' }}>
+          Created user: {user_name}
+        </Typography>
+        <Typography variant="h6" sx={{ mb: 2, textAlign: 'center' }}>
+          Created inventory: {created_at}
+        </Typography>
+      </Box>
       <div style={{ height: 300, width: '100%' }}>
         <DataGrid rows={rows} columns={columns} pageSizeOptions={[5]} sx={{ border: 0 }} />
       </div>

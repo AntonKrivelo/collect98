@@ -39,7 +39,7 @@ const Dashboard = () => {
 
       <Box sx={{ maxWidth: 1100, margin: '20px auto' }}>
         {inventories.length === 0 ? (
-          <Typography>No inventories found.</Typography>
+          <Typography>Is loading...</Typography>
         ) : (
           <>
             {currentInventories.map((inventory) => (

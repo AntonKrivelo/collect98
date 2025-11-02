@@ -1,6 +1,6 @@
 import { Alert, Button, Typography } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import ItemsModal from '../../components/Utils/ItemsModal';
 import axios from 'axios';
 import useConfirmDialog from '../../components/Utils/useConfirmDialog';
@@ -39,35 +39,6 @@ const InventoryTable = ({ inventory, handleDeleteInventory }) => {
       setSelectedRows(selectedItems);
     }
   };
-
-  const fetchInventories = async () => {
-    try {
-      setLoading(true);
-      await axios.get(`http://localhost:4000/users/${userId}/inventories`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-    } catch (err) {
-      console.error('Error fetching inventories:', err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchInventories();
-  }, []);
-
-  useEffect(() => {
-    const fetchItems = async () => {
-      try {
-        const res = await axios.get(`http://localhost:4000/inventories/${id}/items`);
-        setItemsInventory(res.data.items || []);
-      } catch (err) {
-        console.error('error loading items:', err);
-      }
-    };
-    fetchItems();
-  }, [id]);
 
   const rows = itemsInventory.map((item) => ({
     id: item.id,

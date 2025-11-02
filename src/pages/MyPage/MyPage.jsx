@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { Container, Typography, Paper, Box, Alert } from '@mui/material';
 

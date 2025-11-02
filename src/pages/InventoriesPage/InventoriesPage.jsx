@@ -52,6 +52,8 @@ const InventoriesPage = () => {
     fetchInventories();
   }, []);
 
+  console.log(inventories);
+
   useEffect(() => {
     if (isSuccessCreatedAlert) {
       const timer = setTimeout(() => {

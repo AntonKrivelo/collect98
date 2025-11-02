@@ -22,6 +22,7 @@ const Dashboard = () => {
   const [inventories, setInventories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('');
   const [showOnlyWithItems, setShowOnlyWithItems] = useState(false);
+  const [sortOption, setSortOption] = useState('newest');
 
   const [page, setPage] = useState(1);
   const itemsPerPage = 5;
@@ -34,7 +35,22 @@ const Dashboard = () => {
     return matchesCategory && matchesItems;
   });
 
-  const currentInventories = filteredInventories.slice(
+  const sortedInventories = [...filteredInventories].sort((a, b) => {
+    switch (sortOption) {
+      case 'newest':
+        return new Date(b.createdAt) - new Date(a.createdAt);
+      case 'oldest':
+        return new Date(a.createdAt) - new Date(b.createdAt);
+      case 'most':
+        return (b.items?.length || 0) - (a.items?.length || 0);
+      case 'least':
+        return (a.items?.length || 0) - (b.items?.length || 0);
+      default:
+        return 0;
+    }
+  });
+
+  const currentInventories = sortedInventories.slice(
     (page - 1) * itemsPerPage,
     page * itemsPerPage,
   );
@@ -53,7 +69,6 @@ const Dashboard = () => {
     };
     fetchCategories();
   }, []);
-  console.log(inventories);
 
   useEffect(() => {
     const fetchInventories = async () => {
@@ -104,6 +119,20 @@ const Dashboard = () => {
             ))}
           </Select>
         </FormControl>
+        <FormControl fullWidth sx={{ mb: 3 }}>
+          <InputLabel id="sort-select-label">Sort by</InputLabel>
+          <Select
+            labelId="sort-select-label"
+            value={sortOption}
+            label="Sort by"
+            onChange={(e) => setSortOption(e.target.value)}
+          >
+            <MenuItem value="newest">Newest first</MenuItem>
+            <MenuItem value="oldest">Oldest first</MenuItem>
+            <MenuItem value="most">Most popular</MenuItem>
+            <MenuItem value="least">Least popular</MenuItem>
+          </Select>
+        </FormControl>
         <FormGroup sx={{ mb: 3 }}>
           <FormControlLabel
             control={
@@ -125,7 +154,7 @@ const Dashboard = () => {
               </Paper>
             ))}
             <Pagination
-              count={Math.ceil(inventories.length / itemsPerPage)}
+              count={Math.ceil(sortedInventories.length / itemsPerPage)}
               page={page}
               onChange={(e, value) => setPage(value)}
               sx={{ display: 'flex', justifyContent: 'center', mt: 3 }}

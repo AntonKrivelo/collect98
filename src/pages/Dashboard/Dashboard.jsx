@@ -1,15 +1,51 @@
-import { Box, Paper, Typography, Pagination } from '@mui/material';
+import {
+  Box,
+  Paper,
+  Typography,
+  Pagination,
+  FormGroup,
+  FormControlLabel,
+  Checkbox,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+} from '@mui/material';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import DashboardTable from './DashboardTable';
 
 const Dashboard = () => {
   const [loading, setLoading] = useState(false);
+  const [categories, setCategories] = useState([]);
   const [inventories, setInventories] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState('');
 
   const [page, setPage] = useState(1);
   const itemsPerPage = 5;
-  const currentInventories = inventories.slice((page - 1) * itemsPerPage, page * itemsPerPage);
+  const filteredInventories = selectedCategory
+    ? inventories.filter((inv) => inv.category_id === selectedCategory)
+    : inventories;
+
+  const currentInventories = filteredInventories.slice(
+    (page - 1) * itemsPerPage,
+    page * itemsPerPage,
+  );
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        setLoading(true);
+        const res = await axios.get('http://localhost:4000/categories', {});
+        setCategories(res.data.category || []);
+      } catch (err) {
+        console.error('Error loading category:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchCategories();
+  }, []);
 
   useEffect(() => {
     const fetchInventories = async () => {
@@ -29,8 +65,6 @@ const Dashboard = () => {
     fetchInventories();
   }, []);
 
-  console.log(inventories);
-
   return (
     <div>
       <Typography variant="h4" sx={{ mb: 4, mt: 4, fontWeight: 'bold', textAlign: 'center' }}>
@@ -38,6 +72,22 @@ const Dashboard = () => {
       </Typography>
 
       <Box sx={{ maxWidth: 1100, margin: '20px auto' }}>
+        <FormControl fullWidth required sx={{ mb: 3 }}>
+          <InputLabel id="category-select-label">Category</InputLabel>
+          <Select
+            labelId="category-select-label"
+            value={selectedCategory}
+            label="Category"
+            onChange={(e) => setSelectedCategory(e.target.value)}
+          >
+            <MenuItem value="">All Categories</MenuItem>
+            {categories.map((cat) => (
+              <MenuItem key={cat.id} value={cat.id}>
+                {cat.category}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
         {inventories.length === 0 ? (
           <Typography>Is loading...</Typography>
         ) : (

@@ -1,18 +1,8 @@
-import { useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
-import { useNavigate } from 'react-router';
 import { Container, Typography, Paper, Box, Alert } from '@mui/material';
 
 const MyPage = () => {
   const { user } = useAuth();
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (!user || user.status === 'blocked') {
-      navigate('/auth');
-      return;
-    }
-  }, [user, navigate]);
 
   return (
     <Container maxWidth="md" sx={{ py: 4 }}>
@@ -50,7 +40,9 @@ const MyPage = () => {
         </Typography>
 
         {!user ? (
-          <Alert severity="warning">User data not available</Alert>
+          <Alert severity="warning">
+            User data is unavailable or the profile is blocked, please contact the administrator.
+          </Alert>
         ) : (
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>

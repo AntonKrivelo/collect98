@@ -30,6 +30,10 @@ const RegisterAuth = ({ setIsRegister, setAlertMessage }) => {
         password: data.password,
       });
 
+      setAlertMessage({
+        text: 'Registration successful! You can now log in.',
+        severity: 'success',
+      });
       setAlertMessage({ text: 'Registration success!', severity: 'success' });
       setIsRegister(false);
       reset();

@@ -145,7 +145,9 @@ const Dashboard = () => {
           />
         </FormGroup>
         {inventories.length === 0 ? (
-          <Typography>Is loading...</Typography>
+          <Box sx={{ display: 'flex', justifyContent: 'center', mt: 10 }}>
+            <CircularProgress />
+          </Box>
         ) : (
           <>
             {currentInventories.map((inventory) => (

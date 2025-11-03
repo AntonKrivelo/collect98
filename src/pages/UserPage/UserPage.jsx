@@ -2,10 +2,13 @@ import { Box, Button, Container, Paper, Typography } from '@mui/material';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import InventoryTable from '../../components/InventoryTable/InventoryTable';
 
 const UserPage = () => {
   const { id } = useParams();
   const [user, setUser] = useState([]);
+  const [inventoryUser, setInventoryUser] = useState([]);
+
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
@@ -16,7 +19,8 @@ const UserPage = () => {
         const res = await axios.get(`http://localhost:4000/users/${id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        setUser(res.data.user);
+        setUser(res.data.user || []);
+        setInventoryUser(res.data.inventories || []);
       } catch (err) {
         console.error('Error loading user:', err);
       } finally {
@@ -68,7 +72,7 @@ const UserPage = () => {
                   display: 'flex',
                   alignItems: 'center',
                   gap: 1,
-                  mb: 3,
+                  mb: 2,
                 }}
               >
                 Information user:
@@ -113,7 +117,11 @@ const UserPage = () => {
           </Box>
         </Box>
       </Paper>
-      {/* {user && <InventoriesSection />} */}
+      {inventoryUser.map((inventory) => (
+        <Paper key={inventoryUser.id} sx={{ mb: 4, p: 2, mt: 4 }}>
+          <InventoryTable inventory={inventory} withControls={true} />
+        </Paper>
+      ))}
     </Container>
   );
 };

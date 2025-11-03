@@ -25,7 +25,13 @@ const deleteItems = async ({ inventoryId, token, userId, removeItemsIds }) => {
   }
 };
 
-const InventoryTable = ({ inventory, handleDeleteInventory, withControls = true }) => {
+const InventoryTable = ({
+  inventory,
+  handleDeleteInventory,
+  withControls = true,
+  token = '',
+  userId = '',
+}) => {
   const { id, name, user_id, category_name, fields = [], items = [], user_name } = inventory;
 
   const columns = fields.map(({ field_name = '' }) => ({
@@ -34,8 +40,6 @@ const InventoryTable = ({ inventory, handleDeleteInventory, withControls = true 
     width: 150,
   }));
 
-  const token = localStorage.getItem('token');
-  const userId = localStorage.getItem('userId');
   const displayValue = withControls ? 'inline-flex' : 'none';
 
   const [successMsg, setSuccessMsg] = useState('');

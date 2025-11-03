@@ -13,10 +13,7 @@ import {
 import InventoryModal from '../Utils/InventoryModal';
 import InventoryTable from '../InventoryTable/InventoryTable';
 
-const InventoriesSection = () => {
-  const token = localStorage.getItem('token');
-  const userId = localStorage.getItem('userId');
-
+const InventoriesSection = ({ token, userId, header }) => {
   const [inventories, setInventories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
@@ -50,7 +47,7 @@ const InventoriesSection = () => {
     };
 
     fetchInventories();
-  }, []);
+  }, [token, userId]);
 
   useEffect(() => {
     if (isSuccessCreatedAlert) {
@@ -93,7 +90,7 @@ const InventoriesSection = () => {
   return (
     <Box sx={{ maxWidth: 1100, margin: '20px auto' }}>
       <Typography variant="h4" sx={{ mb: 4, fontWeight: 'bold', textAlign: 'center' }}>
-        My Inventories
+        {header}
       </Typography>
       <Typography
         sx={{
@@ -136,6 +133,8 @@ const InventoriesSection = () => {
                 inventory={inventory}
                 handleDeleteInventory={handleDeleteInventory}
                 withControls
+                token={token}
+                userId={userId}
               />
             </Paper>
           ))}

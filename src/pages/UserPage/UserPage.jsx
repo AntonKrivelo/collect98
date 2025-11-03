@@ -8,10 +8,11 @@ import InventoriesSection from '../../components/InventoriesSection/InventoriesS
 // import InventoriesSection from '../../components/InventoriesSection/InventoriesSection';
 
 const UserPage = () => {
-  const { id } = useParams();
-  const [users, setUsers] = useState([]);
-  const [inventoryUser, setInventoryUser] = useState([]);
+  const params = useParams();
+  const { id } = params;
+  const token = localStorage.getItem('token');
 
+  const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const { user } = useAuth();
@@ -23,8 +24,7 @@ const UserPage = () => {
         const res = await axios.get(`http://localhost:4000/users/${id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        setUsers(res.data.user || []);
-        setInventoryUser(res.data.inventories || []);
+        setUserData(res.data.user || null);
       } catch (err) {
         console.error('Error loading user:', err);
       } finally {
@@ -39,7 +39,11 @@ const UserPage = () => {
       navigate('/dashboard');
       return;
     }
-  }, [user]);
+  }, [navigate, user]);
+
+  if (!userData) {
+    return <>No user data</>;
+  }
 
   return (
     <Container maxWidth="md" sx={{ py: 4 }}>
@@ -90,7 +94,7 @@ const UserPage = () => {
                 Unique identifier
               </Typography>
               <Typography variant="h6" component="div">
-                {users.id || 'Not available'}
+                {userData.id || 'Not available'}
               </Typography>
             </Box>
           </Box>
@@ -100,7 +104,7 @@ const UserPage = () => {
                 Name
               </Typography>
               <Typography variant="h6" component="div">
-                {users.name || 'Not available'}
+                {userData.name || 'Not available'}
               </Typography>
             </Box>
           </Box>
@@ -110,7 +114,7 @@ const UserPage = () => {
                 Email
               </Typography>
               <Typography variant="h6" component="div">
-                {users.email || 'Not available'}
+                {userData.email || 'Not available'}
               </Typography>
             </Box>
           </Box>
@@ -120,17 +124,13 @@ const UserPage = () => {
                 Role
               </Typography>
               <Typography variant="h6" component="div">
-                {users.role || 'Not available'}
+                {userData.role || 'Not available'}
               </Typography>
             </Box>
           </Box>
         </Box>
       </Paper>
-      {inventoryUser.map((inventory, token, id) => (
-        <Paper key={inventoryUser.id} sx={{ mb: 4, p: 2, mt: 4 }}>
-          <InventoriesSection inventory={inventory} id={id} token={token} withControls={true} />
-        </Paper>
-      ))}
+      <InventoriesSection token={token} userId={id} header={`${userData.name} inventories`} />
     </Container>
   );
 };

@@ -42,7 +42,15 @@ const UserPage = () => {
       >
         User Page
       </Typography>
-
+      <Button
+        sx={{ marginBottom: '10px' }}
+        variant="contained"
+        size="small"
+        color="primary"
+        onClick={() => navigate('/admin-panel')}
+      >
+        Back to adminPanel
+      </Button>
       <Paper
         elevation={3}
         sx={{
@@ -50,12 +58,21 @@ const UserPage = () => {
           borderRadius: 2,
         }}
       >
-        <Button color="primary" onClick={() => navigate('/admin-panel')}>
-          Back
-        </Button>
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
             <Box sx={{ flexGrow: 1 }}>
+              <Typography
+                variant="h5"
+                component="h2"
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 1,
+                  mb: 3,
+                }}
+              >
+                Information user:
+              </Typography>
               <Typography variant="caption" color="text.secondary">
                 Unique identifier
               </Typography>

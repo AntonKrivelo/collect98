@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import InventoryTable from '../../components/InventoryTable/InventoryTable';
+// import InventoriesSection from '../../components/InventoriesSection/InventoriesSection';
 
 const UserPage = () => {
   const { id } = useParams();

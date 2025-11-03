@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import InventoryTable from '../../components/InventoryTable/InventoryTable';
 import { useAuth } from '../../context/AuthContext';
+import InventoriesSection from '../../components/InventoriesSection/InventoriesSection';
 // import InventoriesSection from '../../components/InventoriesSection/InventoriesSection';
 
 const UserPage = () => {
@@ -125,9 +126,9 @@ const UserPage = () => {
           </Box>
         </Box>
       </Paper>
-      {inventoryUser.map((inventory) => (
+      {inventoryUser.map((inventory, token, id) => (
         <Paper key={inventoryUser.id} sx={{ mb: 4, p: 2, mt: 4 }}>
-          <InventoryTable inventory={inventory} withControls={true} />
+          <InventoriesSection inventory={inventory} id={id} token={token} withControls={true} />
         </Paper>
       ))}
     </Container>

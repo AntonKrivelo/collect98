@@ -13,7 +13,7 @@ import {
 import InventoryModal from '../Utils/InventoryModal';
 import InventoryTable from '../InventoryTable/InventoryTable';
 
-const InventoriesPage = () => {
+const InventoriesSection = () => {
   const token = localStorage.getItem('token');
   const userId = localStorage.getItem('userId');
 
@@ -159,4 +159,4 @@ const InventoriesPage = () => {
   );
 };
 
-export default InventoriesPage;
+export default InventoriesSection;

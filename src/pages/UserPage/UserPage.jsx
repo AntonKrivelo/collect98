@@ -3,15 +3,17 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import InventoryTable from '../../components/InventoryTable/InventoryTable';
+import { useAuth } from '../../context/AuthContext';
 // import InventoriesSection from '../../components/InventoriesSection/InventoriesSection';
 
 const UserPage = () => {
   const { id } = useParams();
-  const [user, setUser] = useState([]);
+  const [users, setUsers] = useState([]);
   const [inventoryUser, setInventoryUser] = useState([]);
 
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+  const { user } = useAuth();
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -20,7 +22,7 @@ const UserPage = () => {
         const res = await axios.get(`http://localhost:4000/users/${id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        setUser(res.data.user || []);
+        setUsers(res.data.user || []);
         setInventoryUser(res.data.inventories || []);
       } catch (err) {
         console.error('Error loading user:', err);
@@ -31,7 +33,12 @@ const UserPage = () => {
     fetchUser();
   }, [id]);
 
-  console.log(user);
+  useEffect(() => {
+    if (user.role !== 'admin') {
+      navigate('/dashboard');
+      return;
+    }
+  }, [user]);
 
   return (
     <Container maxWidth="md" sx={{ py: 4 }}>
@@ -82,7 +89,7 @@ const UserPage = () => {
                 Unique identifier
               </Typography>
               <Typography variant="h6" component="div">
-                {user.id || 'Not available'}
+                {users.id || 'Not available'}
               </Typography>
             </Box>
           </Box>
@@ -92,7 +99,7 @@ const UserPage = () => {
                 Name
               </Typography>
               <Typography variant="h6" component="div">
-                {user.name || 'Not available'}
+                {users.name || 'Not available'}
               </Typography>
             </Box>
           </Box>
@@ -102,7 +109,7 @@ const UserPage = () => {
                 Email
               </Typography>
               <Typography variant="h6" component="div">
-                {user.email || 'Not available'}
+                {users.email || 'Not available'}
               </Typography>
             </Box>
           </Box>
@@ -112,7 +119,7 @@ const UserPage = () => {
                 Role
               </Typography>
               <Typography variant="h6" component="div">
-                {user.role || 'Not available'}
+                {users.role || 'Not available'}
               </Typography>
             </Box>
           </Box>

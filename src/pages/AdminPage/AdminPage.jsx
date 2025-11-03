@@ -279,7 +279,7 @@ export default function AdminPage() {
                 variant="contained"
                 onClick={() =>
                   openConfirm({
-                    title: 'add admin users',
+                    title: 'add admin rights',
                     message: 'Are you sure you want to grant administrator rights to the user?',
                     onConfirm: handleProvideAdminAccess,
                   })
@@ -294,7 +294,7 @@ export default function AdminPage() {
                 variant="contained"
                 onClick={() =>
                   openConfirm({
-                    title: 'remove admin users',
+                    title: 'delete admin rights',
                     message: 'Are you sure you want to change the administrator rights to a user?',
                     onConfirm: handleRemoveAdminAccess,
                   })

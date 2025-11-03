@@ -14,7 +14,7 @@ import {
 } from '@mui/material';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import DashboardTable from './DashboardTable';
+import InventoryTable from '../../components/InventoryTable/InventoryTable';
 
 const Dashboard = () => {
   const [loading, setLoading] = useState(false);
@@ -152,7 +152,7 @@ const Dashboard = () => {
           <>
             {currentInventories.map((inventory) => (
               <Paper key={inventory.id} sx={{ mb: 4, p: 2 }}>
-                <DashboardTable setInventories={setInventories} inventory={inventory} />
+                <InventoryTable inventory={inventory} withControls={false} />
               </Paper>
             ))}
             <Pagination

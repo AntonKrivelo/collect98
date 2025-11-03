@@ -116,7 +116,7 @@ const InventoryTable = ({ inventory, handleDeleteInventory, withControls = true 
         </Typography>
       </Box>
       <ButtonGroup
-        sx={{ mb: 1, display: displayValue }}
+        sx={{ mb: 1, display: displayValue, gap: '5px' }}
         variant="contained"
         aria-label="Basic button group"
       >

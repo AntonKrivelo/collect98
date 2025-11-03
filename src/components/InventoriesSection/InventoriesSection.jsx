@@ -10,8 +10,8 @@ import {
   Alert,
   Pagination,
 } from '@mui/material';
-import InventoryModal from '../../components/Utils/InventoryModal';
-import InventoryTable from '../../components/InventoryTable/InventoryTable';
+import InventoryModal from '../Utils/InventoryModal';
+import InventoryTable from '../InventoryTable/InventoryTable';
 
 const InventoriesPage = () => {
   const token = localStorage.getItem('token');

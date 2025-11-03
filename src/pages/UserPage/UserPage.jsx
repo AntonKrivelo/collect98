@@ -2,10 +2,8 @@ import { Box, Button, Container, Paper, Typography } from '@mui/material';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import InventoryTable from '../../components/InventoryTable/InventoryTable';
 import { useAuth } from '../../context/AuthContext';
 import InventoriesSection from '../../components/InventoriesSection/InventoriesSection';
-// import InventoriesSection from '../../components/InventoriesSection/InventoriesSection';
 
 const UserPage = () => {
   const params = useParams();

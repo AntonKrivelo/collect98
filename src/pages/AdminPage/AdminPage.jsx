@@ -5,6 +5,7 @@ import { Box, Button, Toolbar, Typography, Paper, CircularProgress } from '@mui/
 import SearchBar from '../../components/Utils/SearchBar';
 import { useAuth } from '../../context/AuthContext';
 import { useNavigate } from 'react-router';
+import useConfirmDialog from '../../components/Utils/useConfirmDialog';
 
 const columns = [
   { field: 'id', headerName: 'ID', width: 70 },
@@ -48,6 +49,7 @@ export default function AdminPage() {
   const [selectedRows, setSelectedRows] = useState([]);
   const [search, setSearch] = useState('');
   const [loading, setLoading] = useState(true);
+  const { openConfirm, ConfirmDialog } = useConfirmDialog();
 
   useEffect(() => {
     if (!user || user.role !== 'admin' || user.status === 'blocked') {
@@ -230,7 +232,13 @@ export default function AdminPage() {
               <Button
                 sx={{ fontSize: '12px' }}
                 variant="contained"
-                onClick={handleBlock}
+                onClick={() =>
+                  openConfirm({
+                    title: 'Blocked users',
+                    message: 'Are you sure you want to block the user?',
+                    onConfirm: handleBlock,
+                  })
+                }
                 disabled={selectedRows.length === 0}
                 size="small"
               >
@@ -239,7 +247,13 @@ export default function AdminPage() {
               <Button
                 sx={{ fontSize: '12px' }}
                 variant="contained"
-                onClick={handleUnblock}
+                onClick={() =>
+                  openConfirm({
+                    title: 'Unblock users',
+                    message: 'Are you sure you want to unblock the user?',
+                    onConfirm: handleUnblock,
+                  })
+                }
                 disabled={selectedRows.length === 0}
                 size="small"
               >
@@ -248,7 +262,13 @@ export default function AdminPage() {
               <Button
                 sx={{ fontSize: '12px' }}
                 variant="contained"
-                onClick={handleDeleteUsers}
+                onClick={() =>
+                  openConfirm({
+                    title: 'delete users',
+                    message: 'Are you sure you want to delete the user?',
+                    onConfirm: handleDeleteUsers,
+                  })
+                }
                 disabled={selectedRows.length === 0}
                 size="small"
               >
@@ -257,7 +277,13 @@ export default function AdminPage() {
               <Button
                 sx={{ fontSize: '12px' }}
                 variant="contained"
-                onClick={handleProvideAdminAccess}
+                onClick={() =>
+                  openConfirm({
+                    title: 'add admin rights',
+                    message: 'Are you sure you want to grant administrator rights to the user?',
+                    onConfirm: handleProvideAdminAccess,
+                  })
+                }
                 disabled={selectedRows.length === 0}
                 size="small"
               >
@@ -266,12 +292,19 @@ export default function AdminPage() {
               <Button
                 sx={{ fontSize: '12px' }}
                 variant="contained"
-                onClick={handleRemoveAdminAccess}
+                onClick={() =>
+                  openConfirm({
+                    title: 'delete admin rights',
+                    message: 'Are you sure you want to change the administrator rights to a user?',
+                    onConfirm: handleRemoveAdminAccess,
+                  })
+                }
                 disabled={selectedRows.length === 0}
                 size="small"
               >
                 Remove admin access
               </Button>
+              {ConfirmDialog}
             </Box>
           </Toolbar>
         </Paper>

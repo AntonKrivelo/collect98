@@ -10,8 +10,8 @@ import {
   Alert,
   Pagination,
 } from '@mui/material';
-import InventoryTable from './InventoryTable';
 import InventoryModal from '../../components/Utils/InventoryModal';
+import InventoryTable from '../../components/InventoryTable/InventoryTable';
 
 const InventoriesPage = () => {
   const token = localStorage.getItem('token');
@@ -51,8 +51,6 @@ const InventoriesPage = () => {
 
     fetchInventories();
   }, []);
-
-  console.log(inventories);
 
   useEffect(() => {
     if (isSuccessCreatedAlert) {
@@ -135,13 +133,12 @@ const InventoriesPage = () => {
           {currentInventories.map((inventory) => (
             <Paper key={inventory.id} sx={{ mb: 4, p: 2 }}>
               <InventoryTable
-                setInventories={setInventories}
                 inventory={inventory}
                 handleDeleteInventory={handleDeleteInventory}
+                withControls
               />
             </Paper>
           ))}
-
           <Pagination
             count={Math.ceil(inventories.length / itemsPerPage)}
             page={page}

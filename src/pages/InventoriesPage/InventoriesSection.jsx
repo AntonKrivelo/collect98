@@ -147,6 +147,7 @@ const InventoriesPage = () => {
           />
         </>
       )}
+
       <InventoryModal
         open={showModal}
         onClose={() => setShowModal(false)}

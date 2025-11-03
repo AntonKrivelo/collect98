@@ -1,5 +1,6 @@
 import { useAuth } from '../../context/AuthContext';
 import { Container, Typography, Paper, Box, Alert } from '@mui/material';
+import InventoriesSection from '../InventoriesPage/InventoriesSection';
 
 const MyPage = () => {
   const { user } = useAuth();
@@ -88,6 +89,7 @@ const MyPage = () => {
           </Box>
         )}
       </Paper>
+      {user && <InventoriesSection />}
     </Container>
   );
 };

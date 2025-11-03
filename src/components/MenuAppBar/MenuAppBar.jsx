@@ -81,7 +81,6 @@ export default function MenuAppBar() {
             )}
             <MenuItem onClick={() => handleClose('/dashboard')}>Dashboard</MenuItem>
             <MenuItem onClick={() => handleClose('/my-page')}>My Page</MenuItem>
-            {user && <MenuItem onClick={() => handleClose('/inventories')}>Inventories</MenuItem>}
           </Menu>
         </Toolbar>
       </AppBar>

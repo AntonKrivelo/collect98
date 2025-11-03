@@ -5,12 +5,15 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import AuthFormWrapper from '../../pages/AuthPage/AuthFormWrapper';
 import styles from './LoginAuth.module.scss';
+import { useAuth } from '../../context/AuthContext';
 
 const LoginAuth = () => {
   const [error, setError] = useState('');
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+
+  const { checkAuth } = useAuth();
 
   const {
     handleSubmit,
@@ -33,6 +36,7 @@ const LoginAuth = () => {
         localStorage.setItem('token', res.data.token);
         localStorage.setItem('userId', res.data.user.id);
         localStorage.setItem('userName', res.data.user.name);
+        await checkAuth();
         return navigate('/dashboard');
       }
     } catch (error) {

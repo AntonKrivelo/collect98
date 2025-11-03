@@ -16,27 +16,33 @@ export const AuthProvider = ({ children }) => {
     window.location.href = '/auth';
   };
 
-  useEffect(() => {
+  const checkAuth = async () => {
     const token = localStorage.getItem('token');
     if (!token) {
+      setUser(null);
       setLoading(false);
       return;
     }
 
     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
-    axios
-      .get('http://localhost:4000/me')
-      .then((res) => setUser(res.data.user))
-      .catch((err) => {
-        console.error('Auth check failed:', err);
-        logout();
-      })
-      .finally(() => setLoading(false));
+    try {
+      const res = await axios.get('http://localhost:4000/me');
+      setUser(res.data.user);
+    } catch (err) {
+      console.error('Auth check failed:', err);
+      logout();
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    checkAuth();
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, setUser, logout, loading }}>
+    <AuthContext.Provider value={{ user, setUser, logout, loading, checkAuth }}>
       {loading ? <div>Loading...</div> : children}
     </AuthContext.Provider>
   );

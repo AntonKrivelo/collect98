@@ -4,4 +4,4 @@ export const login = async (credentials) => await axiosBase.post('/login', crede
 
 export const registerAuth = async (userData) => await axiosBase.post('/register', userData);
 
-export const getMe = async () => (await axiosBase.get('/me')).data.user;
+export const getMe = async () => await axiosBase.get('/me');

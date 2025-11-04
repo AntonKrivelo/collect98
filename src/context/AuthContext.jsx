@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from 'react';
-import axios from 'axios';
+import axiosBase from '../api/axiosBase';
 
 export const AuthContext = createContext();
 
@@ -11,7 +11,6 @@ export const AuthProvider = ({ children }) => {
 
   const logout = () => {
     localStorage.removeItem('token');
-    delete axios.defaults.headers.common['Authorization'];
     setUser(null);
     window.location.href = '/auth';
   };
@@ -24,10 +23,8 @@ export const AuthProvider = ({ children }) => {
       return;
     }
 
-    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-
     try {
-      const res = await axios.get('http://localhost:4000/me');
+      const res = await axiosBase.get('/me');
       setUser(res.data.user);
     } catch (err) {
       console.error('Auth check failed:', err);

@@ -11,8 +11,8 @@ import {
   FormControl,
   Alert,
 } from '@mui/material';
-import axios from 'axios';
 import styles from './InventoryModal.module.scss';
+import axiosBase from '../../api/axiosBase';
 
 const InventoryModal = ({
   open,
@@ -33,7 +33,7 @@ const InventoryModal = ({
     const fetchCategories = async () => {
       try {
         setLoading(true);
-        const res = await axios.get('http://localhost:4000/categories', {});
+        const res = await axiosBase.get('/categories', {});
         setCategories(res.data.category || []);
         setFields([
           { field_name: '', field_type: 'string', is_visible: true },
@@ -70,7 +70,6 @@ const InventoryModal = ({
     setError('');
     try {
       setLoading(true);
-      const token = localStorage.getItem('token');
       const userId = localStorage.getItem('userId');
 
       if (!userId) return setError('User ID not found.');
@@ -84,16 +83,12 @@ const InventoryModal = ({
         field_name: e.field_name.trim().toLowerCase(),
       }));
 
-      const res = await axios.post(
-        'http://localhost:4000/inventories',
-        {
-          userId,
-          name: inventoryName.trim().toLowerCase(),
-          categoryId: selectedCategory,
-          fields: mapFields,
-        },
-        { headers: { Authorization: `Bearer ${token}` } },
-      );
+      const res = await axiosBase.post('/inventories', {
+        userId,
+        name: inventoryName.trim().toLowerCase(),
+        categoryId: selectedCategory,
+        fields: mapFields,
+      });
 
       if (res.status === 201 || res.data.inventory) {
         setIsSuccessCreatedAlert(true);

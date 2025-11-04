@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
-import axios from 'axios';
 import { DataGrid } from '@mui/x-data-grid';
 import { Box, Button, Toolbar, Typography, Paper, CircularProgress } from '@mui/material';
 import SearchBar from '../../components/Utils/SearchBar';
 import { useAuth } from '../../context/AuthContext';
 import { useNavigate } from 'react-router';
 import useConfirmDialog from '../../components/Utils/useConfirmDialog';
+import axiosBase from '../../api/axiosBase';
 
 export default function AdminPage() {
   const columns = [
@@ -83,10 +83,7 @@ export default function AdminPage() {
     const fetchUsers = async () => {
       try {
         setLoading(true);
-        const token = localStorage.getItem('token');
-        const res = await axios.get('http://localhost:4000/users', {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        const res = await axiosBase.get('/users');
         setUsers(res.data.users || []);
       } catch (err) {
         console.error('Errors is loading users:', err);
@@ -116,19 +113,9 @@ export default function AdminPage() {
   };
 
   const fetchEditUsers = async ({ ids, editField }) => {
-    const token = localStorage.getItem('token');
     const usersUpdateData = ids.map((id) => ({ id, ...editField }));
 
-    return await axios.patch(
-      `http://localhost:4000/users`,
-      { users: usersUpdateData },
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-      },
-    );
+    return await axiosBase.patch(`/users`, { users: usersUpdateData });
   };
 
   const handleBlock = async () => {
@@ -157,13 +144,7 @@ export default function AdminPage() {
   };
 
   const handleDeleteUsers = async () => {
-    const token = localStorage.getItem('token');
-
-    await axios.delete('http://localhost:4000/users', {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
+    await axiosBase.delete('/users', {
       data: {
         ids: selectedRows,
       },

@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import axios from 'axios';
 import Paper from '@mui/material/Paper';
 import {
   Box,
@@ -12,6 +11,7 @@ import {
 } from '@mui/material';
 import InventoryModal from '../Utils/InventoryModal';
 import InventoryTable from '../InventoryTable/InventoryTable';
+import axiosBase from '../../api/axiosBase';
 
 const InventoriesSection = ({ token, userId, header }) => {
   const [inventories, setInventories] = useState([]);
@@ -34,9 +34,7 @@ const InventoriesSection = ({ token, userId, header }) => {
           return;
         }
 
-        const res = await axios.get(`http://localhost:4000/inventories/${userId}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        const res = await axiosBase.get(`/inventories/${userId}`);
 
         setInventories(res.data.inventories || []);
       } catch (err) {
@@ -68,22 +66,12 @@ const InventoriesSection = ({ token, userId, header }) => {
   }
 
   const handleDeleteInventory = async ({ deleteInventoryId }) => {
-    const inventoryId = deleteInventoryId;
-
     try {
-      // setLoading(true);
-      await axios.delete(`http://localhost:4000/inventories/${deleteInventoryId}`, {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        data: { userId, inventoryId },
-      });
+      await axiosBase.delete(`/inventories/${deleteInventoryId}`);
       setInventories(inventories.filter((e) => e.id !== deleteInventoryId));
     } catch (err) {
       console.error('Error deleting inventory:', err);
     } finally {
-      // setLoading(false);
     }
   };
 

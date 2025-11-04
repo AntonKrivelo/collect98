@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import axios from 'axios';
 import { DataGrid } from '@mui/x-data-grid';
 import { Box, Button, Toolbar, Typography, Paper, CircularProgress } from '@mui/material';
 import SearchBar from '../../components/Utils/SearchBar';

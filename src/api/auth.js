@@ -1,11 +1,7 @@
 import axiosBase from './axiosBase';
 
-export const login = async (credentials) => {
-  const { data } = await axiosBase.post('/login', credentials);
-  return data;
-};
+export const login = async (credentials) => await axiosBase.post('/login', credentials);
 
-export const registerAuth = async (userData) => {
-  const { data } = await axiosBase.post('/register', userData);
-  return data;
-};
+export const registerAuth = async (userData) => await axiosBase.post('/register', userData);
+
+export const getMe = async () => (await axiosBase.get('/me')).data.user;

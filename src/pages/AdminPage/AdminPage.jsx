@@ -7,41 +7,58 @@ import { useAuth } from '../../context/AuthContext';
 import { useNavigate } from 'react-router';
 import useConfirmDialog from '../../components/Utils/useConfirmDialog';
 
-const columns = [
-  { field: 'id', headerName: 'ID', width: 70 },
-  { field: 'name', headerName: 'Name', width: 180 },
-  { field: 'email', headerName: 'Email', width: 220 },
-  {
-    field: 'role',
-    headerName: 'Role',
-    width: 120,
-    renderCell: (params) => {
-      const color = params.row.role === 'admin' ? 'error' : 'success.main';
-      const text = params.row.role === 'admin' ? 'Admin' : 'User';
-
-      return <Typography color={color}>{text}</Typography>;
-    },
-  },
-  {
-    field: 'status',
-    headerName: 'Status',
-    width: 120,
-    renderCell: (params) => {
-      const color =
-        params.row.status === 'active'
-          ? 'success.main'
-          : params.row.status === 'blocked'
-          ? 'error'
-          : 'warning.main';
-
-      return <Typography color={color}>{params.row.status}</Typography>;
-    },
-  },
-];
-
-const paginationModel = { page: 0, pageSize: 5 };
-
 export default function AdminPage() {
+  const columns = [
+    { field: 'id', headerName: 'ID', width: 70 },
+    { field: 'name', headerName: 'Name', width: 180 },
+    { field: 'email', headerName: 'Email', width: 220 },
+    {
+      field: 'role',
+      headerName: 'Role',
+      width: 120,
+      renderCell: (params) => {
+        const color = params.row.role === 'admin' ? 'error' : 'success.main';
+        const text = params.row.role === 'admin' ? 'Admin' : 'User';
+
+        return <Typography color={color}>{text}</Typography>;
+      },
+    },
+    {
+      field: 'status',
+      headerName: 'Status',
+      width: 120,
+      renderCell: (params) => {
+        const color =
+          params.row.status === 'active'
+            ? 'success.main'
+            : params.row.status === 'blocked'
+            ? 'error'
+            : 'warning.main';
+
+        return <Typography color={color}>{params.row.status}</Typography>;
+      },
+    },
+    {
+      field: 'action',
+      headerName: '',
+      width: 120,
+      sortable: false,
+      renderCell: (params) => (
+        <Button
+          variant="contained"
+          size="small"
+          color="primary"
+          sx={{ minWidth: 60, textTransform: 'none' }}
+          onClick={() => handleUserButtonClick(params.row)}
+        >
+          to page user
+        </Button>
+      ),
+    },
+  ];
+
+  const paginationModel = { page: 0, pageSize: 5 };
+
   const { user } = useAuth();
   const navigate = useNavigate();
 
@@ -50,6 +67,10 @@ export default function AdminPage() {
   const [search, setSearch] = useState('');
   const [loading, setLoading] = useState(true);
   const { openConfirm, ConfirmDialog } = useConfirmDialog();
+
+  const handleUserButtonClick = (user) => {
+    navigate(`/users/${user.id}`);
+  };
 
   useEffect(() => {
     if (!user || user.role !== 'admin' || user.status === 'blocked') {
@@ -136,8 +157,6 @@ export default function AdminPage() {
   };
 
   const handleDeleteUsers = async () => {
-    console.log(selectedRows);
-
     const token = localStorage.getItem('token');
 
     await axios.delete('http://localhost:4000/users', {

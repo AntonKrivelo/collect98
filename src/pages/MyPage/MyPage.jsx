@@ -4,6 +4,8 @@ import InventoriesSection from '../../components/InventoriesSection/InventoriesS
 
 const MyPage = () => {
   const { user } = useAuth();
+  const token = localStorage.getItem('token');
+  const userId = localStorage.getItem('userId');
 
   return (
     <Container maxWidth="md" sx={{ py: 4 }}>
@@ -89,7 +91,7 @@ const MyPage = () => {
           </Box>
         )}
       </Paper>
-      {user && <InventoriesSection />}
+      {user && <InventoriesSection token={token} userId={userId} header="My inventories" />}
     </Container>
   );
 };

@@ -20,6 +20,7 @@ const InventoryModal = ({
   setIsSuccessCreatedAlert,
   inventories,
   setInventories,
+  userId,
 }) => {
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('');
@@ -70,7 +71,6 @@ const InventoryModal = ({
     setError('');
     try {
       setLoading(true);
-      const userId = localStorage.getItem('userId');
 
       if (!userId) return setError('User ID not found.');
 

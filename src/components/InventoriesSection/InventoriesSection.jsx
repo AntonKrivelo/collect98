@@ -139,6 +139,7 @@ const InventoriesSection = ({ token, userId, header }) => {
 
       <InventoryModal
         open={showModal}
+        userId={userId}
         onClose={() => setShowModal(false)}
         setIsSuccessCreatedAlert={setIsSuccessCreatedAlert}
         inventories={inventories}

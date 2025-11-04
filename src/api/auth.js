@@ -5,7 +5,7 @@ export const login = async (credentials) => {
   return data;
 };
 
-export const register = async (userData) => {
+export const registerAuth = async (userData) => {
   const { data } = await axiosBase.post('/register', userData);
   return data;
 };

@@ -15,6 +15,7 @@ import {
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import InventoryTable from '../../components/InventoryTable/InventoryTable';
+import { getAllInventories } from '../../api/inventories';
 
 const Dashboard = () => {
   const [loading, setLoading] = useState(false);
@@ -75,7 +76,7 @@ const Dashboard = () => {
       try {
         setLoading(true);
 
-        const res = await axios.get(`http://localhost:4000/inventories`, {});
+        const res = await getAllInventories();
 
         setInventories(res.data.inventories || []);
       } catch (err) {

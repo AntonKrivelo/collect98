@@ -13,6 +13,7 @@ import {
 } from '@mui/material';
 import axios from 'axios';
 import styles from './InventoryModal.module.scss';
+import { getAllInventories } from '../../api/inventories';
 
 const InventoryModal = ({
   open,
@@ -84,8 +85,7 @@ const InventoryModal = ({
         field_name: e.field_name.trim().toLowerCase(),
       }));
 
-      const res = await axios.post(
-        'http://localhost:4000/inventories',
+      const res = await getAllInventories(
         {
           userId,
           name: inventoryName.trim().toLowerCase(),

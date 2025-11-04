@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import axios from 'axios';
 import Paper from '@mui/material/Paper';
 import {
   Box,
@@ -12,6 +11,7 @@ import {
 } from '@mui/material';
 import InventoryModal from '../Utils/InventoryModal';
 import InventoryTable from '../InventoryTable/InventoryTable';
+import { deleteInventory, getInventoriesByUser } from '../../api/inventories';
 
 const InventoriesSection = ({ token, userId, header }) => {
   const [inventories, setInventories] = useState([]);
@@ -34,7 +34,7 @@ const InventoriesSection = ({ token, userId, header }) => {
           return;
         }
 
-        const res = await axios.get(`http://localhost:4000/inventories/${userId}`, {
+        const res = await getInventoriesByUser({
           headers: { Authorization: `Bearer ${token}` },
         });
 
@@ -72,7 +72,7 @@ const InventoriesSection = ({ token, userId, header }) => {
 
     try {
       // setLoading(true);
-      await axios.delete(`http://localhost:4000/inventories/${deleteInventoryId}`, {
+      await deleteInventory({
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,

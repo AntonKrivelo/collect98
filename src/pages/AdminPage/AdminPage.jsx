@@ -6,6 +6,7 @@ import SearchBar from '../../components/Utils/SearchBar';
 import { useAuth } from '../../context/AuthContext';
 import { useNavigate } from 'react-router';
 import useConfirmDialog from '../../components/Utils/useConfirmDialog';
+import { deleteUsers, getUserById, patchUsers } from '../../api/users';
 
 export default function AdminPage() {
   const columns = [
@@ -84,7 +85,7 @@ export default function AdminPage() {
       try {
         setLoading(true);
         const token = localStorage.getItem('token');
-        const res = await axios.get('http://localhost:4000/users', {
+        const res = await getUserById({
           headers: { Authorization: `Bearer ${token}` },
         });
         setUsers(res.data.users || []);
@@ -119,8 +120,7 @@ export default function AdminPage() {
     const token = localStorage.getItem('token');
     const usersUpdateData = ids.map((id) => ({ id, ...editField }));
 
-    return await axios.patch(
-      `http://localhost:4000/users`,
+    return await patchUsers(
       { users: usersUpdateData },
       {
         headers: {
@@ -159,7 +159,7 @@ export default function AdminPage() {
   const handleDeleteUsers = async () => {
     const token = localStorage.getItem('token');
 
-    await axios.delete('http://localhost:4000/users', {
+    await deleteUsers({
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,

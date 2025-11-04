@@ -59,7 +59,7 @@ const Dashboard = () => {
     const fetchCategories = async () => {
       try {
         setLoading(true);
-        const res = await axiosBase.get('/categories', {});
+        const res = await axiosBase.get('/categories');
         setCategories(res.data.category || []);
       } catch (err) {
         console.error('Error loading category:', err);
@@ -75,7 +75,7 @@ const Dashboard = () => {
       try {
         setLoading(true);
 
-        const res = await axiosBase.get(`/inventories`, {});
+        const res = await axiosBase.get(`/inventories`);
 
         setInventories(res.data.inventories || []);
       } catch (err) {

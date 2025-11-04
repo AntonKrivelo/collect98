@@ -33,7 +33,7 @@ const InventoryModal = ({
     const fetchCategories = async () => {
       try {
         setLoading(true);
-        const res = await axiosBase.get('/categories', {});
+        const res = await axiosBase.get('/categories');
         setCategories(res.data.category || []);
         setFields([
           { field_name: '', field_type: 'string', is_visible: true },

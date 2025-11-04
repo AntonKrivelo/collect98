@@ -7,7 +7,7 @@ import useConfirmDialog from '../Utils/useConfirmDialog';
 import handleRowSelection from '../Utils/handleRowSelection';
 import axiosBase from '../../api/axiosBase';
 
-const deleteItems = async ({ inventoryId, token, userId, removeItemsIds }) => {
+const deleteItems = async ({ inventoryId, userId, removeItemsIds }) => {
   try {
     await axiosBase.delete(`/inventories/${inventoryId}/items`, {
       data: {

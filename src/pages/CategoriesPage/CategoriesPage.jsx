@@ -26,7 +26,7 @@ const CategoriesPage = () => {
     const fetchCategories = async () => {
       try {
         setLoading(true);
-        const res = await axiosBase.get('/categories', {});
+        const res = await axiosBase.get('/categories');
         setCategories(res.data.category || []);
       } catch (err) {
         console.error('Errors is loading categories:', err);

@@ -12,7 +12,7 @@ import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
-import { Button } from '@mui/material';
+import { Button, Box, Alert } from '@mui/material';
 import { useAuth } from '../../context/AuthContext';
 
 export default function MenuAppBar() {
@@ -27,6 +27,7 @@ export default function MenuAppBar() {
     logout();
     setMessage('You have logged out of your profile!');
     navigate('/auth');
+    setTimeout(() => setMessage(''), 3000);
   };
 
   const [mode, setMode] = React.useState(localStorage.getItem('theme') || 'light');
@@ -84,6 +85,12 @@ export default function MenuAppBar() {
           </Menu>
         </Toolbar>
       </AppBar>
+
+      {message && (
+        <Box sx={{ mt: 2, mx: 2 }}>
+          <Alert severity="info">{message}</Alert>
+        </Box>
+      )}
     </ThemeProvider>
   );
 }

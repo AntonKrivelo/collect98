@@ -30,6 +30,7 @@ const CategoriesPage = () => {
         setCategories(res.data.category || []);
       } catch (err) {
         console.error('Errors is loading categories:', err);
+        setError(true);
       } finally {
         setLoading(false);
       }
@@ -108,11 +109,19 @@ const CategoriesPage = () => {
             sx={{ border: 0 }}
           />
         </Paper>
+
         {isSuccess && (
           <Alert variant="outlined" severity="success">
             The category was successfully created!.
           </Alert>
         )}
+
+        {error && (
+          <Alert variant="outlined" severity="error">
+            An error occurred while loading or creating categories.
+          </Alert>
+        )}
+
         <CategoryModal
           open={showModal}
           onClose={() => setShowModal(false)}

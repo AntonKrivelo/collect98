@@ -67,7 +67,9 @@ const InventoriesSection = ({ token, userId, header }) => {
 
   const handleDeleteInventory = async ({ deleteInventoryId }) => {
     try {
-      await axiosBase.delete(`/inventories/${deleteInventoryId}`);
+      await axiosBase.delete(`/inventories/${deleteInventoryId}`, {
+        data: { userId, deleteInventoryId },
+      });
       setInventories(inventories.filter((e) => e.id !== deleteInventoryId));
     } catch (err) {
       console.error('Error deleting inventory:', err);

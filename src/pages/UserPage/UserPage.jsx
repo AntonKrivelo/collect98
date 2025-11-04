@@ -1,9 +1,9 @@
 import { Box, Button, Container, Paper, Typography } from '@mui/material';
-import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import InventoriesSection from '../../components/InventoriesSection/InventoriesSection';
+import { getUserById } from '../../api/users';
 
 const UserPage = () => {
   const params = useParams();
@@ -19,7 +19,7 @@ const UserPage = () => {
     const fetchUser = async () => {
       try {
         const token = localStorage.getItem('token');
-        const res = await axios.get(`http://localhost:4000/users/${id}`, {
+        const res = await getUserById({
           headers: { Authorization: `Bearer ${token}` },
         });
         setUserData(res.data.user || null);

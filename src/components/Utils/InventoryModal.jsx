@@ -11,8 +11,9 @@ import {
   FormControl,
   Alert,
 } from '@mui/material';
-import axios from 'axios';
 import styles from './InventoryModal.module.scss';
+import { getAllInventories } from '../../api/inventories';
+import { getCategories } from '../../api/categories';
 
 const InventoryModal = ({
   open,
@@ -33,7 +34,7 @@ const InventoryModal = ({
     const fetchCategories = async () => {
       try {
         setLoading(true);
-        const res = await axios.get('http://localhost:4000/categories', {});
+        const res = await getCategories();
         setCategories(res.data.category || []);
         setFields([
           { field_name: '', field_type: 'string', is_visible: true },
@@ -84,8 +85,7 @@ const InventoryModal = ({
         field_name: e.field_name.trim().toLowerCase(),
       }));
 
-      const res = await axios.post(
-        'http://localhost:4000/inventories',
+      const res = await getAllInventories(
         {
           userId,
           name: inventoryName.trim().toLowerCase(),

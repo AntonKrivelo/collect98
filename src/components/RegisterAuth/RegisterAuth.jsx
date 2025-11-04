@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { TextField, Button, Typography } from '@mui/material';
 import { useForm } from 'react-hook-form';
-import axios from 'axios';
 import AuthFormWrapper from '../../pages/AuthPage/AuthFormWrapper';
+import { registerAuth } from '../../api/auth';
 
 const RegisterAuth = ({ setIsRegister, setAlertMessage }) => {
   const [error, setError] = useState('');
@@ -24,7 +24,7 @@ const RegisterAuth = ({ setIsRegister, setAlertMessage }) => {
     setError('');
 
     try {
-      await axios.post('http://localhost:4000/register', {
+      await registerAuth({
         name: data.username,
         email: data.email,
         password: data.password,

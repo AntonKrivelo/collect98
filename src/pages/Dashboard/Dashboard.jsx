@@ -13,8 +13,9 @@ import {
   CircularProgress,
 } from '@mui/material';
 import { useEffect, useState } from 'react';
-import axios from 'axios';
 import InventoryTable from '../../components/InventoryTable/InventoryTable';
+import { getAllInventories } from '../../api/inventories';
+import { getCategories } from '../../api/categories';
 
 const Dashboard = () => {
   const [loading, setLoading] = useState(false);
@@ -59,7 +60,7 @@ const Dashboard = () => {
     const fetchCategories = async () => {
       try {
         setLoading(true);
-        const res = await axios.get('http://localhost:4000/categories', {});
+        const res = await getCategories();
         setCategories(res.data.category || []);
       } catch (err) {
         console.error('Error loading category:', err);
@@ -75,7 +76,7 @@ const Dashboard = () => {
       try {
         setLoading(true);
 
-        const res = await axios.get(`http://localhost:4000/inventories`, {});
+        const res = await getAllInventories();
 
         setInventories(res.data.inventories || []);
       } catch (err) {

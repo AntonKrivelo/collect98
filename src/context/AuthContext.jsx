@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import axios from 'axios';
+import { getMe } from '../api/auth';
 
 export const AuthContext = createContext();
 
@@ -27,7 +28,7 @@ export const AuthProvider = ({ children }) => {
     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
     try {
-      const res = await axios.get('http://localhost:4000/me');
+      const res = await getMe();
       setUser(res.data.user);
     } catch (err) {
       console.error('Auth check failed:', err);

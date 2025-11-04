@@ -3,8 +3,8 @@ import { DataGrid } from '@mui/x-data-grid';
 import { Box, Button, Toolbar, Typography, Paper } from '@mui/material';
 import { useNavigate } from 'react-router';
 import { Alert } from '@mui/material';
-import axios from 'axios';
 import CategoryModal from '../../components/Utils/CategoryModal';
+import { createCategory, getCategories } from '../../api/categories';
 
 const columns = [
   { field: 'id', headerName: 'ID', width: 70 },
@@ -26,7 +26,7 @@ const CategoriesPage = () => {
     const fetchCategories = async () => {
       try {
         setLoading(true);
-        const res = await axios.get('http://localhost:4000/categories', {});
+        const res = await getCategories();
         setCategories(res.data.category || []);
       } catch (err) {
         console.error('Errors is loading categories:', err);
@@ -41,9 +41,7 @@ const CategoriesPage = () => {
   const handleCreateCategory = async (categoryName, id) => {
     setLoading(true);
     try {
-      const res = await axios.post('http://localhost:4000/categories', {
-        category: categoryName,
-      });
+      const res = createCategory(categoryName, id);
 
       if (res.data.ok) {
         setIsSuccess(true);

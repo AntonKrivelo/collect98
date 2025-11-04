@@ -1,11 +1,11 @@
 import { TextField, Button, Typography } from '@mui/material';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import AuthFormWrapper from '../../pages/AuthPage/AuthFormWrapper';
 import styles from './LoginAuth.module.scss';
 import { useAuth } from '../../context/AuthContext';
+import { login } from '../../api/auth';
 
 const LoginAuth = () => {
   const [error, setError] = useState('');
@@ -27,7 +27,7 @@ const LoginAuth = () => {
     setError('');
 
     try {
-      const res = await axios.post('http://localhost:4000/login', {
+      const res = await login({
         email: data.email,
         password: data.password,
       });

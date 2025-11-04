@@ -40,7 +40,7 @@ const CategoryModal = ({
       reset();
       onClose();
     } catch (err) {
-      setError(err.message || 'Something went wrong');
+      setError(err.message || `Something went wrong`);
     }
   };
 

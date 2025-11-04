@@ -10,7 +10,7 @@ import {
 } from '@mui/material';
 import { useState, useCallback, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
-import axios from 'axios';
+import axiosBase from '../../api/axiosBase';
 
 const ItemsModal = ({
   open = false,
@@ -44,16 +44,10 @@ const ItemsModal = ({
         setLoading(true);
         setError('');
 
-        const res = await axios.post(
-          `http://localhost:4000/inventories/${inventory.id}`,
-          {
-            userId,
-            values: data,
-          },
-          {
-            headers: { 'Content-Type': 'application/json' },
-          },
-        );
+        const res = await axiosBase.post(`/inventories/${inventory.id}`, {
+          userId,
+          values: data,
+        });
         if (onItemCreated) {
           onItemCreated(res.data.item);
         }

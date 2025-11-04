@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { useState } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import { Alert, Button, ButtonGroup, Typography, Box } from '@mui/material';
@@ -6,14 +5,11 @@ import { Alert, Button, ButtonGroup, Typography, Box } from '@mui/material';
 import ItemsModal from '../Utils/ItemsModal';
 import useConfirmDialog from '../Utils/useConfirmDialog';
 import handleRowSelection from '../Utils/handleRowSelection';
+import axiosBase from '../../api/axiosBase';
 
-const deleteItems = async ({ inventoryId, token, userId, removeItemsIds }) => {
+const deleteItems = async ({ inventoryId, userId, removeItemsIds }) => {
   try {
-    await axios.delete(`http://localhost:4000/inventories/${inventoryId}/items`, {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
+    await axiosBase.delete(`/inventories/${inventoryId}/items`, {
       data: {
         userId,
         itemIds: removeItemsIds,

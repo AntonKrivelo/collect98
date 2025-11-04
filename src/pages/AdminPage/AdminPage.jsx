@@ -77,7 +77,7 @@ export default function AdminPage() {
       navigate('/dashboard');
       return;
     }
-  }, [user]);
+  }, [user, navigate]);
 
   useEffect(() => {
     const fetchUsers = async () => {

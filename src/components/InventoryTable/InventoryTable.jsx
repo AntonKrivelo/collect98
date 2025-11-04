@@ -10,16 +10,27 @@ import { deleteInventoryItems } from '../../api/inventories';
 const deleteItems = async ({ inventoryId, token, userId, removeItemsIds }) => {
   try {
     await deleteInventoryItems({
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-      data: {
+      inventoryId,
+      payload: {
         userId,
         itemIds: removeItemsIds,
         inventoryId,
       },
     });
+
+    // await axios.delete(
+    //   http://localhost:4000/inventories/${inventoryId}/items,
+    //   {
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //       Authorization: Bearer ${token},
+    //     },
+    //     data: {
+    //       userId,
+    //       itemIds: removeItemsIds,
+    //       inventoryId,
+    //     },
+    //   }
   } catch (e) {
     throw new Error(e);
   }

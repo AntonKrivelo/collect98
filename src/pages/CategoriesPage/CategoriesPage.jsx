@@ -41,9 +41,7 @@ const CategoriesPage = () => {
   const handleCreateCategory = async (categoryName, id) => {
     setLoading(true);
     try {
-      const res = createCategory({
-        category: categoryName,
-      });
+      const res = createCategory(categoryName, id);
 
       if (res.data.ok) {
         setIsSuccess(true);

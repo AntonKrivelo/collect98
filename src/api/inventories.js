@@ -1,16 +1,23 @@
 import axiosBase from './axiosBase';
 
-export const getAllInventories = async () => await axiosBase.get('/inventories');
+export const getInventories = async () => await axiosBase.get(`/inventories`);
 
-export const getInventoriesByUser = async (userId) => await axiosBase.get(`/inventories/${userId}`);
+export const getInventoriesByUserId = async (userId) =>
+  await axiosBase.get(`/inventories/${userId}`);
 
 export const createInventory = async (payload) => await axiosBase.post('/inventories', payload);
 
-export const addInventoryItem = async (inventoryId, payload) =>
-  await axiosBase.post(`/inventories/${inventoryId}`, payload);
+export const deleteInventoryById = async ({ inventoryId, userId }) =>
+  axiosBase.delete(`/inventories/${inventoryId}`, {
+    data: { userId, inventoryId },
+  });
 
-export const deleteInventoryItems = async (payload) =>
-  await axiosBase.delete('/inventory-items', { data: payload });
+export const createInventoryItem = async ({ inventoryId, payload }) =>
+  await axiosBase.post(`http://localhost:4000/inventories/${inventoryId}`, {
+    payload,
+  });
 
-export const deleteInventory = async (inventoryId) =>
-  await axiosBase.delete(`/inventories/${inventoryId}`);
+export const deleteInventoryItems = async ({ inventoryId, payload }) =>
+  axiosBase.delete(`http://localhost:4000/inventories/${inventoryId}/items`, {
+    data: payload,
+  });

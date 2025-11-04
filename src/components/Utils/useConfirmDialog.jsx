@@ -44,7 +44,7 @@ export default function useConfirmDialog() {
             setConfirmState((s) => ({ ...s, open: false }));
           }}
         >
-          Delete
+          Ok
         </Button>
       </DialogActions>
     </Dialog>

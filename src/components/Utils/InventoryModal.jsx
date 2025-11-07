@@ -169,7 +169,7 @@ const InventoryModal = ({
           </Box>
         ))}
 
-        <Button disabled={fields.length >= 5} onClick={handleAddField} sx={{ mt: 2 }}>
+        <Button disabled={fields.length >= 8} onClick={handleAddField} sx={{ mt: 2 }}>
           Add field
         </Button>
 

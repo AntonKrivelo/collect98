@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import Paper from '@mui/material/Paper';
 import {
   Box,
@@ -57,6 +57,20 @@ const InventoriesSection = ({ token, userId, header }) => {
     }
   }, [isSuccessCreatedAlert]);
 
+  const handleDeleteInventory = useCallback(
+    async ({ deleteInventoryId }) => {
+      try {
+        await axiosBase.delete(`/inventories/${deleteInventoryId}`, {
+          data: { userId, deleteInventoryId },
+        });
+        setInventories(inventories.filter((e) => e.id !== deleteInventoryId));
+      } catch (err) {
+        console.error('Error deleting inventory:', err);
+      }
+    },
+    [userId, setInventories],
+  );
+
   if (loading) {
     return (
       <Box sx={{ display: 'flex', justifyContent: 'center', mt: 10 }}>
@@ -64,18 +78,6 @@ const InventoriesSection = ({ token, userId, header }) => {
       </Box>
     );
   }
-
-  const handleDeleteInventory = async ({ deleteInventoryId }) => {
-    try {
-      await axiosBase.delete(`/inventories/${deleteInventoryId}`, {
-        data: { userId, deleteInventoryId },
-      });
-      setInventories(inventories.filter((e) => e.id !== deleteInventoryId));
-    } catch (err) {
-      console.error('Error deleting inventory:', err);
-    } finally {
-    }
-  };
 
   return (
     <Box sx={{ maxWidth: 1100, margin: '20px auto' }}>

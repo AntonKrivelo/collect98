@@ -6,14 +6,31 @@ import { Alert } from '@mui/material';
 import CategoryModal from '../../components/Utils/CategoryModal';
 import axiosBase from '../../api/axiosBase';
 
-const columns = [
-  { field: 'id', headerName: 'ID', width: 70 },
-  { field: 'category', headerName: 'Category name', width: 380 },
-];
-
-const paginationModel = { page: 0, pageSize: 5 };
-
 const CategoriesPage = () => {
+  const columns = [
+    { field: 'id', headerName: 'ID', width: 70 },
+    { field: 'category', headerName: 'Category name', width: 380 },
+    {
+      field: 'actions',
+      headerName: 'Actions',
+      width: 200,
+      renderCell: (params) => (
+        <>
+          <Button
+            variant="outlined"
+            color="error"
+            size="small"
+            onClick={() => handleDeleteCategory(params.row.id)}
+          >
+            Delete
+          </Button>
+        </>
+      ),
+    },
+  ];
+
+  const paginationModel = { page: 0, pageSize: 5 };
+
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
@@ -59,6 +76,23 @@ const CategoriesPage = () => {
       setTimeout(() => {
         setIsSuccess(false);
       }, 1000);
+    }
+  };
+
+  const handleDeleteCategory = async (id) => {
+    setLoading(true);
+    try {
+      const res = await axiosBase.delete(`/categories/${id}`);
+      if (res.data.ok) {
+        setCategories((prev) => prev.filter((cat) => cat.id !== id));
+        setIsSuccess(true);
+      }
+    } catch (err) {
+      console.error('Error deleting category:', err);
+      setError(true);
+    } finally {
+      setLoading(false);
+      setTimeout(() => setIsSuccess(false), 1000);
     }
   };
 

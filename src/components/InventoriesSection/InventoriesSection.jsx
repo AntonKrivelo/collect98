@@ -57,19 +57,16 @@ const InventoriesSection = ({ token, userId, header }) => {
     }
   }, [isSuccessCreatedAlert]);
 
-  const handleDeleteInventory = useCallback(
-    async ({ deleteInventoryId }) => {
-      try {
-        await axiosBase.delete(`/inventories/${deleteInventoryId}`, {
-          data: { userId, deleteInventoryId },
-        });
-        setInventories(inventories.filter((e) => e.id !== deleteInventoryId));
-      } catch (err) {
-        console.error('Error deleting inventory:', err);
-      }
-    },
-    [userId, setInventories],
-  );
+  const handleDeleteInventory = async ({ deleteInventoryId }) => {
+    try {
+      await axiosBase.delete(`/inventories/${deleteInventoryId}`, {
+        data: { userId, deleteInventoryId },
+      });
+      setInventories(inventories.filter((e) => e.id !== deleteInventoryId));
+    } catch (err) {
+      console.error('Error deleting inventory:', err);
+    }
+  };
 
   if (loading) {
     return (

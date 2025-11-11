@@ -127,7 +127,7 @@ export default function AdminPage() {
         ),
       );
     } catch (e) {
-    } finally {
+      console.error(e);
     }
   };
   const handleUnblock = async () => {
@@ -139,18 +139,22 @@ export default function AdminPage() {
         ),
       );
     } catch (e) {
-    } finally {
+      console.error(e);
     }
   };
 
   const handleDeleteUsers = async () => {
-    await axiosBase.delete('/users', {
-      data: {
-        ids: selectedRows,
-      },
-    });
-    setUsers((prevUsers) => prevUsers.filter((user) => !selectedRows.includes(user.id)));
-    setSelectedRows([]);
+    try {
+      await axiosBase.delete('/users', {
+        data: {
+          ids: selectedRows,
+        },
+      });
+      setUsers((prevUsers) => prevUsers.filter((user) => !selectedRows.includes(user.id)));
+      setSelectedRows([]);
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   const handleProvideAdminAccess = async () => {
@@ -162,7 +166,7 @@ export default function AdminPage() {
         ),
       );
     } catch (e) {
-    } finally {
+      console.error(e);
     }
   };
 
@@ -175,7 +179,7 @@ export default function AdminPage() {
         ),
       );
     } catch (e) {
-    } finally {
+      console.error(e);
     }
   };
 

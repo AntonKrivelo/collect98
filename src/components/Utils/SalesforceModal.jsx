@@ -61,6 +61,7 @@ const SalesforceModal = ({ open, onClose, user }) => {
         notes,
       });
       setSuccessMsg(`Created: AccountId=${res.data.accountId} ContactId=${res.data.contactId}`);
+      onClose();
     } catch (err) {
       setErrorMsg(err.response?.data?.error || err.message);
     } finally {

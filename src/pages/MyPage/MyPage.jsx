@@ -1,11 +1,14 @@
 import { useAuth } from '../../context/AuthContext';
-import { Container, Typography, Paper, Box, Alert } from '@mui/material';
+import { Container, Typography, Paper, Box, Alert, Button } from '@mui/material';
 import InventoriesSection from '../../components/InventoriesSection/InventoriesSection';
+import { useState } from 'react';
+import SalesforceModal from '../../components/Utils/SalesforceModal';
 
 const MyPage = () => {
   const { user } = useAuth();
   const token = localStorage.getItem('token');
   const userId = localStorage.getItem('userId');
+  const [showModal, setShowModal] = useState(false);
 
   return (
     <Container maxWidth="md" sx={{ py: 4 }}>
@@ -29,6 +32,15 @@ const MyPage = () => {
           borderRadius: 2,
         }}
       >
+        <Button
+          onClick={() => setShowModal(true)}
+          disabled={!user}
+          variant="contained"
+          size="small"
+          sx={{ mb: '20px' }}
+        >
+          send data to salesforce
+        </Button>
         <Typography
           variant="h5"
           component="h2"
@@ -90,6 +102,7 @@ const MyPage = () => {
             </Box>
           </Box>
         )}
+        <SalesforceModal open={showModal} onClose={() => setShowModal(false)} user={user} />
       </Paper>
       {user && <InventoriesSection token={token} userId={userId} header="My inventories" />}
     </Container>

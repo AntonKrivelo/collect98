@@ -13,6 +13,7 @@ import {
   Box,
 } from '@mui/material';
 import axiosBase from '../../api/axiosBase';
+import { AuthButton } from './AuthButton';
 
 const SalesforceModal = ({ open, onClose, user }) => {
   const [company, setCompany] = useState('');
@@ -76,6 +77,11 @@ const SalesforceModal = ({ open, onClose, user }) => {
       setLoading(false);
     }
   };
+
+  const AUTH_ERROR = [
+    'Connect Salesforce first via OAuth',
+    'Unable to refresh session due to: No refresh token found in the connection',
+  ];
 
   return (
     <>
@@ -141,7 +147,9 @@ const SalesforceModal = ({ open, onClose, user }) => {
         <Alert severity="success">{successMsg}</Alert>
       </Snackbar>
       <Snackbar open={!!errorMsg} autoHideDuration={8000} onClose={() => setErrorMsg('')}>
-        <Alert severity="error">{errorMsg}</Alert>
+        <Alert severity="error">
+          {errorMsg} {AUTH_ERROR.includes(errorMsg) && <AuthButton />}
+        </Alert>
       </Snackbar>
     </>
   );

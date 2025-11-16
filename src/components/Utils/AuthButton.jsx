@@ -7,7 +7,7 @@ export const AuthButton = () => {
     <Button
       variant="contained"
       color="primary"
-      onClick={() => window.open(`${baseUrl}/salesforce/auth', '_blank`)}
+      onClick={() => window.open(`${baseUrl}/salesforce/auth`, `_blank`)}
     >
       Click to Auth
     </Button>

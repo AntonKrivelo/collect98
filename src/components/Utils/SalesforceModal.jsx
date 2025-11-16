@@ -60,7 +60,15 @@ const SalesforceModal = ({ open, onClose, user }) => {
         phone,
         notes,
       });
-      setSuccessMsg(`Created: AccountId=${res.data.accountId} ContactId=${res.data.contactId}`);
+
+      const accountId = res?.data?.accountId;
+      const contactId = res?.data?.contactId;
+
+      setSuccessMsg(
+        accountId && contactId
+          ? `Created: AccountId=${accountId} · ContactId=${contactId}`
+          : 'Created successfully',
+      );
       onClose();
     } catch (err) {
       setErrorMsg(err.response?.data?.error || err.message);

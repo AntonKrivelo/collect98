@@ -15,7 +15,7 @@ import {
 import axiosBase from '../../api/axiosBase';
 import { AuthButton } from './AuthButton';
 
-const SalesforceModal = ({ open, onClose, user }) => {
+const SalesforceModal = ({ open, onClose, user, setStateUser }) => {
   const [company, setCompany] = useState('');
   const [jobTitle, setJobTitle] = useState('');
   const [phone, setPhone] = useState('');
@@ -70,6 +70,13 @@ const SalesforceModal = ({ open, onClose, user }) => {
           ? `Created: AccountId=${accountId} · ContactId=${contactId}`
           : 'Created successfully',
       );
+      setStateUser({
+        ...user,
+        salesforce_integration: {
+          accountId,
+          contactId,
+        },
+      });
       onClose();
     } catch (err) {
       setErrorMsg(err.response?.data?.error || err.message);

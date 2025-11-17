@@ -27,7 +27,7 @@ const style = {
 export default function CreateTicketModal({ currentUser, currentPageLink, inventories, onClose }) {
   const [summary, setSummary] = useState('');
   const [priority, setPriority] = useState('Average');
-  const [admins, setAdmins] = useState('admin@example.com');
+  const [admins, setAdmins] = useState('krivelo2017@mail.ru');
   const [selectedInventoryId, setSelectedInventoryId] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -36,7 +36,7 @@ export default function CreateTicketModal({ currentUser, currentPageLink, invent
     try {
       const inventoryTitle = inventories.find((i) => i.id === selectedInventoryId)?.name || null;
 
-      await axiosBase.post('/tickets/upload-json', {
+      await axiosBase.post('/upload-json', {
         reported_by: `${currentUser.name} <${currentUser.email}>`,
         inventory: inventoryTitle,
         link: currentPageLink,

@@ -16,8 +16,11 @@ import { useEffect, useState } from 'react';
 import InventoryTable from '../../components/InventoryTable/InventoryTable';
 import axiosBase from '../../api/axiosBase';
 import CreateTicketModal from '../../components/Utils/CreateTicketModal';
+import { useAuth } from '../../context/AuthContext';
 
 const Dashboard = () => {
+  const { user } = useAuth();
+
   const [loading, setLoading] = useState(false);
   const [categories, setCategories] = useState([]);
   const [inventories, setInventories] = useState([]);
@@ -25,7 +28,7 @@ const Dashboard = () => {
   const [showOnlyWithItems, setShowOnlyWithItems] = useState(false);
   const [sortOption, setSortOption] = useState('newest');
   const [showTicketModal, setShowTicketModal] = useState(false);
-  const currentUser = JSON.parse(localStorage.getItem('user')) || {};
+  const currentUser = user || {};
 
   const [page, setPage] = useState(1);
   const itemsPerPage = 5;

@@ -15,6 +15,7 @@ import {
 import { useEffect, useState } from 'react';
 import InventoryTable from '../../components/InventoryTable/InventoryTable';
 import axiosBase from '../../api/axiosBase';
+import CreateTicketModal from '../../components/Utils/CreateTicketModal';
 
 const Dashboard = () => {
   const [loading, setLoading] = useState(false);
@@ -23,6 +24,8 @@ const Dashboard = () => {
   const [selectedCategory, setSelectedCategory] = useState('');
   const [showOnlyWithItems, setShowOnlyWithItems] = useState(false);
   const [sortOption, setSortOption] = useState('newest');
+  const [showTicketModal, setShowTicketModal] = useState(false);
+  const currentUser = JSON.parse(localStorage.getItem('user')) || {};
 
   const [page, setPage] = useState(1);
   const itemsPerPage = 5;
@@ -101,6 +104,23 @@ const Dashboard = () => {
       <Typography variant="h4" sx={{ mb: 4, mt: 4, fontWeight: 'bold', textAlign: 'center' }}>
         Dashboard
       </Typography>
+      <Box sx={{ display: 'flex', justifyContent: 'flex-end', mr: 4 }}>
+        <button
+          style={{
+            padding: '8px 14px',
+            borderRadius: '8px',
+            backgroundColor: '#1976d2',
+            color: 'white',
+            border: 'none',
+            cursor: 'pointer',
+            fontWeight: 'bold',
+            margin: '0px auto',
+          }}
+          onClick={() => setShowTicketModal(true)}
+        >
+          Help / Create Ticket
+        </button>
+      </Box>
 
       <Box sx={{ maxWidth: 1100, margin: '20px auto' }}>
         <FormControl fullWidth required sx={{ mb: 3 }}>
@@ -164,6 +184,14 @@ const Dashboard = () => {
           </>
         )}
       </Box>
+      {showTicketModal && (
+        <CreateTicketModal
+          currentUser={currentUser}
+          currentPageLink={window.location.href}
+          inventories={inventories}
+          onClose={() => setShowTicketModal(false)}
+        />
+      )}
     </div>
   );
 };

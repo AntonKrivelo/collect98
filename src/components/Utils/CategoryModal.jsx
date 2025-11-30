@@ -62,7 +62,7 @@ const CategoryModal = ({
             variant="outlined"
             margin="normal"
             {...register('category', {
-              required: 'Category name is required',
+              required: 'Category name is requiredd',
               minLength: {
                 value: 2,
                 message: 'The name must contain at least 2 characters.',
